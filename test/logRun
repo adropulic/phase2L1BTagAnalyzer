@@ -1,51 +1,446 @@
-01-Aug-2018 10:35:18 CEST  Initiating request to open file root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/MINIAODSIM/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/8CB1DA1F-A22C-E811-9917-0025905B85FE.root
-%MSG-w XrdAdaptorInternal:  file_open 01-Aug-2018 10:35:19 CEST pre-events
-Failed to open file at URL root://eoscms.cern.ch:1094//eos/cms/store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/MINIAODSIM/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/8CB1DA1F-A22C-E811-9917-0025905B85FE.root.
+01-Aug-2018 11:12:12 CEST  Initiating request to open file root://xrootd-cms.infn.it//store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/MINIAODSIM/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/8CB1DA1F-A22C-E811-9917-0025905B85FE.root
+%MSG-w XrdAdaptorInternal:  file_open 01-Aug-2018 11:12:14 CEST pre-events
+Failed to open file at URL root://cmsxrootd-site1.fnal.gov:1094//store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/MINIAODSIM/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/8CB1DA1F-A22C-E811-9917-0025905B85FE.root?tried=+1213xrootd-redic.pi.infn.it.
 %MSG
-%MSG-w XrdAdaptorInternal:  file_open 01-Aug-2018 10:35:19 CEST pre-events
-Failed to open file at URL root://eoscms.cern.ch:1094//eos/cms/store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/MINIAODSIM/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/8CB1DA1F-A22C-E811-9917-0025905B85FE.root?tried=.
+%MSG-w XrdAdaptor:  file_open 01-Aug-2018 11:12:16 CEST pre-events
+Data is served from fnal.gov instead of original site T2_IT_Pisa
 %MSG
-01-Aug-2018 10:35:19 CEST  Fallback request to file root://xrootd-cms.infn.it//store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/MINIAODSIM/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/8CB1DA1F-A22C-E811-9917-0025905B85FE.root
-%MSG-w XrdAdaptor:  file_open 01-Aug-2018 10:35:34 CEST pre-events
-Data is served from fnal.gov instead of original site infn.it
-%MSG
-01-Aug-2018 10:35:36 CEST  Successfully opened file root://xrootd-cms.infn.it//store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/MINIAODSIM/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/8CB1DA1F-A22C-E811-9917-0025905B85FE.root
-01-Aug-2018 10:35:40 CEST  Initiating request to open file root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root
-%MSG-w XrdAdaptorInternal:  AfterFile 01-Aug-2018 10:35:41 CEST pre-events
-Failed to open file at URL root://eoscms.cern.ch:1094//eos/cms/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root.
-%MSG
-%MSG-w XrdAdaptorInternal:  AfterFile 01-Aug-2018 10:35:41 CEST pre-events
-Failed to open file at URL root://eoscms.cern.ch:1094//eos/cms/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root?tried=.
-%MSG
-01-Aug-2018 10:35:41 CEST  Fallback request to file root://xrootd-cms.infn.it//store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root
-%MSG-w XrdAdaptorInternal:  AfterFile 01-Aug-2018 10:36:48 CEST pre-events
-Failed to open file at URL root://cms-xrd-global.cern.ch:1094//store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root?tried=+1213xrootd-cms-redir-01.cr.cnaf.infn.it.
-%MSG
-%MSG-w XrdAdaptorInternal:  AfterFile 01-Aug-2018 10:36:48 CEST pre-events
-Failed to open file at URL root://cms-xrd-global.cern.ch:1094//store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root?tried=+1213xrootd-cms-redir-01.cr.cnaf.infn.it,.
-%MSG
-01-Aug-2018 10:36:48 CEST  Closed file root://xrootd-cms.infn.it//store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/MINIAODSIM/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/8CB1DA1F-A22C-E811-9917-0025905B85FE.root
------ Begin Fatal Exception 01-Aug-2018 10:36:48 CEST-----------------------
-An exception of category 'FallbackFileOpenError' occurred while
-   [0] Constructing the EventProcessor
-   [1] Constructing input source of type PoolSource
-   [2] Calling RootFileSequenceBase::initTheFile()
-   [3] Calling StorageFactory::open()
-   [4] Calling XrdFile::open()
+01-Aug-2018 11:12:17 CEST  Successfully opened file root://xrootd-cms.infn.it//store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/MINIAODSIM/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/8CB1DA1F-A22C-E811-9917-0025905B85FE.root
+01-Aug-2018 11:12:21 CEST  Initiating request to open file root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root
+01-Aug-2018 11:12:32 CEST  Successfully opened file root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root
+L1T vertex producer: Finding vertices using a DBSCAN algorithm 
+01-Aug-2018 11:15:35 CEST  Closed file root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root
+01-Aug-2018 11:15:35 CEST  Initiating request to open file root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/D86D2DA6-752C-E811-8E90-0025905B856C.root
+01-Aug-2018 11:15:38 CEST  Successfully opened file root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/D86D2DA6-752C-E811-8E90-0025905B856C.root
+01-Aug-2018 11:15:43 CEST  Closed file root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/D86D2DA6-752C-E811-8E90-0025905B856C.root
+01-Aug-2018 11:15:43 CEST  Initiating request to open file root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/CE1930F1-762C-E811-B9F4-0CC47A78A468.root
+01-Aug-2018 11:15:46 CEST  Successfully opened file root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/CE1930F1-762C-E811-B9F4-0CC47A78A468.root
+Begin processing the 1st record. Run 1, Event 2, LumiSection 1 on stream 0 at 01-Aug-2018 11:15:53.736 CEST
+----- Begin Fatal Exception 01-Aug-2018 11:16:09 CEST-----------------------
+An exception of category 'ProductNotFound' occurred while
+   [0] Processing  Event run: 1 lumi: 1 event: 2 stream: 0
+   [1] Running path 'btaggingPath'
+   [2] Calling method for module SoftPFMuonTagInfoProducer/'softPFMuonsTagInfosNewSlimmedJets'
 Exception Message:
-Failed to open the file 'root://xrootd-cms.infn.it//store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root'
+Principal::getByToken: Found zero products matching all criteria
+Looking for a container with elements of type: reco::Muon
+Looking for module label: muons
+Looking for productInstanceName: 
+
    Additional Info:
-      [a] XrdCl::File::Open(name='root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root', flags=0x10, permissions=0660) => error '[ERROR] Server responded with an error: [3011] Unable to open file /eos/cms/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root; No such file or directory
-' (errno=3011, code=400). No additional data servers were found.
-      [b] Last URL tried: root://eoscms.cern.ch:1094//eos/cms/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root?tried=
-      [c] Problematic data server: eoscms.cern.ch:1094
-      [d] Disabled source: eoscms.cern.ch:1094
-      [e] Input file root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root could not be opened.
-Fallback Input file root://xrootd-cms.infn.it//store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root also could not be opened.
-Original exception info is above; fallback exception info is below.
-      [f] XrdCl::File::Open(name='root://xrootd-cms.infn.it//store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root', flags=0x10, permissions=0660) => error '[ERROR] Server responded with an error: [3011] No servers are available to read the file.
-' (errno=3011, code=400). No additional data servers were found.
-      [g] Last URL tried: root://cms-xrd-global.cern.ch:1094//store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root?tried=+1213xrootd-cms-redir-01.cr.cnaf.infn.it,
-      [h] Problematic data server: cms-xrd-global.cern.ch:1094
-      [i] Disabled source: cms-xrd-global.cern.ch:1094
+      [a] If you wish to continue processing events after a ProductNotFound exception,
+add "SkipEvent = cms.untracked.vstring('ProductNotFound')" to the "options" PSet in the configuration.
+
 ----- End Fatal Exception -------------------------------------------------
+01-Aug-2018 11:16:10 CEST  Closed file root://xrootd-cms.infn.it//store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/MINIAODSIM/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/8CB1DA1F-A22C-E811-9917-0025905B85FE.root
+
+TrigReport ---------- Event  Summary ------------
+TrigReport Events total = 1 passed = 0 failed = 1
+
+TrigReport ---------- Path   Summary ------------
+TrigReport  Trig Bit#   Executed     Passed     Failed      Error Name
+TrigReport     1    0          1          1          0          0 EcalEBtp_step
+TrigReport     1    1          1          1          0          0 L1TrackTrigger_step
+TrigReport     1    2          1          1          0          0 L1simulation_step
+TrigReport     1    3          1          0          0          1 btaggingPath
+
+TrigReport -------End-Path   Summary ------------
+TrigReport  Trig Bit#   Executed     Passed     Failed      Error Name
+TrigReport     0    0          1          1          0          0 endjob_step
+
+TrigReport ---------- Modules in Path: EcalEBtp_step ------------
+TrigReport  Trig Bit#    Visited     Passed     Failed      Error Name
+TrigReport     1    0          1          1          0          0 simEcalEBTriggerPrimitiveDigis
+
+TrigReport ---------- Modules in Path: L1TrackTrigger_step ------------
+TrigReport  Trig Bit#    Visited     Passed     Failed      Error Name
+TrigReport     1    0          1          1          0          0 offlineBeamSpot
+TrigReport     1    1          1          1          0          0 TTTracksFromTracklet
+TrigReport     1    2          1          1          0          0 TTTrackAssociatorFromPixelDigis
+
+TrigReport ---------- Modules in Path: L1simulation_step ------------
+TrigReport  Trig Bit#    Visited     Passed     Failed      Error Name
+TrigReport     1    0          1          1          0          0 simCaloStage2Layer1Digis
+TrigReport     1    1          1          1          0          0 simCaloStage2Digis
+TrigReport     1    2          1          1          0          0 simDtTriggerPrimitiveDigis
+TrigReport     1    3          1          1          0          0 simCscTriggerPrimitiveDigis
+TrigReport     1    4          1          1          0          0 simTwinMuxDigis
+TrigReport     1    5          1          1          0          0 simBmtfDigis
+TrigReport     1    6          1          1          0          0 simEmtfDigis
+TrigReport     1    7          1          1          0          0 simOmtfDigis
+TrigReport     1    8          1          1          0          0 simGmtCaloSumDigis
+TrigReport     1    9          1          1          0          0 simGmtStage2Digis
+TrigReport     1   10          1          1          0          0 simMuonME0PseudoReDigisCoarse
+TrigReport     1   11          1          1          0          0 me0RecHitsCoarse
+TrigReport     1   12          1          1          0          0 me0TriggerPseudoDigis
+TrigReport     1   13          1          1          0          0 simGtExtFakeStage2Digis
+TrigReport     1   14          1          1          0          0 simGtStage2Digis
+TrigReport     1   15          1          1          0          0 hgcalTriggerPrimitiveDigiProducer
+TrigReport     1   16          1          1          0          0 VertexProducer
+TrigReport     1   17          1          1          0          0 simKBmtfStubs
+TrigReport     1   18          1          1          0          0 simKBmtfDigis
+TrigReport     1   19          1          1          0          0 l1EGammaCrystalsProducer
+TrigReport     1   20          1          1          0          0 L1TkElectrons
+TrigReport     1   21          1          1          0          0 L1TkIsoElectrons
+TrigReport     1   22          1          1          0          0 L1TkPhotons
+TrigReport     1   23          1          1          0          0 L1TkJets
+TrigReport     1   24          1          1          0          0 L1TkPrimaryVertex
+TrigReport     1   25          1          1          0          0 L1TkEtMiss
+TrigReport     1   26          1          1          0          0 L1TkHTMissVtx
+TrigReport     1   27          1          1          0          0 L1TkMuons
+TrigReport     1   28          1          1          0          0 L1TkTauFromCalo
+TrigReport     1   29          1          1          0          0 l1EGammaCrystalsProducer
+TrigReport     1   30          1          1          0          0 pfTracksFromL1Tracks
+TrigReport     1   31          1          1          0          0 pfClustersFromHGC3DClustersEM
+TrigReport     1   32          1          1          0          0 pfClustersFromL1EGClusters
+TrigReport     1   33          1          1          0          0 pfClustersFromCombinedCalo
+TrigReport     1   34          1          1          0          0 l1pfProducer
+TrigReport     1   35          1          1          0          0 l1pfProducerTightTK
+TrigReport     1   36          1          1          0          0 l1MetCalo
+TrigReport     1   37          1          1          0          0 l1MetTK
+TrigReport     1   38          1          1          0          0 l1MetTKV
+TrigReport     1   39          1          1          0          0 l1MetPF
+TrigReport     1   40          1          1          0          0 l1MetPuppi
+TrigReport     1   41          1          1          0          0 l1MetTightTK
+TrigReport     1   42          1          1          0          0 l1MetTightTKV
+TrigReport     1   43          1          1          0          0 ak4L1Calo
+TrigReport     1   44          1          1          0          0 ak4L1TK
+TrigReport     1   45          1          1          0          0 ak4L1TKV
+TrigReport     1   46          1          1          0          0 ak4L1PF
+TrigReport     1   47          1          1          0          0 ak4L1Puppi
+TrigReport     1   48          1          1          0          0 ak4L1TightTK
+TrigReport     1   49          1          1          0          0 ak4L1TightTKV
+TrigReport     1   50          1          1          0          0 L1TkFastJets
+
+TrigReport ---------- Modules in Path: btaggingPath ------------
+TrigReport  Trig Bit#    Visited     Passed     Failed      Error Name
+TrigReport     1    0          1          1          0          0 pfCHS
+TrigReport     1    1          1          1          0          0 ak4PFJetsCHS
+TrigReport     1    2          1          1          0          0 unpackTV
+TrigReport     1    3          1          1          0          0 patJetPartonsLegacy
+TrigReport     1    4          1          1          0          0 patJetPartonAssociationLegacy
+TrigReport     1    5          1          1          0          0 patJetFlavourAssociationLegacy
+TrigReport     1    6          1          1          0          0 patJetPartons
+TrigReport     1    7          1          0          0          1 softPFMuonsTagInfosNewSlimmedJets
+TrigReport     1    8          0          0          0          0 softPFMuonBJetTagsNewSlimmedJets
+TrigReport     1    9          0          0          0          0 patJetsNewSlimmedJets
+TrigReport     1   10          0          0          0          0 L1BTagAnalyzer
+
+TrigReport ------ Modules in End-Path: endjob_step ------------
+TrigReport  Trig Bit#    Visited     Passed     Failed      Error Name
+TrigReport     0    0          1          1          0          0 MEtoEDMConverter
+
+TrigReport ---------- Module Summary ------------
+TrigReport    Visited   Executed     Passed     Failed      Error Name
+TrigReport          1          1          1          0          0 EcalEBtp_step
+TrigReport          0          0          0          0          0 L1BTagAnalyzer
+TrigReport          1          1          1          0          0 L1TkElectrons
+TrigReport          1          1          1          0          0 L1TkEtMiss
+TrigReport          1          1          1          0          0 L1TkFastJets
+TrigReport          1          1          1          0          0 L1TkHTMissVtx
+TrigReport          1          1          1          0          0 L1TkIsoElectrons
+TrigReport          1          1          1          0          0 L1TkJets
+TrigReport          1          1          1          0          0 L1TkMuons
+TrigReport          1          1          1          0          0 L1TkPhotons
+TrigReport          1          1          1          0          0 L1TkPrimaryVertex
+TrigReport          1          1          1          0          0 L1TkTauFromCalo
+TrigReport          1          1          1          0          0 L1TrackTrigger_step
+TrigReport          1          1          1          0          0 L1simulation_step
+TrigReport          1          1          1          0          0 MEtoEDMConverter
+TrigReport          1          1          1          0          0 TTTrackAssociatorFromPixelDigis
+TrigReport          1          1          1          0          0 TTTracksFromTracklet
+TrigReport          1          1          1          0          0 TriggerResults
+TrigReport          1          1          1          0          0 VertexProducer
+TrigReport          1          1          1          0          0 ak4L1Calo
+TrigReport          1          1          1          0          0 ak4L1PF
+TrigReport          1          1          1          0          0 ak4L1Puppi
+TrigReport          1          1          1          0          0 ak4L1TK
+TrigReport          1          1          1          0          0 ak4L1TKV
+TrigReport          1          1          1          0          0 ak4L1TightTK
+TrigReport          1          1          1          0          0 ak4L1TightTKV
+TrigReport          1          1          1          0          0 ak4PFJetsCHS
+TrigReport          1          1          1          0          0 btaggingPath
+TrigReport          1          1          1          0          0 endjob_step
+TrigReport          1          1          1          0          0 hgcalTriggerPrimitiveDigiProducer
+TrigReport          0          0          0          0          0 impactParameterTagInfosNewSlimmedJets
+TrigReport          0          0          0          0          0 jetTracksAssociatorAtVertexNewSlimmedJets
+TrigReport          2          1          1          0          0 l1EGammaCrystalsProducer
+TrigReport          1          1          1          0          0 l1MetCalo
+TrigReport          1          1          1          0          0 l1MetPF
+TrigReport          1          1          1          0          0 l1MetPuppi
+TrigReport          1          1          1          0          0 l1MetTK
+TrigReport          1          1          1          0          0 l1MetTKV
+TrigReport          1          1          1          0          0 l1MetTightTK
+TrigReport          1          1          1          0          0 l1MetTightTKV
+TrigReport          1          1          1          0          0 l1pfProducer
+TrigReport          1          1          1          0          0 l1pfProducerTightTK
+TrigReport          1          1          1          0          0 me0RecHitsCoarse
+TrigReport          1          1          1          0          0 me0TriggerPseudoDigis
+TrigReport          1          1          1          0          0 offlineBeamSpot
+TrigReport          0          0          0          0          0 patJetChargeNewSlimmedJets
+TrigReport          1          1          1          0          0 patJetFlavourAssociationLegacy
+TrigReport          0          0          0          0          0 patJetFlavourAssociationLegacyNewSlimmedJets
+TrigReport          0          0          0          0          0 patJetFlavourAssociationNewSlimmedJets
+TrigReport          0          0          0          0          0 patJetGenJetMatchNewSlimmedJets
+TrigReport          1          1          1          0          0 patJetPartonAssociationLegacy
+TrigReport          0          0          0          0          0 patJetPartonAssociationLegacyNewSlimmedJets
+TrigReport          0          0          0          0          0 patJetPartonMatchNewSlimmedJets
+TrigReport          1          1          1          0          0 patJetPartons
+TrigReport          1          1          1          0          0 patJetPartonsLegacy
+TrigReport          0          0          0          0          0 patJetsNewSlimmedJets
+TrigReport          1          1          1          0          0 pfCHS
+TrigReport          1          1          1          0          0 pfClustersFromCombinedCalo
+TrigReport          1          1          1          0          0 pfClustersFromHGC3DClustersEM
+TrigReport          1          1          1          0          0 pfClustersFromL1EGClusters
+TrigReport          1          1          1          0          0 pfTracksFromL1Tracks
+TrigReport          0          0          0          0          0 secondaryVertexTagInfosNewSlimmedJets
+TrigReport          0          0          0          0          0 selectedPatJetsNewSlimmedJets
+TrigReport          1          1          1          0          0 simBmtfDigis
+TrigReport          1          1          1          0          0 simCaloStage2Digis
+TrigReport          1          1          1          0          0 simCaloStage2Layer1Digis
+TrigReport          1          1          1          0          0 simCscTriggerPrimitiveDigis
+TrigReport          1          1          1          0          0 simDtTriggerPrimitiveDigis
+TrigReport          1          1          1          0          0 simEcalEBTriggerPrimitiveDigis
+TrigReport          1          1          1          0          0 simEmtfDigis
+TrigReport          1          1          1          0          0 simGmtCaloSumDigis
+TrigReport          1          1          1          0          0 simGmtStage2Digis
+TrigReport          1          1          1          0          0 simGtExtFakeStage2Digis
+TrigReport          1          1          1          0          0 simGtStage2Digis
+TrigReport          1          1          1          0          0 simKBmtfDigis
+TrigReport          1          1          1          0          0 simKBmtfStubs
+TrigReport          1          1          1          0          0 simMuonME0PseudoReDigisCoarse
+TrigReport          1          1          1          0          0 simOmtfDigis
+TrigReport          1          1          1          0          0 simTwinMuxDigis
+TrigReport          0          0          0          0          0 simpleSecondaryVertexHighEffBJetTagsNewSlimmedJets
+TrigReport          0          0          0          0          0 simpleSecondaryVertexHighPurBJetTagsNewSlimmedJets
+TrigReport          0          0          0          0          0 softPFMuonBJetTagsNewSlimmedJets
+TrigReport          1          1          0          0          1 softPFMuonsTagInfosNewSlimmedJets
+TrigReport          1          1          1          0          0 unpackTV
+
+TimeReport ---------- Event  Summary ---[sec]----
+TimeReport       event loop CPU/event = 96.832044
+TimeReport      event loop Real/event = 199.851282
+TimeReport     sum Streams Real/event = 18.221252
+TimeReport efficiency CPU/Real/thread = 0.484521
+
+TimeReport ---------- Path   Summary ---[Real sec]----
+TimeReport  per event     per exec  Name
+TimeReport   2.729050     2.729050  EcalEBtp_step
+TimeReport   2.634567     2.634567  L1TrackTrigger_step
+TimeReport   9.383813     9.383813  L1simulation_step
+TimeReport  16.248070    16.248070  btaggingPath
+TimeReport  per event     per exec  Name
+
+TimeReport -------End-Path   Summary ---[Real sec]----
+TimeReport  per event     per exec  Name
+TimeReport  16.248169    16.248169  endjob_step
+TimeReport  per event     per exec  Name
+
+TimeReport ---------- Modules in Path: EcalEBtp_step ---[Real sec]----
+TimeReport  per event    per visit  Name
+TimeReport   0.094422     0.094422  simEcalEBTriggerPrimitiveDigis
+
+TimeReport ---------- Modules in Path: L1TrackTrigger_step ---[Real sec]----
+TimeReport  per event    per visit  Name
+TimeReport   0.004309     0.004309  offlineBeamSpot
+TimeReport   2.170139     2.170139  TTTracksFromTracklet
+TimeReport   0.051963     0.051963  TTTrackAssociatorFromPixelDigis
+
+TimeReport ---------- Modules in Path: L1simulation_step ---[Real sec]----
+TimeReport  per event    per visit  Name
+TimeReport   0.007100     0.007100  simCaloStage2Layer1Digis
+TimeReport   0.030155     0.030155  simCaloStage2Digis
+TimeReport   0.023546     0.023546  simDtTriggerPrimitiveDigis
+TimeReport   1.384196     1.384196  simCscTriggerPrimitiveDigis
+TimeReport   0.001925     0.001925  simTwinMuxDigis
+TimeReport   0.072919     0.072919  simBmtfDigis
+TimeReport   0.440914     0.440914  simEmtfDigis
+TimeReport   0.013444     0.013444  simOmtfDigis
+TimeReport   0.001309     0.001309  simGmtCaloSumDigis
+TimeReport   0.001982     0.001982  simGmtStage2Digis
+TimeReport   0.001453     0.001453  simMuonME0PseudoReDigisCoarse
+TimeReport   0.000812     0.000812  me0RecHitsCoarse
+TimeReport   0.004410     0.004410  me0TriggerPseudoDigis
+TimeReport   0.052793     0.052793  simGtExtFakeStage2Digis
+TimeReport   0.045991     0.045991  simGtStage2Digis
+TimeReport   1.000476     1.000476  hgcalTriggerPrimitiveDigiProducer
+TimeReport   0.037542     0.037542  VertexProducer
+TimeReport   0.000800     0.000800  simKBmtfStubs
+TimeReport   0.000481     0.000481  simKBmtfDigis
+TimeReport   0.015851     0.015851  l1EGammaCrystalsProducer
+TimeReport   1.625337     1.625337  L1TkElectrons
+TimeReport   0.000142     0.000142  L1TkIsoElectrons
+TimeReport   0.000256     0.000256  L1TkPhotons
+TimeReport   0.002833     0.002833  L1TkJets
+TimeReport   0.000661     0.000661  L1TkPrimaryVertex
+TimeReport   0.000330     0.000330  L1TkEtMiss
+TimeReport   0.000352     0.000352  L1TkHTMissVtx
+TimeReport   0.000226     0.000226  L1TkMuons
+TimeReport   0.002532     0.002532  L1TkTauFromCalo
+TimeReport   0.000000     0.000000  l1EGammaCrystalsProducer
+TimeReport   0.010819     0.010819  pfTracksFromL1Tracks
+TimeReport   0.013063     0.013063  pfClustersFromHGC3DClustersEM
+TimeReport   0.000225     0.000225  pfClustersFromL1EGClusters
+TimeReport   0.005920     0.005920  pfClustersFromCombinedCalo
+TimeReport   0.006121     0.006121  l1pfProducer
+TimeReport   0.000388     0.000388  l1pfProducerTightTK
+TimeReport   0.002164     0.002164  l1MetCalo
+TimeReport   0.000057     0.000057  l1MetTK
+TimeReport   0.000023     0.000023  l1MetTKV
+TimeReport   0.000029     0.000029  l1MetPF
+TimeReport   0.000032     0.000032  l1MetPuppi
+TimeReport   0.000016     0.000016  l1MetTightTK
+TimeReport   0.000016     0.000016  l1MetTightTKV
+TimeReport   0.032077     0.032077  ak4L1Calo
+TimeReport   0.016806     0.016806  ak4L1TK
+TimeReport   0.017324     0.017324  ak4L1TKV
+TimeReport   0.012926     0.012926  ak4L1PF
+TimeReport   0.011707     0.011707  ak4L1Puppi
+TimeReport   0.011479     0.011479  ak4L1TightTK
+TimeReport   0.012097     0.012097  ak4L1TightTKV
+TimeReport   0.000636     0.000636  L1TkFastJets
+
+TimeReport ---------- Modules in Path: btaggingPath ---[Real sec]----
+TimeReport  per event    per visit  Name
+TimeReport   6.611268     6.611268  pfCHS
+TimeReport   0.015969     0.015969  ak4PFJetsCHS
+TimeReport   0.218950     0.218950  unpackTV
+TimeReport   0.002875     0.002875  patJetPartonsLegacy
+TimeReport   0.001564     0.001564  patJetPartonAssociationLegacy
+TimeReport   0.000746     0.000746  patJetFlavourAssociationLegacy
+TimeReport   0.001331     0.001331  patJetPartons
+TimeReport   0.003651     0.003651  softPFMuonsTagInfosNewSlimmedJets
+TimeReport   0.000000     0.000000  softPFMuonBJetTagsNewSlimmedJets
+TimeReport   0.000000     0.000000  patJetsNewSlimmedJets
+TimeReport   0.000000     0.000000  L1BTagAnalyzer
+TimeReport  per event    per visit  Name
+
+TimeReport ------ Modules in End-Path: endjob_step ---[Real sec]----
+TimeReport  per event    per visit  Name
+TimeReport   0.000005     0.000005  MEtoEDMConverter
+TimeReport  per event    per visit  Name
+
+TimeReport ---------- Module Summary ---[Real sec]----
+TimeReport  per event     per exec    per visit  Name
+TimeReport   0.000005     0.000005     0.000005  EcalEBtp_step
+TimeReport   0.000000     0.000000     0.000000  L1BTagAnalyzer
+TimeReport   1.625337     1.625337     1.625337  L1TkElectrons
+TimeReport   0.000330     0.000330     0.000330  L1TkEtMiss
+TimeReport   0.000636     0.000636     0.000636  L1TkFastJets
+TimeReport   0.000352     0.000352     0.000352  L1TkHTMissVtx
+TimeReport   0.000142     0.000142     0.000142  L1TkIsoElectrons
+TimeReport   0.002833     0.002833     0.002833  L1TkJets
+TimeReport   0.000226     0.000226     0.000226  L1TkMuons
+TimeReport   0.000256     0.000256     0.000256  L1TkPhotons
+TimeReport   0.000661     0.000661     0.000661  L1TkPrimaryVertex
+TimeReport   0.002532     0.002532     0.002532  L1TkTauFromCalo
+TimeReport   0.000009     0.000009     0.000009  L1TrackTrigger_step
+TimeReport   0.000005     0.000005     0.000005  L1simulation_step
+TimeReport   0.000005     0.000005     0.000005  MEtoEDMConverter
+TimeReport   0.051963     0.051963     0.051963  TTTrackAssociatorFromPixelDigis
+TimeReport   2.170139     2.170139     2.170139  TTTracksFromTracklet
+TimeReport   0.000010     0.000010     0.000010  TriggerResults
+TimeReport   0.037542     0.037542     0.037542  VertexProducer
+TimeReport   0.032077     0.032077     0.032077  ak4L1Calo
+TimeReport   0.012926     0.012926     0.012926  ak4L1PF
+TimeReport   0.011707     0.011707     0.011707  ak4L1Puppi
+TimeReport   0.016806     0.016806     0.016806  ak4L1TK
+TimeReport   0.017324     0.017324     0.017324  ak4L1TKV
+TimeReport   0.011479     0.011479     0.011479  ak4L1TightTK
+TimeReport   0.012097     0.012097     0.012097  ak4L1TightTKV
+TimeReport   0.015969     0.015969     0.015969  ak4PFJetsCHS
+TimeReport   0.000007     0.000007     0.000007  btaggingPath
+TimeReport   0.000004     0.000004     0.000004  endjob_step
+TimeReport   1.000476     1.000476     1.000476  hgcalTriggerPrimitiveDigiProducer
+TimeReport   0.000000     0.000000     0.000000  impactParameterTagInfosNewSlimmedJets
+TimeReport   0.000000     0.000000     0.000000  jetTracksAssociatorAtVertexNewSlimmedJets
+TimeReport   0.015851     0.015851     0.007926  l1EGammaCrystalsProducer
+TimeReport   0.002164     0.002164     0.002164  l1MetCalo
+TimeReport   0.000029     0.000029     0.000029  l1MetPF
+TimeReport   0.000032     0.000032     0.000032  l1MetPuppi
+TimeReport   0.000057     0.000057     0.000057  l1MetTK
+TimeReport   0.000023     0.000023     0.000023  l1MetTKV
+TimeReport   0.000016     0.000016     0.000016  l1MetTightTK
+TimeReport   0.000016     0.000016     0.000016  l1MetTightTKV
+TimeReport   0.006121     0.006121     0.006121  l1pfProducer
+TimeReport   0.000388     0.000388     0.000388  l1pfProducerTightTK
+TimeReport   0.000812     0.000812     0.000812  me0RecHitsCoarse
+TimeReport   0.004410     0.004410     0.004410  me0TriggerPseudoDigis
+TimeReport   0.004309     0.004309     0.004309  offlineBeamSpot
+TimeReport   0.000000     0.000000     0.000000  patJetChargeNewSlimmedJets
+TimeReport   0.000746     0.000746     0.000746  patJetFlavourAssociationLegacy
+TimeReport   0.000000     0.000000     0.000000  patJetFlavourAssociationLegacyNewSlimmedJets
+TimeReport   0.000000     0.000000     0.000000  patJetFlavourAssociationNewSlimmedJets
+TimeReport   0.000000     0.000000     0.000000  patJetGenJetMatchNewSlimmedJets
+TimeReport   0.001564     0.001564     0.001564  patJetPartonAssociationLegacy
+TimeReport   0.000000     0.000000     0.000000  patJetPartonAssociationLegacyNewSlimmedJets
+TimeReport   0.000000     0.000000     0.000000  patJetPartonMatchNewSlimmedJets
+TimeReport   0.001331     0.001331     0.001331  patJetPartons
+TimeReport   0.002875     0.002875     0.002875  patJetPartonsLegacy
+TimeReport   0.000000     0.000000     0.000000  patJetsNewSlimmedJets
+TimeReport   6.611268     6.611268     6.611268  pfCHS
+TimeReport   0.005920     0.005920     0.005920  pfClustersFromCombinedCalo
+TimeReport   0.013063     0.013063     0.013063  pfClustersFromHGC3DClustersEM
+TimeReport   0.000225     0.000225     0.000225  pfClustersFromL1EGClusters
+TimeReport   0.010819     0.010819     0.010819  pfTracksFromL1Tracks
+TimeReport   0.000000     0.000000     0.000000  secondaryVertexTagInfosNewSlimmedJets
+TimeReport   0.000000     0.000000     0.000000  selectedPatJetsNewSlimmedJets
+TimeReport   0.072919     0.072919     0.072919  simBmtfDigis
+TimeReport   0.030155     0.030155     0.030155  simCaloStage2Digis
+TimeReport   0.007100     0.007100     0.007100  simCaloStage2Layer1Digis
+TimeReport   1.384196     1.384196     1.384196  simCscTriggerPrimitiveDigis
+TimeReport   0.023546     0.023546     0.023546  simDtTriggerPrimitiveDigis
+TimeReport   0.094422     0.094422     0.094422  simEcalEBTriggerPrimitiveDigis
+TimeReport   0.440914     0.440914     0.440914  simEmtfDigis
+TimeReport   0.001309     0.001309     0.001309  simGmtCaloSumDigis
+TimeReport   0.001982     0.001982     0.001982  simGmtStage2Digis
+TimeReport   0.052793     0.052793     0.052793  simGtExtFakeStage2Digis
+TimeReport   0.045991     0.045991     0.045991  simGtStage2Digis
+TimeReport   0.000481     0.000481     0.000481  simKBmtfDigis
+TimeReport   0.000800     0.000800     0.000800  simKBmtfStubs
+TimeReport   0.001453     0.001453     0.001453  simMuonME0PseudoReDigisCoarse
+TimeReport   0.013444     0.013444     0.013444  simOmtfDigis
+TimeReport   0.001925     0.001925     0.001925  simTwinMuxDigis
+TimeReport   0.000000     0.000000     0.000000  simpleSecondaryVertexHighEffBJetTagsNewSlimmedJets
+TimeReport   0.000000     0.000000     0.000000  simpleSecondaryVertexHighPurBJetTagsNewSlimmedJets
+TimeReport   0.000000     0.000000     0.000000  softPFMuonBJetTagsNewSlimmedJets
+TimeReport   0.003651     0.003651     0.003651  softPFMuonsTagInfosNewSlimmedJets
+TimeReport   0.218950     0.218950     0.218950  unpackTV
+TimeReport  per event     per exec    per visit  Name
+
+T---Report end!
+
+01-Aug-2018 11:16:10 CEST  Closed file root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/CE1930F1-762C-E811-B9F4-0CC47A78A468.root
+
+=============================================
+
+MessageLogger Summary
+
+ type     category        sev    module        subroutine        count    total
+ ---- -------------------- -- ---------------- ----------------  -----    -----
+    1 XrdAdaptor           -w file_open                              1        1
+    2 XrdAdaptorInternal   -w file_open                              1        1
+    3 Fatal Exception      -s PostProcessPath                        1        1
+    4 fileAction           -s AfterFile                              2        2
+    5 fileAction           -s AfterModEndJob                         1        1
+    6 fileAction           -s file_close                             1        1
+    7 fileAction           -s file_open                              2        2
+    8 fileAction           -s source                                 6        6
+
+ type    category    Examples: run/evt        run/evt          run/evt
+ ---- -------------------- ---------------- ---------------- ----------------
+    1 XrdAdaptor           pre-events                        
+    2 XrdAdaptorInternal   pre-events                        
+    3 Fatal Exception      1/2                               
+    4 fileAction           pre-events       pre-events       
+    5 fileAction           PostGlobalEndRun                  
+    6 fileAction           PostGlobalEndRun                  
+    7 fileAction           pre-events       pre-events       
+    8 fileAction           PostStreamBeginR PostStreamBeginR PostStreamBeginR
+
+Severity    # Occurrences   Total Occurrences
+--------    -------------   -----------------
+Warning                 2                   2
+System                 13                  13
+
+dropped waiting message count 0
