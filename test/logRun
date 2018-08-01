@@ -1,30 +1,51 @@
-31-Jul-2018 15:09:45 CEST  Initiating request to open file root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/MINIAODSIM/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/8CB1DA1F-A22C-E811-9917-0025905B85FE.root
-%MSG-w XrdAdaptor:  file_open 31-Jul-2018 15:09:48 CEST pre-events
-Data is served from fnal.gov instead of original site T2_US_Nebraska
+01-Aug-2018 10:35:18 CEST  Initiating request to open file root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/MINIAODSIM/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/8CB1DA1F-A22C-E811-9917-0025905B85FE.root
+%MSG-w XrdAdaptorInternal:  file_open 01-Aug-2018 10:35:19 CEST pre-events
+Failed to open file at URL root://eoscms.cern.ch:1094//eos/cms/store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/MINIAODSIM/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/8CB1DA1F-A22C-E811-9917-0025905B85FE.root.
 %MSG
-31-Jul-2018 15:09:50 CEST  Successfully opened file root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/MINIAODSIM/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/8CB1DA1F-A22C-E811-9917-0025905B85FE.root
-31-Jul-2018 15:09:53 CEST  Initiating request to open file root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root
-%MSG-w XrdAdaptorInternal:  AfterFile 31-Jul-2018 15:09:54 CEST pre-events
-Failed to open file at URL root://cms-xrd-global.cern.ch:1094//store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root?tried=+1213cmsxrootd2.fnal.gov1213xrootd.unl.edu.
+%MSG-w XrdAdaptorInternal:  file_open 01-Aug-2018 10:35:19 CEST pre-events
+Failed to open file at URL root://eoscms.cern.ch:1094//eos/cms/store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/MINIAODSIM/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/8CB1DA1F-A22C-E811-9917-0025905B85FE.root?tried=.
 %MSG
-%MSG-w XrdAdaptorInternal:  AfterFile 31-Jul-2018 15:09:54 CEST pre-events
-Failed to open file at URL root://cms-xrd-global.cern.ch:1094//store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root?tried=+1213cmsxrootd2.fnal.gov1213xrootd.unl.edu,.
+01-Aug-2018 10:35:19 CEST  Fallback request to file root://xrootd-cms.infn.it//store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/MINIAODSIM/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/8CB1DA1F-A22C-E811-9917-0025905B85FE.root
+%MSG-w XrdAdaptor:  file_open 01-Aug-2018 10:35:34 CEST pre-events
+Data is served from fnal.gov instead of original site infn.it
 %MSG
-31-Jul-2018 15:09:54 CEST  Closed file root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/MINIAODSIM/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/8CB1DA1F-A22C-E811-9917-0025905B85FE.root
------ Begin Fatal Exception 31-Jul-2018 15:09:55 CEST-----------------------
-An exception of category 'FileOpenError' occurred while
+01-Aug-2018 10:35:36 CEST  Successfully opened file root://xrootd-cms.infn.it//store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/MINIAODSIM/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/8CB1DA1F-A22C-E811-9917-0025905B85FE.root
+01-Aug-2018 10:35:40 CEST  Initiating request to open file root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root
+%MSG-w XrdAdaptorInternal:  AfterFile 01-Aug-2018 10:35:41 CEST pre-events
+Failed to open file at URL root://eoscms.cern.ch:1094//eos/cms/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root.
+%MSG
+%MSG-w XrdAdaptorInternal:  AfterFile 01-Aug-2018 10:35:41 CEST pre-events
+Failed to open file at URL root://eoscms.cern.ch:1094//eos/cms/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root?tried=.
+%MSG
+01-Aug-2018 10:35:41 CEST  Fallback request to file root://xrootd-cms.infn.it//store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root
+%MSG-w XrdAdaptorInternal:  AfterFile 01-Aug-2018 10:36:48 CEST pre-events
+Failed to open file at URL root://cms-xrd-global.cern.ch:1094//store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root?tried=+1213xrootd-cms-redir-01.cr.cnaf.infn.it.
+%MSG
+%MSG-w XrdAdaptorInternal:  AfterFile 01-Aug-2018 10:36:48 CEST pre-events
+Failed to open file at URL root://cms-xrd-global.cern.ch:1094//store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root?tried=+1213xrootd-cms-redir-01.cr.cnaf.infn.it,.
+%MSG
+01-Aug-2018 10:36:48 CEST  Closed file root://xrootd-cms.infn.it//store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/MINIAODSIM/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/8CB1DA1F-A22C-E811-9917-0025905B85FE.root
+----- Begin Fatal Exception 01-Aug-2018 10:36:48 CEST-----------------------
+An exception of category 'FallbackFileOpenError' occurred while
    [0] Constructing the EventProcessor
    [1] Constructing input source of type PoolSource
    [2] Calling RootFileSequenceBase::initTheFile()
    [3] Calling StorageFactory::open()
    [4] Calling XrdFile::open()
 Exception Message:
-Failed to open the file 'root://cmsxrootd.fnal.gov//store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root'
+Failed to open the file 'root://xrootd-cms.infn.it//store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root'
    Additional Info:
-      [a] Input file root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root could not be opened.
-      [b] XrdCl::File::Open(name='root://cmsxrootd.fnal.gov//store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root', flags=0x10, permissions=0660) => error '[ERROR] Server responded with an error: [3011] No servers are available to read the file.
+      [a] XrdCl::File::Open(name='root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root', flags=0x10, permissions=0660) => error '[ERROR] Server responded with an error: [3011] Unable to open file /eos/cms/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root; No such file or directory
 ' (errno=3011, code=400). No additional data servers were found.
-      [c] Last URL tried: root://cms-xrd-global.cern.ch:1094//store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root?tried=+1213cmsxrootd2.fnal.gov1213xrootd.unl.edu,
-      [d] Problematic data server: cms-xrd-global.cern.ch:1094
-      [e] Disabled source: cms-xrd-global.cern.ch:1094
+      [b] Last URL tried: root://eoscms.cern.ch:1094//eos/cms/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root?tried=
+      [c] Problematic data server: eoscms.cern.ch:1094
+      [d] Disabled source: eoscms.cern.ch:1094
+      [e] Input file root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root could not be opened.
+Fallback Input file root://xrootd-cms.infn.it//store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root also could not be opened.
+Original exception info is above; fallback exception info is below.
+      [f] XrdCl::File::Open(name='root://xrootd-cms.infn.it//store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root', flags=0x10, permissions=0660) => error '[ERROR] Server responded with an error: [3011] No servers are available to read the file.
+' (errno=3011, code=400). No additional data servers were found.
+      [g] Last URL tried: root://cms-xrd-global.cern.ch:1094//store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root?tried=+1213xrootd-cms-redir-01.cr.cnaf.infn.it,
+      [h] Problematic data server: cms-xrd-global.cern.ch:1094
+      [i] Disabled source: cms-xrd-global.cern.ch:1094
 ----- End Fatal Exception -------------------------------------------------

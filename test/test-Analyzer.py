@@ -40,7 +40,7 @@ process.source = cms.Source("PoolSource",
        #### Uncomment the following file for Z->TauTau 
        #'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValZTT_14TeV/MINIAODSIM/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/C033607A-8E2C-E811-B4EF-0CC47A78A478.root'
        #### Uncomment the following file for Z->TTbar
-        'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/MINIAODSIM/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/8CB1DA1F-A22C-E811-9917-0025905B85FE.root'
+        '/store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/MINIAODSIM/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/8CB1DA1F-A22C-E811-9917-0025905B85FE.root'
     ),
     secondaryFileNames = cms.untracked.vstring(
        # 'file:raw.root'
@@ -56,16 +56,16 @@ process.source = cms.Source("PoolSource",
         # 'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValZTT_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/BE6A3C80-6D2C-E811-9143-0CC47A4D7668.root',
         # 'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValZTT_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/DA7C408A-6D2C-E811-9BFF-0025905B858A.root'
         # #### Z->T-ttbar samples
-        'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root',
-        'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/D86D2DA6-752C-E811-8E90-0025905B856C.root',
-        'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/CE1930F1-762C-E811-B9F4-0CC47A78A468.root',
-        'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/B0D7BD76-782C-E811-AED2-0CC47A7C35F4.root',
-        'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/AC64F3F2-8D2C-E811-AEA8-0025905A611E.root',
-        'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/A05308F4-762C-E811-ACC0-0CC47A78A360.root',
-        'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/886F551E-7E2C-E811-9D10-0025905A608C.root',
-        'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/7EC7DD7F-782C-E811-B469-0CC47A4D76A0.root',
-        'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/7EB68679-782C-E811-A2C9-0CC47A4D7690.root',
-        'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/0E1785F0-762C-E811-9192-0CC47A78A4BA.root',
+        '/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root',
+        '/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/D86D2DA6-752C-E811-8E90-0025905B856C.root',
+        '/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/CE1930F1-762C-E811-B9F4-0CC47A78A468.root',
+        '/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/B0D7BD76-782C-E811-AED2-0CC47A7C35F4.root',
+        '/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/AC64F3F2-8D2C-E811-AEA8-0025905A611E.root',
+        '/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/A05308F4-762C-E811-ACC0-0CC47A78A360.root',
+        '/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/886F551E-7E2C-E811-9D10-0025905A608C.root',
+        '/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/7EC7DD7F-782C-E811-B469-0CC47A4D76A0.root',
+        '/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/7EB68679-782C-E811-A2C9-0CC47A4D7690.root',
+        '/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/0E1785F0-762C-E811-9192-0CC47A78A4BA.root',
         ),
     inputCommands = cms.untracked.vstring("keep *", 
         "drop l1tHGCalTowerMapBXVector_hgcalTriggerPrimitiveDigiProducer_towerMap_HLT",
