@@ -6,16 +6,18 @@
 //// % .x plotRecoJetProperties.C
 ////  
 //// Output .PDF file is in the same directory.
+//// Make sure you change the output .PDF file name and the
+//// legend title for a new dataset or the output will
+//// overwrite the existing .PDF/ be wrong!
 ////
 //// Based on mlpHiggs.C in official ROOT tutorials.
-//// Takes several minutes to run on one .ROOT file.
 
 void plotRecoJetProperties() {
 	////////////////////////////
 	/// Load data and initialize
 	////////////////////////////
 
-	const char *fname = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/analyzer_ZTTbar.root";
+	const char *fname = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/analyzer_ttbar.root";
 	// Load file with checks on whether it exists
 	TFile *input = 0;
 	if (!gSystem->AccessPathName(fname)) {
@@ -136,39 +138,32 @@ void plotRecoJetProperties() {
 	
 	sb_canvas->cd(1); 
 	bkg_recoPt->DrawNormalized();  sig_recoPt->DrawNormalized("same");
-	//	sb_canvas->SetTitle("recoPt");
 
 	sb_canvas->cd(2); 
 	bkg_recoEta->DrawNormalized(); sig_recoEta->DrawNormalized("same"); 
-	//	sb_canvas->SetTitle("reco Eta");
 
 	sb_canvas->cd(3); 
 	bkg_recoPhi->DrawNormalized(); sig_recoPhi->DrawNormalized("same"); 
-	//	sb_canvas->SetTitle("reco Phi");
 
 	sb_canvas->cd(4); 
 	bkg_recoTk1IP->DrawNormalized(); sig_recoTk1IP->DrawNormalized("same"); 
-	//	sb_canvas->SetTitle("recoTk1IP");
 
 	sb_canvas->cd(5);
 	bkg_recoTk2IP->DrawNormalized(); sig_recoTk2IP->DrawNormalized("same"); 
-	//	sb_canvas->SetTitle("recoTk2IP");
 
 	sb_canvas->cd(6); 
 	bkg_recoTk3IP->DrawNormalized(); sig_recoTk3IP->DrawNormalized("same"); 
-	//	sb_canvas->SetTitle("recoTk3IP");
 
 	sb_canvas->cd(7); 
 	bkg_recoTk4IP->DrawNormalized(); sig_recoTk4IP->DrawNormalized("same"); 
-	//	sb_canvas->SetTitle("recoTk4IP");
 
 	// Create legend and title (defined above)
 	sb_canvas->cd(8);
-	TLegend *legend = new TLegend(0.2, 0.2, 0.8, 0.8, "Z to TTbar events");
+	TLegend *legend = new TLegend(0.2, 0.2, 0.8, 0.8, "ttbar events");
 	legend->AddEntry(sig_recoPt, "Signal (hadronFlavor == 5)");
 	legend->AddEntry(bkg_recoPt, "Background (hadronFlavor != 5)");
 	legend->Draw();
-	sb_canvas->SaveAs("output_ZTTbar.pdf");
+	sb_canvas->SaveAs("output_ttbar.pdf");
 	// Close file
 	input->Close();
 }

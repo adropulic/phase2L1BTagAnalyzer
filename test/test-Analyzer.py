@@ -39,13 +39,13 @@ process.source = cms.Source("PoolSource",
        #'file:mini.root'
        #### Uncomment the following file for Z->TauTau 
        #'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValZTT_14TeV/MINIAODSIM/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/C033607A-8E2C-E811-B4EF-0CC47A78A478.root'
-       #### Uncomment the following file for Z->TTbar
+       #### Uncomment the following file for ttbar
         'root://xrootd-cms.infn.it//store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/MINIAODSIM/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/8CB1DA1F-A22C-E811-9917-0025905B85FE.root'
     ),
     secondaryFileNames = cms.untracked.vstring(
-       # 'file:raw.root'
-       # 'file:reco.root'
-        # #### Z->TauTau samples
+       #'file:raw.root'
+       #'file:reco.root'
+        #### Z->TauTau samples
         # 'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValZTT_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/02306B8E-6D2C-E811-9625-0025905B858C.root',
         # 'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValZTT_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/163A5C8E-6D2C-E811-B990-0025905B85B2.root',
         # 'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValZTT_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/1A7E6D8F-6D2C-E811-8DFB-0025905B85BE.root',
@@ -55,8 +55,7 @@ process.source = cms.Source("PoolSource",
         # 'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValZTT_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/820C0278-6D2C-E811-B95B-0CC47A4C8F0C.root',
         # 'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValZTT_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/BE6A3C80-6D2C-E811-9143-0CC47A4D7668.root',
         # 'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValZTT_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/DA7C408A-6D2C-E811-9BFF-0025905B858A.root'
-        # #### Z->T-ttbar samples
-        # root://eoscms.cern.ch//eos/cms/store/relval/CMSSW_9_3_7/relvalTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root
+        #### ttbar samples
         '/store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root',
         '/store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/D86D2DA6-752C-E811-8E90-0025905B856C.root',
         '/store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/CE1930F1-762C-E811-B9F4-0CC47A78A468.root',
@@ -150,8 +149,8 @@ addJetCollection(
                  explicitJTA = False,
                  svClustering = False,
                  #jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute']), 'Type-2'),
-                 btagInfos = ['impactParameterTagInfos','secondaryVertexTagInfos','softPFMuonsTagInfos'],#,'softPFElectronsTagInfos'
-                 btagDiscriminators=['simpleSecondaryVertexHighEffBJetTags','simpleSecondaryVertexHighPurBJetTags','softPFMuonBJetTags']#,'softPFElectronBJetTags'
+                 btagInfos = ['impactParameterTagInfos','secondaryVertexTagInfos'], #,'softPFMuonsTagInfos', 'softPFElectronsTagInfos'
+                 btagDiscriminators=['simpleSecondaryVertexHighEffBJetTags','simpleSecondaryVertexHighPurBJetTags'],#,'softPFMuonBJetTags','softPFElectronBJetTags'
                  )
 
 process.unpackTV  = cms.EDProducer('PATTrackAndVertexUnpacker',
@@ -187,8 +186,8 @@ process.patJetPartons = cms.EDProducer('HadronAndPartonSelector',
 process.jetTracksAssociatorAtVertexNewSlimmedJets.jets = cms.InputTag("ak4PFJetsCHS")
 process.jetTracksAssociatorAtVertexNewSlimmedJets.tracks = cms.InputTag("unpackTV")
 process.impactParameterTagInfosNewSlimmedJets.primaryVertex = cms.InputTag("unpackTV")
-process.softPFMuonsTagInfosNewSlimmedJets.primaryVertex = cms.InputTag("unpackTV")
-process.softPFMuonBJetTagsNewSlimmedJets.tagInfos = cms.VInputTag(cms.InputTag("softPFMuonsTagInfosNewSlimmedJets"))
+#process.softPFMuonsTagInfosNewSlimmedJets.primaryVertex = cms.InputTag("unpackTV")
+#process.softPFMuonBJetTagsNewSlimmedJets.tagInfos = cms.VInputTag(cms.InputTag("softPFMuonsTagInfosNewSlimmedJets"))
 
 ## the key to adding the 
 process.patJetsNewSlimmedJets.addTagInfos = cms.bool(True)
@@ -197,7 +196,7 @@ process.load("L1Trigger.phase2L1BTagAnalyzer.phase2L1BTagAnalyzer_cfi")
 process.L1BTagAnalyzer.slimmedJets = cms.InputTag("patJetsNewSlimmedJets")
 
 process.TFileService = cms.Service("TFileService", 
-                                   fileName = cms.string("analyzer_ZTTbar.root")
+                                   fileName = cms.string("analyzer_ttbar.root")
                                    )
 
 ## Define a Path
@@ -209,8 +208,8 @@ process.btaggingPath = cms.Path(
     * process.patJetPartonAssociationLegacy
     * process.patJetFlavourAssociationLegacy
     * process.patJetPartons
-    * process.softPFMuonsTagInfosNewSlimmedJets
-    * process.softPFMuonBJetTagsNewSlimmedJets
+#    * process.softPFMuonsTagInfosNewSlimmedJets
+#    * process.softPFMuonBJetTagsNewSlimmedJets
     * process.patJetsNewSlimmedJets
     * process.L1BTagAnalyzer
 )
