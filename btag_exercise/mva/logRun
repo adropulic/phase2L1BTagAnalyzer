@@ -1,0 +1,126 @@
+
+Processing TMVAAnalysis.C...
+<HEADER> DataSetInfo              : [dataset] : Added class "Signal"
+                         : Add Tree efficiencyTree of type Signal with 18098 events
+<HEADER> DataSetInfo              : [dataset] : Added class "Background"
+                         : Add Tree efficiencyTree of type Background with 99281 events
+<HEADER> Factory                  : Booking method: BDT
+                         : 
+<HEADER> DataSetFactory           : [dataset] : Number of events in input trees
+                         : Dataset[dataset] :     Signal     requirement: "recoTk1IP > -99"
+                         : Dataset[dataset] :     Signal          -- number of events passed: 17915  / sum of weights: 17915
+                         : Dataset[dataset] :     Signal          -- efficiency             : 0.989888
+                         : Dataset[dataset] :     Background requirement: "recoTk1IP > -99"
+                         : Dataset[dataset] :     Background      -- number of events passed: 88426  / sum of weights: 88426
+                         : Dataset[dataset] :     Background      -- efficiency             : 0.890664
+                         : Dataset[dataset] :  you have opted for interpreting the requested number of training/testing events
+                         :  to be the number of events AFTER your preselection cuts
+                         : 
+                         : Dataset[dataset] :  you have opted for interpreting the requested number of training/testing events
+                         :  to be the number of events AFTER your preselection cuts
+                         : 
+                         : Dataset[dataset] : Weight renormalisation mode: "EqualNumEvents": renormalises all event classes ...
+                         : Dataset[dataset] :  such that the effective (weighted) number of events in each class is the same 
+                         : Dataset[dataset] :  (and equals the number of events (entries) given for class=0 )
+                         : Dataset[dataset] : ... i.e. such that Sum[i=1..N_j]{w_i} = N_classA, j=classA, classB, ...
+                         : Dataset[dataset] : ... (note that N_j is the sum of TRAINING events
+                         : Dataset[dataset] :  ..... Testing events are not renormalised nor included in the renormalisation factor!)
+                         : Number of training and testing events
+                         : ---------------------------------------------------------------------------
+                         : Signal     -- training events            : 8957
+                         : Signal     -- testing events             : 8957
+                         : Signal     -- training and testing events: 17914
+                         : Dataset[dataset] : Signal     -- due to the preselection a scaling factor has been applied to the numbers of requested events: 0.989888
+                         : Background -- training events            : 44213
+                         : Background -- testing events             : 44213
+                         : Background -- training and testing events: 88426
+                         : Dataset[dataset] : Background -- due to the preselection a scaling factor has been applied to the numbers of requested events: 0.890664
+                         : 
+<HEADER> DataSetInfo              : Correlation matrix (Signal):
+                         : --------------------
+                         :            recoTk1IP
+                         : recoTk1IP:    +1.000
+                         : --------------------
+<HEADER> DataSetInfo              : Correlation matrix (Background):
+                         : --------------------
+                         :            recoTk1IP
+                         : recoTk1IP:    +1.000
+                         : --------------------
+<HEADER> DataSetFactory           : [dataset] :  
+                         : 
+<HEADER> Factory                  : Train all methods
+<HEADER> Factory                  : [dataset] : Create Transformation "I" with events from all classes.
+                         : 
+<HEADER>                          : Transformation, Variable selection : 
+                         : Input : variable 'recoTk1IP' <---> Output : variable 'recoTk1IP'
+<HEADER> TFHandler_Factory        :  Variable         Mean         RMS   [        Min         Max ]
+                         : ----------------------------------------------------------------
+                         : recoTk1IP:  0.0058844   0.024440   [   -0.19922    0.20000 ]
+                         : ----------------------------------------------------------------
+                         : Ranking input variables (method unspecific)...
+<HEADER> IdTransformation         : Ranking result (top variable is best ranked)
+                         : ----------------------------------
+                         : Rank : Variable  : Separation
+                         : ----------------------------------
+                         :    1 : recoTk1IP : 1.020e-01
+                         : ----------------------------------
+<HEADER> Factory                  : Train method: BDT for Classification
+                         : 
+<HEADER> BDT                      : #events: (reweighted) sig: 26585 bkg: 26585
+                         : #events: (unweighted) sig: 8957 bkg: 44213
+                         : Training 800 Decision Trees ... patience please
+<ERROR>                          :  YOUR tree has only 1 Node... kind of a funny *tree*. I cannot boost such a thing... if after 1 step the error rate is == 0.5
+                         : please check why this happens, maybe too many events per node requested ?
+<WARNING> <WARNING>                : stopped boosting at itree=136
+                         : Elapsed time for training with 53170 events: 8.18 sec         
+<HEADER> BDT                      : [dataset] : Evaluation of BDT on training sample (53170 events)
+                         : Elapsed time for evaluation of 53170 events: 1.18 sec       
+                         : Creating xml weight file: dataset/weights/TMVAClassification_BDT.weights.xml
+                         : Creating standalone class: dataset/weights/TMVAClassification_BDT.class.C
+<HEADER> Factory                  : Training finished
+                         : 
+                         : Ranking input variables (method specific)...
+<HEADER> BDT                      : Ranking result (top variable is best ranked)
+                         : -------------------------------------------
+                         : Rank : Variable  : Variable Importance
+                         : -------------------------------------------
+                         :    1 : recoTk1IP : 1.000e+00
+                         : -------------------------------------------
+<HEADER> Factory                  : === Destroy and recreate all methods via weight files for testing ===
+                         : 
+<HEADER> Factory                  : Test all methods
+<HEADER> Factory                  : Test method: BDT for Classification performance
+                         : 
+<HEADER> BDT                      : [dataset] : Evaluation of BDT on testing sample (53170 events)
+                         : Elapsed time for evaluation of 53170 events: 1.14 sec       
+<HEADER> Factory                  : Evaluate all methods
+<HEADER> Factory                  : Evaluate classifier: BDT
+                         : 
+<HEADER> BDT                      : [dataset] : Loop over test events and fill histograms with classifier response...
+                         : 
+<HEADER> TFHandler_BDT            :  Variable         Mean         RMS   [        Min         Max ]
+                         : ----------------------------------------------------------------
+                         : recoTk1IP:  0.0023980   0.020315   [   -0.19938    0.19906 ]
+                         : ----------------------------------------------------------------
+                         : 
+                         : Evaluation results ranked by best signal efficiency and purity (area)
+                         : -------------------------------------------------------------------------------------------------------------------
+                         : DataSet       MVA                       
+                         : Name:         Method:          ROC-integ
+                         : dataset       BDT            : 0.659
+                         : -------------------------------------------------------------------------------------------------------------------
+                         : 
+                         : Testing efficiency compared to training efficiency (overtraining check)
+                         : -------------------------------------------------------------------------------------------------------------------
+                         : DataSet              MVA              Signal efficiency: from test sample (from training sample) 
+                         : Name:                Method:          @B=0.01             @B=0.10            @B=0.30   
+                         : -------------------------------------------------------------------------------------------------------------------
+                         : dataset              BDT            : 0.000 (0.000)       0.354 (0.354)      0.541 (0.544)
+                         : -------------------------------------------------------------------------------------------------------------------
+                         : 
+<HEADER> Dataset:dataset          : Created tree 'TestTree' with 53170 events
+                         : 
+<HEADER> Dataset:dataset          : Created tree 'TrainTree' with 53170 events
+                         : 
+<HEADER> Factory                  : Thank you for using TMVA!
+                         : For citation information, please visit: http://tmva.sf.net/citeTMVA.html
