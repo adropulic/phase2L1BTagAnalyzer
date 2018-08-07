@@ -111,6 +111,9 @@ void TMVAAnalysis()
 	// "3*var1/var2*abs(var3)". [All types of expressions that can also be
 	// parsed by TTree::Draw( "expression" )]
 	dataloader->AddVariable("recoTk1IP", 'D');
+	dataloader->AddVariable("recoTk2IP", 'D');
+	dataloader->AddVariable("recoTk3IP", 'D');
+	dataloader->AddVariable("recoTk4IP", 'D');
 
 	// You can add an arbitrary number of signal or background trees
 	// Here we set the global event weights per tree to 1.0
@@ -122,8 +125,8 @@ void TMVAAnalysis()
 
 	// Apply additional cuts on the signal and background samples
 	// e.g. TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
-	TCut signalCut = "recoTk1IP > -99";   
-	TCut backgroundCut = "recoTk1IP > -99";
+	TCut signalCut     = "recoTk1IP > -99 && recoTk2IP > -99 && recoTk3IP > -99  && recoTk4IP > -99";   
+	TCut backgroundCut = "recoTk1IP > -99 && recoTk2IP > -99 && recoTk3IP > -99  && recoTk4IP > -99";
 
 	TString datasetOptions = "SplitMode=Random";
 	dataloader->PrepareTrainingAndTestTree(signalCut, backgroundCut, datasetOptions);

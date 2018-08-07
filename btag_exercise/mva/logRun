@@ -7,12 +7,12 @@ Processing TMVAAnalysis.C...
 <HEADER> Factory                  : Booking method: BDT
                          : 
 <HEADER> DataSetFactory           : [dataset] : Number of events in input trees
-                         : Dataset[dataset] :     Signal     requirement: "recoTk1IP > -99"
-                         : Dataset[dataset] :     Signal          -- number of events passed: 17915  / sum of weights: 17915
-                         : Dataset[dataset] :     Signal          -- efficiency             : 0.989888
-                         : Dataset[dataset] :     Background requirement: "recoTk1IP > -99"
-                         : Dataset[dataset] :     Background      -- number of events passed: 88426  / sum of weights: 88426
-                         : Dataset[dataset] :     Background      -- efficiency             : 0.890664
+                         : Dataset[dataset] :     Signal     requirement: "recoTk1IP > -99 && recoTk2IP > -99 && recoTk3IP > -99  && recoTk4IP > -99"
+                         : Dataset[dataset] :     Signal          -- number of events passed: 14098  / sum of weights: 14098
+                         : Dataset[dataset] :     Signal          -- efficiency             : 0.778981
+                         : Dataset[dataset] :     Background requirement: "recoTk1IP > -99 && recoTk2IP > -99 && recoTk3IP > -99  && recoTk4IP > -99"
+                         : Dataset[dataset] :     Background      -- number of events passed: 31166  / sum of weights: 31166
+                         : Dataset[dataset] :     Background      -- efficiency             : 0.313917
                          : Dataset[dataset] :  you have opted for interpreting the requested number of training/testing events
                          :  to be the number of events AFTER your preselection cuts
                          : 
@@ -27,25 +27,31 @@ Processing TMVAAnalysis.C...
                          : Dataset[dataset] :  ..... Testing events are not renormalised nor included in the renormalisation factor!)
                          : Number of training and testing events
                          : ---------------------------------------------------------------------------
-                         : Signal     -- training events            : 8957
-                         : Signal     -- testing events             : 8957
-                         : Signal     -- training and testing events: 17914
-                         : Dataset[dataset] : Signal     -- due to the preselection a scaling factor has been applied to the numbers of requested events: 0.989888
-                         : Background -- training events            : 44213
-                         : Background -- testing events             : 44213
-                         : Background -- training and testing events: 88426
-                         : Dataset[dataset] : Background -- due to the preselection a scaling factor has been applied to the numbers of requested events: 0.890664
+                         : Signal     -- training events            : 7049
+                         : Signal     -- testing events             : 7049
+                         : Signal     -- training and testing events: 14098
+                         : Dataset[dataset] : Signal     -- due to the preselection a scaling factor has been applied to the numbers of requested events: 0.778981
+                         : Background -- training events            : 15583
+                         : Background -- testing events             : 15583
+                         : Background -- training and testing events: 31166
+                         : Dataset[dataset] : Background -- due to the preselection a scaling factor has been applied to the numbers of requested events: 0.313917
                          : 
 <HEADER> DataSetInfo              : Correlation matrix (Signal):
-                         : --------------------
-                         :            recoTk1IP
-                         : recoTk1IP:    +1.000
-                         : --------------------
+                         : --------------------------------------------------
+                         :            recoTk1IP recoTk2IP recoTk3IP recoTk4IP
+                         : recoTk1IP:    +1.000    +0.094    +0.124    +0.119
+                         : recoTk2IP:    +0.094    +1.000    +0.114    +0.116
+                         : recoTk3IP:    +0.124    +0.114    +1.000    +0.144
+                         : recoTk4IP:    +0.119    +0.116    +0.144    +1.000
+                         : --------------------------------------------------
 <HEADER> DataSetInfo              : Correlation matrix (Background):
-                         : --------------------
-                         :            recoTk1IP
-                         : recoTk1IP:    +1.000
-                         : --------------------
+                         : --------------------------------------------------
+                         :            recoTk1IP recoTk2IP recoTk3IP recoTk4IP
+                         : recoTk1IP:    +1.000    +0.076    -0.007    +0.030
+                         : recoTk2IP:    +0.076    +1.000    +0.105    +0.035
+                         : recoTk3IP:    -0.007    +0.105    +1.000    +0.067
+                         : recoTk4IP:    +0.030    +0.035    +0.067    +1.000
+                         : --------------------------------------------------
 <HEADER> DataSetFactory           : [dataset] :  
                          : 
 <HEADER> Factory                  : Train all methods
@@ -53,28 +59,34 @@ Processing TMVAAnalysis.C...
                          : 
 <HEADER>                          : Transformation, Variable selection : 
                          : Input : variable 'recoTk1IP' <---> Output : variable 'recoTk1IP'
+                         : Input : variable 'recoTk2IP' <---> Output : variable 'recoTk2IP'
+                         : Input : variable 'recoTk3IP' <---> Output : variable 'recoTk3IP'
+                         : Input : variable 'recoTk4IP' <---> Output : variable 'recoTk4IP'
 <HEADER> TFHandler_Factory        :  Variable         Mean         RMS   [        Min         Max ]
                          : ----------------------------------------------------------------
-                         : recoTk1IP:  0.0058844   0.024440   [   -0.19922    0.20000 ]
+                         : recoTk1IP:  0.0059457   0.024747   [   -0.19906    0.20000 ]
+                         : recoTk2IP:  0.0067541   0.024636   [   -0.18328    0.19891 ]
+                         : recoTk3IP:  0.0072876   0.025497   [   -0.19844    0.19938 ]
+                         : recoTk4IP:  0.0073466   0.025534   [   -0.19609    0.19828 ]
                          : ----------------------------------------------------------------
                          : Ranking input variables (method unspecific)...
 <HEADER> IdTransformation         : Ranking result (top variable is best ranked)
                          : ----------------------------------
                          : Rank : Variable  : Separation
                          : ----------------------------------
-                         :    1 : recoTk1IP : 1.020e-01
+                         :    1 : recoTk3IP : 1.469e-01
+                         :    2 : recoTk4IP : 1.428e-01
+                         :    3 : recoTk2IP : 1.363e-01
+                         :    4 : recoTk1IP : 9.590e-02
                          : ----------------------------------
 <HEADER> Factory                  : Train method: BDT for Classification
                          : 
-<HEADER> BDT                      : #events: (reweighted) sig: 26585 bkg: 26585
-                         : #events: (unweighted) sig: 8957 bkg: 44213
+<HEADER> BDT                      : #events: (reweighted) sig: 11316 bkg: 11316
+                         : #events: (unweighted) sig: 7049 bkg: 15583
                          : Training 800 Decision Trees ... patience please
-<ERROR>                          :  YOUR tree has only 1 Node... kind of a funny *tree*. I cannot boost such a thing... if after 1 step the error rate is == 0.5
-                         : please check why this happens, maybe too many events per node requested ?
-<WARNING> <WARNING>                : stopped boosting at itree=136
-                         : Elapsed time for training with 53170 events: 8.18 sec         
-<HEADER> BDT                      : [dataset] : Evaluation of BDT on training sample (53170 events)
-                         : Elapsed time for evaluation of 53170 events: 1.18 sec       
+                         : Elapsed time for training with 22632 events: 6.28 sec         
+<HEADER> BDT                      : [dataset] : Evaluation of BDT on training sample (22632 events)
+                         : Elapsed time for evaluation of 22632 events: 1.65 sec       
                          : Creating xml weight file: dataset/weights/TMVAClassification_BDT.weights.xml
                          : Creating standalone class: dataset/weights/TMVAClassification_BDT.class.C
 <HEADER> Factory                  : Training finished
@@ -84,15 +96,18 @@ Processing TMVAAnalysis.C...
                          : -------------------------------------------
                          : Rank : Variable  : Variable Importance
                          : -------------------------------------------
-                         :    1 : recoTk1IP : 1.000e+00
+                         :    1 : recoTk4IP : 2.777e-01
+                         :    2 : recoTk2IP : 2.589e-01
+                         :    3 : recoTk3IP : 2.586e-01
+                         :    4 : recoTk1IP : 2.048e-01
                          : -------------------------------------------
 <HEADER> Factory                  : === Destroy and recreate all methods via weight files for testing ===
                          : 
 <HEADER> Factory                  : Test all methods
 <HEADER> Factory                  : Test method: BDT for Classification performance
                          : 
-<HEADER> BDT                      : [dataset] : Evaluation of BDT on testing sample (53170 events)
-                         : Elapsed time for evaluation of 53170 events: 1.14 sec       
+<HEADER> BDT                      : [dataset] : Evaluation of BDT on testing sample (22632 events)
+                         : Elapsed time for evaluation of 22632 events: 1.04 sec       
 <HEADER> Factory                  : Evaluate all methods
 <HEADER> Factory                  : Evaluate classifier: BDT
                          : 
@@ -100,14 +115,17 @@ Processing TMVAAnalysis.C...
                          : 
 <HEADER> TFHandler_BDT            :  Variable         Mean         RMS   [        Min         Max ]
                          : ----------------------------------------------------------------
-                         : recoTk1IP:  0.0023980   0.020315   [   -0.19938    0.19906 ]
+                         : recoTk1IP:  0.0037942   0.022008   [   -0.19703    0.19906 ]
+                         : recoTk2IP:  0.0047554   0.023202   [   -0.19703    0.19984 ]
+                         : recoTk3IP:  0.0050113   0.022806   [   -0.19938    0.19953 ]
+                         : recoTk4IP:  0.0049957   0.022505   [   -0.19750    0.19984 ]
                          : ----------------------------------------------------------------
                          : 
                          : Evaluation results ranked by best signal efficiency and purity (area)
                          : -------------------------------------------------------------------------------------------------------------------
                          : DataSet       MVA                       
                          : Name:         Method:          ROC-integ
-                         : dataset       BDT            : 0.659
+                         : dataset       BDT            : 0.827
                          : -------------------------------------------------------------------------------------------------------------------
                          : 
                          : Testing efficiency compared to training efficiency (overtraining check)
@@ -115,12 +133,12 @@ Processing TMVAAnalysis.C...
                          : DataSet              MVA              Signal efficiency: from test sample (from training sample) 
                          : Name:                Method:          @B=0.01             @B=0.10            @B=0.30   
                          : -------------------------------------------------------------------------------------------------------------------
-                         : dataset              BDT            : 0.000 (0.000)       0.354 (0.354)      0.541 (0.544)
+                         : dataset              BDT            : 0.225 (0.222)       0.573 (0.579)      0.797 (0.795)
                          : -------------------------------------------------------------------------------------------------------------------
                          : 
-<HEADER> Dataset:dataset          : Created tree 'TestTree' with 53170 events
+<HEADER> Dataset:dataset          : Created tree 'TestTree' with 22632 events
                          : 
-<HEADER> Dataset:dataset          : Created tree 'TrainTree' with 53170 events
+<HEADER> Dataset:dataset          : Created tree 'TrainTree' with 22632 events
                          : 
 <HEADER> Factory                  : Thank you for using TMVA!
                          : For citation information, please visit: http://tmva.sf.net/citeTMVA.html
