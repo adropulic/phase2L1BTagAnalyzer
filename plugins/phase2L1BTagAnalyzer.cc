@@ -74,6 +74,7 @@
 
 #include "DataFormats/PatCandidates/interface/Tau.h"
 #include "DataFormats/PatCandidates/interface/Jet.h"
+#include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/PackedCandidate.h"
 
 #include "DataFormats/L1TrackTrigger/interface/TTTypes.h"
@@ -83,6 +84,14 @@
 
 #include "DataFormats/BTauReco/interface/TrackIPTagInfo.h"
 #include "DataFormats/BTauReco/interface/IPTagInfo.h"
+
+// Transient Track and IP
+#include "TrackingTools/TransientTrack/interface/TransientTrack.h"
+#include "TrackingTools/TransientTrack/interface/TransientTrackBuilder.h"
+#include "TrackingTools/Records/interface/TransientTrackRecord.h"
+#include "TrackingTools/IPTools/interface/IPTools.h"
+#include "DataFormats/GeometryVector/interface/GlobalVector.h"
+#include <cmath>
 
 //
 // class declaration
@@ -114,6 +123,7 @@ class phase2L1BTagAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResourc
       edm::EDGetTokenT<TrackCollection> tracksToken_;  //used to select what s to read from configuration file
       edm::EDGetTokenT< std::vector< TTTrack< Ref_Phase2TrackerDigi_ > > > ttTrackToken_;
       edm::EDGetTokenT< vector<pat::Jet>  > MiniJetsToken_;
+      edm::EDGetTokenT< vector<pat::Muon>  > MiniMuonsToken_;
       edm::EDGetTokenT<std::vector<pat::PackedCandidate> > PackedCands_;
       edm::EDGetTokenT<EcalEBTrigPrimDigiCollection> ecalTPGBToken_;
 
@@ -131,7 +141,7 @@ class phase2L1BTagAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResourc
       double recoMuPt;
       double recoTk1IP, recoTk2IP, recoTk3IP, recoTk4IP; 
       double recoTk1IP3D;
-      double muPt, muEta, muPhi, muPtRel, muDeltaR, muSIP2D, muSIP3D
+      double muPt, muEta, muPhi, muPtRel, muDeltaR, muSIP2D, muSIP3D;
       double muRatio, muRatioRel, muSIP2Dsig, muSIP3Dsig;
       int recoFlavor;
       int run, lumi, event;
@@ -157,7 +167,8 @@ class phase2L1BTagAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResourc
  */
 phase2L1BTagAnalyzer::phase2L1BTagAnalyzer(const edm::ParameterSet& cfg):
   tracksToken_(consumes<TrackCollection>(cfg.getUntrackedParameter<edm::InputTag>("tracks"))),
-  MiniJetsToken_(   consumes< vector<pat::Jet>     >(cfg.getParameter<edm::InputTag>("slimmedJets"))),
+  MiniJetsToken_(   consumes< vector<pat::Jet>  >(cfg.getParameter<edm::InputTag>("slimmedJets"))),
+  MiniMuonsToken_(  consumes< vector<pat::Muon> >(cfg.getParameter<edm::InputTag>("slimmedMuons"))),
   PackedCands_(     consumes< std::vector<pat::PackedCandidate> >(cfg.getParameter<edm::InputTag>("packedCandidates"))),
   primaryVertexToken_( consumes<reco::VertexCollection>(cfg.getParameter<edm::InputTag>("primaryVertices")))
   //l1TkJets_(),  //get L1 TK Jets
@@ -226,6 +237,11 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
    using namespace edm;
    using namespace reco;
 
+   // Biult TransientTrackBuilder
+   edm::ESHandle<TransientTrackBuilder> theTrackBuilder;
+   iSetup.get<TransientTrackRecord>().get("TransientTrackBuilder", theTrackBuilder);
+   const TransientTrackBuilder* transientTrackBuilder=theTrackBuilder.product();
+
    typedef typename CandIPTagInfo::input_container Tracks;
    
    edm::Handle<vector<reco::Vertex> > primaryVertex;
@@ -268,9 +284,38 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   if(!iEvent.getByToken( MiniJetsToken_, miniJets))
     std::cout<<"No miniAOD jets found"<<std::endl;
 
+   // get reco muons
+  edm::Handle< std::vector<pat::Muon> > miniMuons;
+  if(!iEvent.getByToken( MiniMuonsToken_, miniMuons))
+    std::cout<<"No miniAOD muons found"<<std::endl;
 
   for( std::vector<pat::Jet>::const_iterator jet = miniJets->begin(); jet != miniJets->end(); ++jet )
     {
+
+      //since we are starting from miniAOD it is impossible to rerun the muontaggging as one might see here:
+      //https://github.com/cms-btv-pog/RecoBTag-PerformanceMeasurements/blob/9_4_X/plugins/BTagAnalyzer.cc
+      //Instead we will just find the muons in the jets
+      for(unsigned int id=0, nd=jet->numberOfDaughters(); id<nd; ++id) {
+	//std::cout<<"id "<<id<<std::endl;
+	edm::Ptr<reco::Candidate> lepPtr = jet->daughterPtr(id);
+	if(std::abs(lepPtr->pdgId())!=13) continue;
+	
+	for(unsigned int im=0, nm= miniMuons->size(); im<nm; ++im) { // --- Begin loop on muons
+          const pat::Muon patmuon= miniMuons->at(im);
+	  if(patmuon.originalObjectRef()==lepPtr) {
+	    reco::TrackRef trkRef( patmuon.innerTrack() );
+	    reco::TrackBaseRef trkBaseRef( trkRef );
+	    // Build Transient Track
+	    reco::TransientTrack transientTrack=transientTrackBuilder->build(trkRef);
+	    Measurement1D ip2d    = IPTools::signedTransverseImpactParameter(transientTrack, GlobalVector(jet->px(), jet->py(), jet->pz()), *pv).second;
+	    // soft lepton variables go here, see:
+	    // https://github.com/cms-sw/cmssw/blob/a1a699103d53ed00ae87f2a2578dd7e4b6bd0b5b/RecoBTag/SoftLepton/plugins/SoftPFMuonTagInfoProducer.cc#L121-L135
+	    std::cout<<"Found the muon ip2d: "<<ip2d.value()<<std::endl;
+	    break;
+	  }
+	}
+      }
+
       recoEta        = -99;
       recoPhi        = -99;
       recoPt         = -99;
@@ -344,25 +389,25 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 	  const reco::CandSoftLeptonTagInfo *softPFMuTagInfo = jet->tagInfoCandSoftLepton(tagInfoString);
 	  int nSM = (jet->hasTagInfo(tagInfoString) ? softPFMuTagInfo->leptons() : 0);
 	  if( nSM > 0 )
-    {
-      muPt  = softPFMuTagInfo->lepton(0)->pt();
-      muEta = softPFMuTagInfo->lepton(0)->eta();
-      muPhi = softPFMuTagInfo->lepton(0)->phi();
-      muPtRel = (softPFMuTagInfo->properties(0).ptRel);
-      muRatio = (softPFMuTagInfo->properties(0).ratio);
-      muRatioRel = (softPFMuTagInfo->properties(0).ratioRel);
-      muDeltaR = (softPFMuTagInfo->properties(0).deltaR);
-
-      muSIP3D = (softPFMuTagInfo->properties(0).sip3d);
-      muSIP2D = (softPFMuTagInfo->properties(0).sip2d);
-      muSIP3Dsig = (softPFMuTagInfo->properties(0).sip3dsig);
-      muSIP2Dsig = (softPFMuTagInfo->properties(0).sip2dsig);
-	  }
+	    {//just to note, please indent your code! (you can delete this comment when you see it)
+	      muPt  = softPFMuTagInfo->lepton(0)->pt();
+	      muEta = softPFMuTagInfo->lepton(0)->eta();
+	      muPhi = softPFMuTagInfo->lepton(0)->phi();
+	      muPtRel = (softPFMuTagInfo->properties(0).ptRel);
+	      muRatio = (softPFMuTagInfo->properties(0).ratio);
+	      muRatioRel = (softPFMuTagInfo->properties(0).ratioRel);
+	      muDeltaR = (softPFMuTagInfo->properties(0).deltaR);
+	      
+	      muSIP3D = (softPFMuTagInfo->properties(0).sip3d);
+	      muSIP2D = (softPFMuTagInfo->properties(0).sip2d);
+	      muSIP3Dsig = (softPFMuTagInfo->properties(0).sip3dsig);
+	      muSIP2Dsig = (softPFMuTagInfo->properties(0).sip2dsig);
+	    }
 	  //std::cout<<"muPt "<<muPt<<std::endl;
 	}
-      else
-	std::cout<<"jet does not have "<<tagInfoString<<std::endl;
-
+      //else
+      //std::cout<<"jet does not have "<<tagInfoString<<std::endl;
+	
       efficiencyTree->Fill();
    }
 

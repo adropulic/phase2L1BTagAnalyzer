@@ -27,6 +27,7 @@
 <use   name="SimDataFormats/Vertex"/>
 <use   name="SimDataFormats/TrackingHit"/>
 <use   name="SimDataFormats/GeneratorProducts"/>
+<use   name="TrackingTools/IPTools"/>
 <use   name="TrackingTools/Records"/>
 <use   name="TrackingTools/PatternTools"/>
 <use   name="TrackingTools/TrajectoryState"/>

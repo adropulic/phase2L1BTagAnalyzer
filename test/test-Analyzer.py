@@ -55,6 +55,7 @@ process.source = cms.Source("PoolSource",
         # 'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValZTT_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/820C0278-6D2C-E811-B95B-0CC47A4C8F0C.root',
         # 'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValZTT_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/BE6A3C80-6D2C-E811-9143-0CC47A4D7668.root',
         # 'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValZTT_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/DA7C408A-6D2C-E811-9BFF-0025905B858A.root'
+<<<<<<< HEAD
         #### ttbar samples
         '/store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root',
         '/store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/D86D2DA6-752C-E811-8E90-0025905B856C.root',
@@ -66,6 +67,19 @@ process.source = cms.Source("PoolSource",
         '/store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/7EC7DD7F-782C-E811-B469-0CC47A4D76A0.root',
         '/store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/7EB68679-782C-E811-A2C9-0CC47A4D7690.root',
         '/store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/0E1785F0-762C-E811-9192-0CC47A78A4BA.root',
+=======
+        # #### Z->T-ttbar samples
+        'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/EEFED097-752C-E811-B621-0CC47A4C8E22.root',
+        'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/D86D2DA6-752C-E811-8E90-0025905B856C.root',
+        'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/CE1930F1-762C-E811-B9F4-0CC47A78A468.root',
+        'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/B0D7BD76-782C-E811-AED2-0CC47A7C35F4.root',
+        'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/AC64F3F2-8D2C-E811-AEA8-0025905A611E.root',
+        'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/A05308F4-762C-E811-ACC0-0CC47A78A360.root',
+        'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/886F551E-7E2C-E811-9D10-0025905A608C.root',
+        'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/7EC7DD7F-782C-E811-B469-0CC47A4D76A0.root',
+        'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/7EB68679-782C-E811-A2C9-0CC47A4D7690.root',
+        'root://cmsxrootd.fnal.gov///store/relval/CMSSW_9_3_7/RelValTTbar_14TeV/GEN-SIM-DIGI-RAW/93X_upgrade2023_realistic_v5_2023D17noPU-v2/10000/0E1785F0-762C-E811-9192-0CC47A78A4BA.root',
+>>>>>>> upstream/master
         ),
     inputCommands = cms.untracked.vstring("keep *", 
         "drop l1tHGCalTowerMapBXVector_hgcalTriggerPrimitiveDigiProducer_towerMap_HLT",
@@ -149,8 +163,8 @@ addJetCollection(
                  explicitJTA = False,
                  svClustering = False,
                  #jetCorrections = ('AK4PFchs', cms.vstring(['L1FastJet', 'L2Relative', 'L3Absolute']), 'Type-2'),
-                 btagInfos = ['impactParameterTagInfos','secondaryVertexTagInfos'], #,'softPFMuonsTagInfos', 'softPFElectronsTagInfos'
-                 btagDiscriminators=['simpleSecondaryVertexHighEffBJetTags','simpleSecondaryVertexHighPurBJetTags'],#,'softPFMuonBJetTags','softPFElectronBJetTags'
+                 btagInfos = ['impactParameterTagInfos','secondaryVertexTagInfos'],#softPFElectronsTagInfos'
+                 btagDiscriminators=['simpleSecondaryVertexHighEffBJetTags','simpleSecondaryVertexHighPurBJetTags']#,'softPFElectronBJetTags'
                  )
 
 process.unpackTV  = cms.EDProducer('PATTrackAndVertexUnpacker',
@@ -163,7 +177,7 @@ process.unpackTV  = cms.EDProducer('PATTrackAndVertexUnpacker',
 process.patJetPartonsLegacy = cms.EDProducer("PartonSelector",
                                              withLeptons = cms.bool(False),
                                              src = cms.InputTag("genParticles")
-)
+                                             )
 
 process.patJetPartonAssociationLegacy = cms.EDProducer("JetPartonMatcher",
                                                        jets    = cms.InputTag("ak4PFJetsCHS"),
@@ -194,6 +208,7 @@ process.patJetsNewSlimmedJets.addTagInfos = cms.bool(True)
 
 process.load("L1Trigger.phase2L1BTagAnalyzer.phase2L1BTagAnalyzer_cfi")
 process.L1BTagAnalyzer.slimmedJets = cms.InputTag("patJetsNewSlimmedJets")
+process.L1BTagAnalyzer.slimmedMuons = cms.InputTag("slimmedMuons")
 
 process.TFileService = cms.Service("TFileService", 
                                    fileName = cms.string("analyzer_ttbar.root")
