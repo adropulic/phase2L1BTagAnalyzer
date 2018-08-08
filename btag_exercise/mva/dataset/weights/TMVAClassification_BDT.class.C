@@ -10,7 +10,7 @@ Method         : BDT::BDT
 TMVA Release   : 4.2.1         [262657]
 ROOT Release   : 6.10/09       [395785]
 Creator        : skkwan
-Date           : Tue Aug  7 09:58:37 2018
+Date           : Tue Aug  7 11:44:09 2018
 Host           : Linux cmsbuild09.cern.ch 2.6.32-696.18.7.el6.x86_64 #1 SMP Thu Jan 4 13:27:39 CET 2018 x86_64 x86_64 x86_64 GNU/Linux
 Dir            : /afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/btag_exercise/mva
 Training events: 22632

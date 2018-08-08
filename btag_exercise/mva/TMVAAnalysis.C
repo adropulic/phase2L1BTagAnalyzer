@@ -40,7 +40,19 @@
 
 void TMVAAnalysis()
 {
-	
+        //--------------------------------------------
+        // Choose TMVA methods to use
+        //--------------------------------------------
+
+        // Use key-value pairs to indicate which TMVA methods we want to use
+        std::map<std::string, int> Use;
+
+        // Neural Networks (all are feed-forward Multilayer Perceptrons)
+        Use["MLP"] = 1;  // Recommended ANN
+	//
+	// Boosted Decision Trees
+	Use["BDT"] = 1;  // uses Adaptive Boost
+
 	//--------------------------------------------
 	// Load data
 	//--------------------------------------------
@@ -65,7 +77,7 @@ void TMVAAnalysis()
 	Int_t hadronFlavor;
 
 	// Set branch addresses
-	inputTree->SetBranchAddress("recoPt",  &recoPt);
+       	inputTree->SetBranchAddress("recoPt",  &recoPt);
 	inputTree->SetBranchAddress("recoEta", &recoEta);
 	inputTree->SetBranchAddress("recoPhi", &recoPhi);
 	inputTree->SetBranchAddress("hadronFlavor", &hadronFlavor);
@@ -133,7 +145,12 @@ void TMVAAnalysis()
 
 	// Method specification
 	TString methodOptions = "";
-	factory->BookMethod(dataloader, TMVA::Types::kBDT, "BDT", methodOptions);
+	//  Adaptive Boost
+	if (Use["BDT"])
+	  factory->BookMethod(dataloader, TMVA::Types::kBDT, "BDT", methodOptions);
+	//  TMVA ANN: MLP (recommended ANN) -- all ANNs in TMVA are Multilayer Perceptrons
+	if (Use["MLP"])
+	  factory->BookMethod(dataloader, TMVA::Types::kMLP, "MLP", methodOptions);
 
 	// Training and Evaluation
 	factory->TrainAllMethods();
