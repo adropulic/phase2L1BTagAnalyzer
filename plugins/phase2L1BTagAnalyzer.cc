@@ -291,6 +291,18 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 
   for( std::vector<pat::Jet>::const_iterator jet = miniJets->begin(); jet != miniJets->end(); ++jet )
     {
+      // muon variables:  https://github.com/cms-btv-pog/RecoBTag-PerformanceMeasurements/blob/9_4_X/plugins/BTagAnalyzer.cc#L2595-L2607
+      muPt  = -99;
+      muEta = -99;
+      muPhi = -99;
+      muPtRel    = -99;
+      muRatio    = -99;
+      muRatioRel = -99;
+      muDeltaR   = -99;
+      muSIP2D  = -99;
+      muSIP3D  = -99;
+      muSIP2Dsig = -99;
+      muSIP3Dsig = -99;
 
       //since we are starting from miniAOD it is impossible to rerun the muontaggging as one might see here:
       //https://github.com/cms-btv-pog/RecoBTag-PerformanceMeasurements/blob/9_4_X/plugins/BTagAnalyzer.cc
@@ -307,9 +319,32 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 	    reco::TrackBaseRef trkBaseRef( trkRef );
 	    // Build Transient Track
 	    reco::TransientTrack transientTrack=transientTrackBuilder->build(trkRef);
+	    // Define jet and muon vectors
+	    reco::Candidate::Vector jetvect(jet->p4().Vect()), muonvect(patmuon->p4()Vect());
+
 	    Measurement1D ip2d    = IPTools::signedTransverseImpactParameter(transientTrack, GlobalVector(jet->px(), jet->py(), jet->pz()), *pv).second;
 	    // soft lepton variables go here, see:
 	    // https://github.com/cms-sw/cmssw/blob/a1a699103d53ed00ae87f2a2578dd7e4b6bd0b5b/RecoBTag/SoftLepton/plugins/SoftPFMuonTagInfoProducer.cc#L121-L135
+	    Measurement1D ip3d    = IPTools::signedImpactParameter3D(transientTrack, GlobalVector(jet->px(), jet->py(), jet->pz()), *pv).second;
+
+	    muPt  = patmuon->pt();
+	    muEta = patmuon->eta();
+	    muPhi = patmuon->phi();
+	    
+	    muSIP2Dsig = ip2d.significance();
+	    muSIP3Dsig = ip3d.significance();
+	    muSIP2D  = ip2d.value();
+	    muSIP3D  = ip3d.value();
+	    muDeltaR = reco::deltaR(*jet, *patmuon);
+	    muPtRel  = ( (jetvect-muonvect).Cross(muonvect)) .R() / jetvect.R();
+	    float mag = muonvect.R()*jetvect.R();
+	    float dot = muon->p4().Dot(jet->p4());
+	    muEtaRel   = -log((mag - dot)/(mag + dot)) / 2.;
+	    muRatio    = patmuon->pt() / jet->pt();
+	    muRatioRel = patmuon->p4().Dot(jet->p4()) / jet.Mag();
+	    // muP0Par    = boostedPPar(patmuon->momentum(), jet->momentum());
+	    // muCharge   = patmuon->charge();
+
 	    std::cout<<"Found the muon ip2d: "<<ip2d.value()<<std::endl;
 	    break;
 	  }
@@ -370,26 +405,15 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
       else
 	std::cout<<"jet does not have "<<tagInfoString<<std::endl;
 
-      // muon variables:  https://github.com/cms-btv-pog/RecoBTag-PerformanceMeasurements/blob/9_4_X/plugins/BTagAnalyzer.cc#L2595-L2607
-      muPt  = -99;
-      muEta = -99;
-      muPhi = -99;
-      muPtRel    = -99;
-      muRatio    = -99;
-      muRatioRel = -99;
-      muDeltaR   = -99;
-      muSIP2D  = -99;
-      muSIP3D  = -99;
-      muSIP2Dsig = -99;
-      muSIP3Dsig = -99;
-
+      // Commenting out since it does not work with miniAOD
+      /* 
       tagInfoString = "softPFMuons";
       if( jet->hasTagInfo(tagInfoString) ) 
 	{
 	  const reco::CandSoftLeptonTagInfo *softPFMuTagInfo = jet->tagInfoCandSoftLepton(tagInfoString);
 	  int nSM = (jet->hasTagInfo(tagInfoString) ? softPFMuTagInfo->leptons() : 0);
 	  if( nSM > 0 )
-	    {//just to note, please indent your code! (you can delete this comment when you see it)
+	    {
 	      muPt  = softPFMuTagInfo->lepton(0)->pt();
 	      muEta = softPFMuTagInfo->lepton(0)->eta();
 	      muPhi = softPFMuTagInfo->lepton(0)->phi();
@@ -409,7 +433,8 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
       //std::cout<<"jet does not have "<<tagInfoString<<std::endl;
 	
       efficiencyTree->Fill();
-   }
+      } 
+      */
 
    //Keep this for now, will be useful if we want to compare L1Tracks to Reco Tracks
    /*  
@@ -431,7 +456,7 @@ void
 phase2L1BTagAnalyzer::beginJob()
 {
 }
-
+ 
 // ------------ method called once each job just after ending the event loop  ------------
 void
 phase2L1BTagAnalyzer::endJob()
