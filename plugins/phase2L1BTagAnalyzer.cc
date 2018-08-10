@@ -141,7 +141,7 @@ class phase2L1BTagAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResourc
       double recoMuPt;
       double recoTk1IP, recoTk2IP, recoTk3IP, recoTk4IP; 
       double recoTk1IP3D;
-      double muPt, muEta, muPhi, muPtRel, muDeltaR, muSIP2D, muSIP3D;
+      double muPt, muEta, muPhi, muPtRel, muEtaRel, muDeltaR, muSIP2D, muSIP3D;
       double muRatio, muRatioRel, muSIP2Dsig, muSIP3Dsig;
       int recoFlavor;
       int run, lumi, event;
@@ -206,6 +206,7 @@ phase2L1BTagAnalyzer::phase2L1BTagAnalyzer(const edm::ParameterSet& cfg):
   efficiencyTree->Branch("muPhi", &muPhi, "muPhi/D");
 
   efficiencyTree->Branch("muPtRel",    &muPtRel,    "muPtRel/D");
+  efficiencyTree->Branch("muEtaRel",   &muEtaRel,   "muEtaRel/D");
   efficiencyTree->Branch("muRatio",    &muRatio,    "muRatio/D");
   efficiencyTree->Branch("muRatioRel", &muRatioRel, "muRatioRel/D");
   efficiencyTree->Branch("muDeltaR",   &muDeltaR,   "muDeltaR/D");
@@ -296,6 +297,7 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
       muEta = -99;
       muPhi = -99;
       muPtRel    = -99;
+      muEtaRel   = -99;
       muRatio    = -99;
       muRatioRel = -99;
       muDeltaR   = -99;
@@ -320,28 +322,28 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 	    // Build Transient Track
 	    reco::TransientTrack transientTrack=transientTrackBuilder->build(trkRef);
 	    // Define jet and muon vectors
-	    reco::Candidate::Vector jetvect(jet->p4().Vect()), muonvect(patmuon->p4()Vect());
-
+	    reco::Candidate::Vector jetvect(jet->p4().Vect()), muonvect(patmuon.p4().Vect());
+	    // Calculate variables
 	    Measurement1D ip2d    = IPTools::signedTransverseImpactParameter(transientTrack, GlobalVector(jet->px(), jet->py(), jet->pz()), *pv).second;
 	    // soft lepton variables go here, see:
 	    // https://github.com/cms-sw/cmssw/blob/a1a699103d53ed00ae87f2a2578dd7e4b6bd0b5b/RecoBTag/SoftLepton/plugins/SoftPFMuonTagInfoProducer.cc#L121-L135
 	    Measurement1D ip3d    = IPTools::signedImpactParameter3D(transientTrack, GlobalVector(jet->px(), jet->py(), jet->pz()), *pv).second;
 
-	    muPt  = patmuon->pt();
-	    muEta = patmuon->eta();
-	    muPhi = patmuon->phi();
+	    muPt  = patmuon.pt();
+	    muEta = patmuon.eta();
+	    muPhi = patmuon.phi();
 	    
 	    muSIP2Dsig = ip2d.significance();
 	    muSIP3Dsig = ip3d.significance();
 	    muSIP2D  = ip2d.value();
 	    muSIP3D  = ip3d.value();
-	    muDeltaR = reco::deltaR(*jet, *patmuon);
-	    muPtRel  = ( (jetvect-muonvect).Cross(muonvect)) .R() / jetvect.R();
+	    muDeltaR = reco::deltaR(*jet, patmuon);
+	    muPtRel  = ( (jetvect-muonvect).Cross(muonvect) ).R() / jetvect.R();
 	    float mag = muonvect.R()*jetvect.R();
-	    float dot = muon->p4().Dot(jet->p4());
+	    float dot = patmuon.p4().Dot(jet->p4());
 	    muEtaRel   = -log((mag - dot)/(mag + dot)) / 2.;
-	    muRatio    = patmuon->pt() / jet->pt();
-	    muRatioRel = patmuon->p4().Dot(jet->p4()) / jet.Mag();
+	    muRatio    = patmuon.pt() / jet->pt();
+	    muRatioRel = patmuon.p4().Dot(jet->p4()) / jetvect.Mag2(); 
 	    // muP0Par    = boostedPPar(patmuon->momentum(), jet->momentum());
 	    // muCharge   = patmuon->charge();
 
@@ -428,13 +430,12 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 	      muSIP2Dsig = (softPFMuTagInfo->properties(0).sip2dsig);
 	    }
 	  //std::cout<<"muPt "<<muPt<<std::endl;
-	}
+	  } */
       //else
       //std::cout<<"jet does not have "<<tagInfoString<<std::endl;
 	
       efficiencyTree->Fill();
       } 
-      */
 
    //Keep this for now, will be useful if we want to compare L1Tracks to Reco Tracks
    /*  
