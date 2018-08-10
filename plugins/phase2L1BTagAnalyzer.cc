@@ -140,6 +140,7 @@ class phase2L1BTagAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResourc
       double recoPt, recoEta, recoPhi; 
       double recoMuPt;
       double recoTk1IP, recoTk2IP, recoTk3IP, recoTk4IP; 
+      UShort_t recoTk1IP_uint;
       double recoTk1IP3D;
       double muPt, muEta, muPhi, muPtRel, muEtaRel, muDeltaR, muSIP2D, muSIP3D;
       double muRatio, muRatioRel, muSIP2Dsig, muSIP3Dsig;
@@ -196,6 +197,8 @@ phase2L1BTagAnalyzer::phase2L1BTagAnalyzer(const edm::ParameterSet& cfg):
   efficiencyTree->Branch("recoTk2IP",     &recoTk2IP,   "recoTk2IP/D");
   efficiencyTree->Branch("recoTk3IP",     &recoTk3IP,   "recoTk3IP/D");
   efficiencyTree->Branch("recoTk4IP",     &recoTk4IP,   "recoTk4IP/D");
+
+  efficiencyTree->Branch("recoTk1IP_uint",     &recoTk1IP_uint,   "recoTk1IP_uint/s");
 
   efficiencyTree->Branch("l1Pt",  &l1Pt,   "l1Pt/D");
   efficiencyTree->Branch("l1Eta", &l1Eta,   "l1Eta/D");
@@ -290,6 +293,7 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   if(!iEvent.getByToken( MiniMuonsToken_, miniMuons))
     std::cout<<"No miniAOD muons found"<<std::endl;
 
+  //std::cout<<"looping over jets"<<std::endl;
   for( std::vector<pat::Jet>::const_iterator jet = miniJets->begin(); jet != miniJets->end(); ++jet )
     {
       // muon variables:  https://github.com/cms-btv-pog/RecoBTag-PerformanceMeasurements/blob/9_4_X/plugins/BTagAnalyzer.cc#L2595-L2607
@@ -310,10 +314,11 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
       //https://github.com/cms-btv-pog/RecoBTag-PerformanceMeasurements/blob/9_4_X/plugins/BTagAnalyzer.cc
       //Instead we will just find the muons in the jets
       for(unsigned int id=0, nd=jet->numberOfDaughters(); id<nd; ++id) {
+
 	//std::cout<<"id "<<id<<std::endl;
 	edm::Ptr<reco::Candidate> lepPtr = jet->daughterPtr(id);
 	if(std::abs(lepPtr->pdgId())!=13) continue;
-	
+	//std::cout<<"got lep ptr, looping over muons"<<std::endl;
 	for(unsigned int im=0, nm= miniMuons->size(); im<nm; ++im) { // --- Begin loop on muons
           const pat::Muon patmuon= miniMuons->at(im);
 	  if(patmuon.originalObjectRef()==lepPtr) {
@@ -364,6 +369,8 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
       recoTk4IP      = -99;
       hadronFlavor   = -99;
 
+      recoTk1IP_uint = 0;
+
       recoPt  = jet->pt();
       recoEta = jet->eta();
       recoPhi = jet->phi();
@@ -387,6 +394,13 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 	  if(trackSize>0)
 	    {
 	      recoTk1IP    = ipTagInfo->impactParameterData()[0].ip2d.value();
+
+	      if(recoTk1IP>0.1){//default saturated value: meaning definitely b-jet like!
+		recoTk1IP_uint = 0xFFFF;}
+	      else{
+		recoTk1IP_uint = (unsigned int)(recoTk1IP/0.001); 	      //using 0.001 as the LSB (Least Significant Bit)
+	      }
+	      std::cout<<"recoTk1IP: "<<std::dec<< recoTk1IP<< " recoTk1IP_uint: "<< std::hex<<recoTk1IP_uint<<std::endl;
 	      recoTk1IP3D  = ipTagInfo->impactParameterData()[0].ip3d.value();
 	      //consider adding track DXY
 	      //recoTk1DXY = ipTagInfo->selectedTracks().at(0).dxy(pv->position());
@@ -480,22 +494,33 @@ phase2L1BTagAnalyzer::fillDescriptions(edm::ConfigurationDescriptions& descripti
   //descriptions.addDefault(desc);
 }
 
-
-  // -------------- toIPTagInfo ----------------
-  /*
-template<>
-const phase2L1BTagAnalyzer<reco::TrackIPTagInfo,reco::Vertex>::IPTagInfo *
-phase2L1BTagAnalyzer<reco::TrackIPTagInfo,reco::Vertex>::toIPTagInfo(const pat::Jet & jet, const std::string & tagInfos)
+/*
+std::vector<std::pair<reco::track, TTTrack< Ref_Phase2TrackerDigi_> > > phase2L1BTagAnalyzer::makeL1RecoTrackPair(std::vector<TTTrack< Ref_Phase2TrackerDigi_ > > L1Tracks, std::vector<reco::Track> RecoTracks)
 {
-  return jet.tagInfoTrackIP(tagInfos.c_str());
-}
+  std::vector<reco::Track> recoTrackVector; recoTrackVector.clear();
+  for(auto recoTrack : RecoTracks){
+    recoTrackVector.push_back(recoTrack);
+  }
 
-template<>
-const phase2L1BTagAnalyzer<reco::CandIPTagInfo,reco::VertexCompositePtrCandidate>::IPTagInfo *
-phase2L1BTagAnalyzer<reco::CandIPTagInfo,reco::VertexCompositePtrCandidate>::toIPTagInfo(const pat::Jet & jet, const std::string & tagInfos)
-{
-    return jet.tagInfoCandIP(tagInfos.c_str());
+  //start sorting by pt, for each reco track matched to a level 1 track remove it from the list of available matched tracks
+  //for( std::vector<TTTrack< Ref_Phase2TrackerDigi_ > >::const_iterator l1Track = L1Tracks->begin(); l1Track !=  L1Tracks->end() ){
+  for( auto l1Track : L1Tracks){
+    for(std::vector<reco::Track>::iterator recoTrack_itt = recoTrackVector.begin(); recoTrack != recoTrackVector.end()){
+      double pt  = ptr->getMomentum().perp();
+      double eta = ptr->getMomentum().eta();
+      double phi = ptr->getMomentum().phi();
+
+      if(DeltaR(recoTrack_itt,)){
+
+        recoTrackVector.erase(recoTrack_itt);
+      }
+      else{
+        ++recoTrack_itt;
+      }
+    }
+  }
+
 }
-  */
+*/
 //define this as a plug-in
 DEFINE_FWK_MODULE(phase2L1BTagAnalyzer);
