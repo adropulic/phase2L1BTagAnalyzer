@@ -402,9 +402,9 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 	      recoTk1IP    = ipTagInfo->impactParameterData()[0].ip2d.value();
 
 	      if(abs(recoTk1IP) > 0.1){//default saturated value: meaning definitely b-jet like!
-		recoTk1IP_uint = 0xFFFF;}
+		recoTk1IP_uint = 0xFF;}
 	      else {
-		recoTk1IP_uint = (unsigned int)(recoTk1IP/0.001); 	      //using 0.001 as the LSB (Least Significant Bit)
+		recoTk1IP_uint = (unsigned int)(abs(recoTk1IP)/0.0004); //using 0.0004 as the LSB (Least Significant Bit)
 	      }
 	      std::cout<<"recoTk1IP: "<<std::dec<< recoTk1IP<< " recoTk1IP_uint: "<< std::hex<<recoTk1IP_uint<<std::endl;
 	      recoTk1IP3D  = ipTagInfo->impactParameterData()[0].ip3d.value();
@@ -415,9 +415,9 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 	    {
 	      recoTk2IP = ipTagInfo->impactParameterData()[1].ip2d.value();
 	      if (abs(recoTk2IP) > 0.1){
-		recoTk2IP_uint = 0xFFFF;}
+		recoTk2IP_uint = 0xFF;}
 	      else {
-		recoTk2IP_uint = (unsigned int)(recoTk2IP/0.001);
+		recoTk2IP_uint = (unsigned int)(abs(recoTk2IP)/0.0004);
 	      }
 	      std::cout<<"recoTk2IP: "<<std::dec<< recoTk2IP<< " recoTk2IP_uint: "<< std::hex<<recoTk2IP_uint<<std::endl;
 	    }      
@@ -425,9 +425,9 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 	    {
 	      recoTk3IP = ipTagInfo->impactParameterData()[2].ip2d.value();
 	      if (abs(recoTk3IP) > 0.1){
-		  recoTk3IP_uint = 0xFFFF;}
+		  recoTk3IP_uint = 0xFF;}
 	      else {
-		recoTk3IP_uint = (unsigned int)(recoTk3IP/0.001);
+		recoTk3IP_uint = (unsigned int)(abs(recoTk3IP)/0.0004);
 	      }
 	      std::cout<<"recoTk3IP: "<<std::dec<< recoTk3IP<< " recoTk3IP_uint: "<< std::hex<<recoTk3IP_uint<<std::endl;
 	    }
@@ -435,9 +435,9 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 	    {
 	      recoTk4IP = ipTagInfo->impactParameterData()[3].ip2d.value();
 	      if (abs(recoTk4IP) > 0.1){
-		recoTk4IP_uint = 0xFFFF;}
+		recoTk4IP_uint = 0xFF;}
 	      else {
-		recoTk4IP_uint = (unsigned int)(recoTk4IP/0.001);
+		recoTk4IP_uint = (unsigned int)(abs(recoTk4IP)/0.0004);
 	      }
 	      std::cout<<"recoTk4IP: "<<std::dec<< recoTk4IP<< " recoTk4IP_uint: "<< std::hex<<recoTk4IP_uint<<std::endl;
 	    }
