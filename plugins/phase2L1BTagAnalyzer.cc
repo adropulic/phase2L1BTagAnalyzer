@@ -140,7 +140,7 @@ class phase2L1BTagAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResourc
       double recoPt, recoEta, recoPhi; 
       double recoMuPt;
       double recoTk1IP, recoTk2IP, recoTk3IP, recoTk4IP; 
-      UShort_t recoTk1IP_uint;
+      UShort_t recoTk1IP_uint, recoTk2IP_uint, recoTk3IP_uint, recoTk4IP_uint;
       double recoTk1IP3D;
       double muPt, muEta, muPhi, muPtRel, muEtaRel, muDeltaR, muSIP2D, muSIP3D;
       double muRatio, muRatioRel, muSIP2Dsig, muSIP3Dsig;
@@ -199,7 +199,10 @@ phase2L1BTagAnalyzer::phase2L1BTagAnalyzer(const edm::ParameterSet& cfg):
   efficiencyTree->Branch("recoTk4IP",     &recoTk4IP,   "recoTk4IP/D");
 
   efficiencyTree->Branch("recoTk1IP_uint",     &recoTk1IP_uint,   "recoTk1IP_uint/s");
-
+  efficiencyTree->Branch("recoTk2IP_uint",     &recoTk2IP_uint,   "recoTk2IP_uint/s");
+  efficiencyTree->Branch("recoTk3IP_uint",     &recoTk3IP_uint,   "recoTk3IP_uint/s");
+  efficiencyTree->Branch("recoTk4IP_uint",     &recoTk4IP_uint,   "recoTk4IP_uint/s");
+  
   efficiencyTree->Branch("l1Pt",  &l1Pt,   "l1Pt/D");
   efficiencyTree->Branch("l1Eta", &l1Eta,   "l1Eta/D");
   efficiencyTree->Branch("l1Phi", &l1Phi,   "l1Phi/D");
@@ -370,6 +373,9 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
       hadronFlavor   = -99;
 
       recoTk1IP_uint = 0;
+      recoTk2IP_uint = 0;
+      recoTk3IP_uint = 0;
+      recoTk4IP_uint = 0;
 
       recoPt  = jet->pt();
       recoEta = jet->eta();
@@ -395,9 +401,9 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 	    {
 	      recoTk1IP    = ipTagInfo->impactParameterData()[0].ip2d.value();
 
-	      if(recoTk1IP>0.1){//default saturated value: meaning definitely b-jet like!
+	      if(abs(recoTk1IP) > 0.1){//default saturated value: meaning definitely b-jet like!
 		recoTk1IP_uint = 0xFFFF;}
-	      else{
+	      else {
 		recoTk1IP_uint = (unsigned int)(recoTk1IP/0.001); 	      //using 0.001 as the LSB (Least Significant Bit)
 	      }
 	      std::cout<<"recoTk1IP: "<<std::dec<< recoTk1IP<< " recoTk1IP_uint: "<< std::hex<<recoTk1IP_uint<<std::endl;
@@ -408,14 +414,32 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 	  if(trackSize>1)
 	    {
 	      recoTk2IP = ipTagInfo->impactParameterData()[1].ip2d.value();
-	    }
+	      if (abs(recoTk2IP) > 0.1){
+		recoTk2IP_uint = 0xFFFF;}
+	      else {
+		recoTk2IP_uint = (unsigned int)(recoTk2IP/0.001);
+	      }
+	      std::cout<<"recoTk2IP: "<<std::dec<< recoTk2IP<< " recoTk2IP_uint: "<< std::hex<<recoTk2IP_uint<<std::endl;
+	    }      
 	  if(trackSize>2)
 	    {
 	      recoTk3IP = ipTagInfo->impactParameterData()[2].ip2d.value();
+	      if (abs(recoTk3IP) > 0.1){
+		  recoTk3IP_uint = 0xFFFF;}
+	      else {
+		recoTk3IP_uint = (unsigned int)(recoTk3IP/0.001);
+	      }
+	      std::cout<<"recoTk3IP: "<<std::dec<< recoTk3IP<< " recoTk3IP_uint: "<< std::hex<<recoTk3IP_uint<<std::endl;
 	    }
 	  if(trackSize>3)
 	    {
 	      recoTk4IP = ipTagInfo->impactParameterData()[3].ip2d.value();
+	      if (abs(recoTk4IP) > 0.1){
+		recoTk4IP_uint = 0xFFFF;}
+	      else {
+		recoTk4IP_uint = (unsigned int)(recoTk4IP/0.001);
+	      }
+	      std::cout<<"recoTk4IP: "<<std::dec<< recoTk4IP<< " recoTk4IP_uint: "<< std::hex<<recoTk4IP_uint<<std::endl;
 	    }
 	}
       else
