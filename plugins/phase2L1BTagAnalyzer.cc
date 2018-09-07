@@ -381,9 +381,8 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 	    std::cout<<"muEta: "<<std::dec<< muEta<< " muEta_uint: "<< std::hex<<muEta_uint<<std::endl;
 	    
 	    if ( muSIP2D > -99 ) {
-	      muSIP2D_uint = (unsigned int)(abs(muSIP2D)/0.03);
-	      // say muSIP2D can range from -3 to 3
-	      // 255 possible values in UShort_t: LSB = 6/255 = 0.0235
+	      muSIP2D_uint = (unsigned int)(abs(muSIP2D)/0.001);
+	      // most mu2DIPs are on the order of 0.001 - 0.01
 	    }
 	    std::cout<<"muSIP2D: "<<std::dec<< muSIP2D<< " muSIP2D_uint: "<< std::hex<<muSIP2D_uint<<std::endl;
 	    
