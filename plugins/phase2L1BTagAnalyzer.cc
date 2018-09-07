@@ -143,6 +143,7 @@ class phase2L1BTagAnalyzer : public edm::one::EDAnalyzer<edm::one::SharedResourc
       UShort_t recoTk1IP_uint, recoTk2IP_uint, recoTk3IP_uint, recoTk4IP_uint;
       double recoTk1IP3D;
       double muPt, muEta, muPhi, muPtRel, muEtaRel, muDeltaR, muSIP2D, muSIP3D;
+      UShort_t muPt_uint, muEta_uint, muSIP2D_uint;
       double muRatio, muRatioRel, muSIP2Dsig, muSIP3Dsig;
       int recoFlavor;
       int run, lumi, event;
@@ -211,6 +212,9 @@ phase2L1BTagAnalyzer::phase2L1BTagAnalyzer(const edm::ParameterSet& cfg):
   efficiencyTree->Branch("muEta", &muEta, "muEta/D");
   efficiencyTree->Branch("muPhi", &muPhi, "muPhi/D");
 
+  efficiencyTree->Branch("muPt_uint",  &muPt_uint,  "muPt_uint/s");
+  efficiencyTree->Branch("muEta_uint", &muEta_uint, "muEta_uint/s");
+
   efficiencyTree->Branch("muPtRel",    &muPtRel,    "muPtRel/D");
   efficiencyTree->Branch("muEtaRel",   &muEtaRel,   "muEtaRel/D");
   efficiencyTree->Branch("muRatio",    &muRatio,    "muRatio/D");
@@ -221,13 +225,15 @@ phase2L1BTagAnalyzer::phase2L1BTagAnalyzer(const edm::ParameterSet& cfg):
   efficiencyTree->Branch("muSIP3D", &muSIP3D, "muSIP3D/D");
   efficiencyTree->Branch("muSIP2Dsig", &muSIP2Dsig, "muSIP2Dsig/D");
   efficiencyTree->Branch("muSIP3Dsig", &muSIP3Dsig, "muSIP3Dsig/D");
+
+  efficiencyTree->Branch("muSIP2D_uint", &muSIP2D_uint, "muSIP2D_uint/s");
 }
 
 
 phase2L1BTagAnalyzer::~phase2L1BTagAnalyzer()
 {
 
-   // do anything here that needs to be done at desctruction time
+   // do anything here that needs to be done at destruction time
    // (e.g. close files, deallocate resources etc.)
 
 }
@@ -313,6 +319,10 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
       muSIP2Dsig = -99;
       muSIP3Dsig = -99;
 
+      muPt_uint    = 0;
+      muEta_uint   = 0;
+      muSIP2D_uint = 0;
+
       //since we are starting from miniAOD it is impossible to rerun the muontaggging as one might see here:
       //https://github.com/cms-btv-pog/RecoBTag-PerformanceMeasurements/blob/9_4_X/plugins/BTagAnalyzer.cc
       //Instead we will just find the muons in the jets
@@ -355,6 +365,28 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 	    // muP0Par    = boostedPPar(patmuon->momentum(), jet->momentum());
 	    // muCharge   = patmuon->charge();
 
+	    // Calculate unsigned integer representations
+	    if ( muPt > -99 ) {
+	      muPt_uint = (unsigned int)(abs(muPt)/1.4);
+	      // maximum muPt in ttbar sample is 324.6
+	      // 255 possible values in UShort_t: LSB = 350/255 = 1.4
+	    }
+	    std::cout<<"muPt: "<<std::dec<< muPt<< " muPt_uint: "<< std::hex<<muPt_uint<<std::endl;
+	    
+	    if ( muEta > -99 ) {
+	      muEta_uint = (unsigned int)(abs(muEta)/0.03);
+	      // say muEta can range from -3 to 3
+	      // 255 possible values in UShort_t: LSB = 6/255 = 0.0235
+	    }
+	    std::cout<<"muEta: "<<std::dec<< muEta<< " muEta_uint: "<< std::hex<<muEta_uint<<std::endl;
+	    
+	    if ( muSIP2D > -99 ) {
+	      muSIP2D_uint = (unsigned int)(abs(muSIP2D)/0.03);
+	      // say muSIP2D can range from -3 to 3
+	      // 255 possible values in UShort_t: LSB = 6/255 = 0.0235
+	    }
+	    std::cout<<"muSIP2D: "<<std::dec<< muSIP2D<< " muSIP2D_uint: "<< std::hex<<muSIP2D_uint<<std::endl;
+	    
 	    std::cout<<"Found the muon ip2d: "<<ip2d.value()<<std::endl;
 	    break;
 	  }
