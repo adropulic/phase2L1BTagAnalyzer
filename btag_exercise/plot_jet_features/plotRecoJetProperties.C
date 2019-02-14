@@ -163,7 +163,7 @@ void plotRecoJetProperties() {
 	legend->AddEntry(sig_recoPt, "Signal (hadronFlavor == 5)");
 	legend->AddEntry(bkg_recoPt, "Background (hadronFlavor != 5)");
 	legend->Draw();
-	sb_canvas->SaveAs("output_ttbar.pdf");
+	sb_canvas->SaveAs("output_ttbar_2000events.pdf");
 	// Close file
 	input->Close();
 }

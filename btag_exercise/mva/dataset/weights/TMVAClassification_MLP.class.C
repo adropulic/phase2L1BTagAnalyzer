@@ -10,10 +10,10 @@ Method         : MLP::MLP
 TMVA Release   : 4.2.1         [262657]
 ROOT Release   : 6.10/09       [395785]
 Creator        : skkwan
-Date           : Tue Aug  7 11:44:44 2018
+Date           : Fri Sep  7 16:13:18 2018
 Host           : Linux cmsbuild09.cern.ch 2.6.32-696.18.7.el6.x86_64 #1 SMP Thu Jan 4 13:27:39 CET 2018 x86_64 x86_64 x86_64 GNU/Linux
 Dir            : /afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/btag_exercise/mva
-Training events: 22632
+Training events: 13352
 Analysis type  : [Classification]
 
 
@@ -59,10 +59,10 @@ WeightRange: "1.000000e+00" [Take the events for the estimator calculations from
 #VAR -*-*-*-*-*-*-*-*-*-*-*-* variables *-*-*-*-*-*-*-*-*-*-*-*-
 
 NVar 4
-recoTk1IP                     recoTk1IP                     recoTk1IP                     recoTk1IP                                                       'D'    [-0.199062496424,0.20000000298]
-recoTk2IP                     recoTk2IP                     recoTk2IP                     recoTk2IP                                                       'D'    [-0.183281242847,0.198906242847]
-recoTk3IP                     recoTk3IP                     recoTk3IP                     recoTk3IP                                                       'D'    [-0.19843749702,0.199375003576]
-recoTk4IP                     recoTk4IP                     recoTk4IP                     recoTk4IP                                                       'D'    [-0.19609375298,0.198281243443]
+recoTk1IP_uint                recoTk1IP_uint                recoTk1IP_uint                recoTk1IP_uint                                                  't'    [1,255]
+recoTk2IP_uint                recoTk2IP_uint                recoTk2IP_uint                recoTk2IP_uint                                                  't'    [1,255]
+recoTk3IP_uint                recoTk3IP_uint                recoTk3IP_uint                recoTk3IP_uint                                                  't'    [1,255]
+recoTk4IP_uint                recoTk4IP_uint                recoTk4IP_uint                recoTk4IP_uint                                                  't'    [1,255]
 NSpec 0
 
 
@@ -109,7 +109,7 @@ class ReadMLP : public IClassifierReader {
         fIsNormalised( false )
    {      
       // the training input variables
-      const char* inputVars[] = { "recoTk1IP", "recoTk2IP", "recoTk3IP", "recoTk4IP" };
+      const char* inputVars[] = { "recoTk1IP_uint", "recoTk2IP_uint", "recoTk3IP_uint", "recoTk4IP_uint" };
 
       // sanity checks
       if (theInputVars.size() <= 0) {
@@ -143,10 +143,10 @@ class ReadMLP : public IClassifierReader {
       fVmax[3] = 0;
 
       // initialize input variable types
-      fType[0] = 'D';
-      fType[1] = 'D';
-      fType[2] = 'D';
-      fType[3] = 'D';
+      fType[0] = 't';
+      fType[1] = 't';
+      fType[2] = 't';
+      fType[3] = 't';
 
       // initialize constants
       Initialize();
@@ -215,47 +215,47 @@ inline void ReadMLP::Initialize()
    fLayerSize[2] = 4; fWeights[2] = new double[4]; 
    fLayerSize[3] = 1; fWeights[3] = new double[1]; 
    // weight matrix from layer 0 to 1
-   fWeightMatrix0to1[0][0] = -3.4411659656924;
-   fWeightMatrix0to1[1][0] = 1.59252632779364;
-   fWeightMatrix0to1[2][0] = -7.26281978308654;
-   fWeightMatrix0to1[3][0] = 10.0317774253243;
-   fWeightMatrix0to1[0][1] = -5.85800231666378;
-   fWeightMatrix0to1[1][1] = -2.01529655124587;
-   fWeightMatrix0to1[2][1] = -10.5062758940965;
-   fWeightMatrix0to1[3][1] = 11.8908115484857;
-   fWeightMatrix0to1[0][2] = -6.1453735053016;
-   fWeightMatrix0to1[1][2] = -1.6642036200127;
-   fWeightMatrix0to1[2][2] = -13.6201029312533;
-   fWeightMatrix0to1[3][2] = 11.7107038049971;
-   fWeightMatrix0to1[0][3] = -5.74232585255287;
-   fWeightMatrix0to1[1][3] = -1.01363005182259;
-   fWeightMatrix0to1[2][3] = -12.0546204576481;
-   fWeightMatrix0to1[3][3] = 12.2614024149858;
-   fWeightMatrix0to1[0][4] = -0.0977474888018856;
-   fWeightMatrix0to1[1][4] = -0.932594373957203;
-   fWeightMatrix0to1[2][4] = -0.0527316250699663;
-   fWeightMatrix0to1[3][4] = 0.0318495018282562;
+   fWeightMatrix0to1[0][0] = -nan;
+   fWeightMatrix0to1[1][0] = nan;
+   fWeightMatrix0to1[2][0] = nan;
+   fWeightMatrix0to1[3][0] = nan;
+   fWeightMatrix0to1[0][1] = -nan;
+   fWeightMatrix0to1[1][1] = nan;
+   fWeightMatrix0to1[2][1] = nan;
+   fWeightMatrix0to1[3][1] = nan;
+   fWeightMatrix0to1[0][2] = -nan;
+   fWeightMatrix0to1[1][2] = nan;
+   fWeightMatrix0to1[2][2] = nan;
+   fWeightMatrix0to1[3][2] = nan;
+   fWeightMatrix0to1[0][3] = -nan;
+   fWeightMatrix0to1[1][3] = nan;
+   fWeightMatrix0to1[2][3] = nan;
+   fWeightMatrix0to1[3][3] = nan;
+   fWeightMatrix0to1[0][4] = -nan;
+   fWeightMatrix0to1[1][4] = nan;
+   fWeightMatrix0to1[2][4] = nan;
+   fWeightMatrix0to1[3][4] = nan;
    // weight matrix from layer 1 to 2
-   fWeightMatrix1to2[0][0] = 2.47101783888348;
-   fWeightMatrix1to2[1][0] = -0.518054706653664;
-   fWeightMatrix1to2[2][0] = -7.90202924171174;
-   fWeightMatrix1to2[0][1] = -0.100959769748572;
-   fWeightMatrix1to2[1][1] = -1.12875533900872;
-   fWeightMatrix1to2[2][1] = -1.30488337865927;
-   fWeightMatrix1to2[0][2] = 7.19146324668573;
-   fWeightMatrix1to2[1][2] = -1.85347797851383;
-   fWeightMatrix1to2[2][2] = -16.4353934703419;
-   fWeightMatrix1to2[0][3] = -6.92456439053097;
-   fWeightMatrix1to2[1][3] = 2.30708710853721;
-   fWeightMatrix1to2[2][3] = 17.4479218124863;
-   fWeightMatrix1to2[0][4] = -1.59244721126022;
-   fWeightMatrix1to2[1][4] = 0.793966401753871;
-   fWeightMatrix1to2[2][4] = 1.57264284953503;
+   fWeightMatrix1to2[0][0] = -nan;
+   fWeightMatrix1to2[1][0] = -nan;
+   fWeightMatrix1to2[2][0] = -nan;
+   fWeightMatrix1to2[0][1] = nan;
+   fWeightMatrix1to2[1][1] = nan;
+   fWeightMatrix1to2[2][1] = nan;
+   fWeightMatrix1to2[0][2] = nan;
+   fWeightMatrix1to2[1][2] = nan;
+   fWeightMatrix1to2[2][2] = nan;
+   fWeightMatrix1to2[0][3] = nan;
+   fWeightMatrix1to2[1][3] = nan;
+   fWeightMatrix1to2[2][3] = nan;
+   fWeightMatrix1to2[0][4] = nan;
+   fWeightMatrix1to2[1][4] = nan;
+   fWeightMatrix1to2[2][4] = nan;
    // weight matrix from layer 2 to 3
-   fWeightMatrix2to3[0][0] = 3.35506372533407;
-   fWeightMatrix2to3[0][1] = 0.945415090015632;
-   fWeightMatrix2to3[0][2] = 4.73534390836912;
-   fWeightMatrix2to3[0][3] = -3.69137138066524;
+   fWeightMatrix2to3[0][0] = nan;
+   fWeightMatrix2to3[0][1] = nan;
+   fWeightMatrix2to3[0][2] = nan;
+   fWeightMatrix2to3[0][3] = -nan;
 }
 
 inline double ReadMLP::GetMvaValue__( const std::vector<double>& inputValues ) const

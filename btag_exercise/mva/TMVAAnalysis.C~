@@ -1,0 +1,142 @@
+//
+// Macro for training Phase2L1BTagAnalyzer TTree using TMVA classifiers.
+// TMVA is a ROOT-integrated toolkit for multivariate data analysis.
+//
+// Instructions:
+// 1. Under the "Load data" section, make sure that dir and key together point
+//    to a file that exists. The name of the .root file produced by the
+//    Phase2L1BTagAnalyzer should be of the format "output_[keyword].root",
+//    E.g. [keyword] is ZTT or ttbar.
+// 2. Run with
+//        `root -l -b -q TMVAAnalysis.C`.
+// 3. This will generate an output file "out_[keyword].root" that can be
+//    viewed with 
+//        `root -l -e 'TMVA::TMVAGui("out_[keyword].root")'`.
+// 
+// Based on ROOT tutorials/tmva/TMVAClassification.C and TMVAMinimalClassification.C by Andreas Hoecker and Kim Albertsson respectively.
+
+#include <cstdlib>
+#include <iostream>
+#include <map>
+#include <string>
+
+#include "TChain.h"
+#include "TFile.h"
+#include "TTree.h"
+#include "TString.h"
+#include "TObjString.h"
+#include "TSystem.h"
+#include "TROOT.h"
+
+#include "TMVA/Factory.h"
+#include "TMVA/DataLoader.h"
+#include "TMVA/Tools.h"
+#include "TMVA/TMVAGui.h"
+
+void TMVAAnalysis()
+{
+	
+	//--------------------------------------------
+	// Load data
+	//--------------------------------------------
+	TString dir = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/";
+	TString key = "ZTT";
+	TString inputFilename = dir + "analyzer_" + key + ".root";
+
+	// Get input file and tree
+	TFile *inputFile = new TFile(inputFilename.Data());
+	TTree *inputTree = (TTree*) inputFile->Get("L1BTagAnalyzer/efficiencyTree");
+
+	// Split the signal and background into two trees
+	TTree *sigTree = inputTree->CloneTree(0);    // Create a clone of oldtree and copy 0 entries
+	TTree *bkgTree = inputTree->CloneTree(0);
+
+	// Declare variables to read from TTree
+	Double_t recoPt, recoEta, recoPhi, recoTk1IP, recoTk2IP, recoTk3IP, recoTk4IP, l1Pt, l1Eta, l1Phi;
+	Int_t hadronFlavor;
+
+	// Set branch addresses
+	inputTree->SetBranchAddress("recoPt",  &recoPt);
+	inputTree->SetBranchAddress("recoEta", &recoEta);
+	inputTree->SetBranchAddress("recoPhi", &recoPhi);
+	inputTree->SetBranchAddress("hadronFlavor", &hadronFlavor);
+	inputTree->SetBranchAddress("recoTk1IP", &recoTk1IP);
+	inputTree->SetBranchAddress("recoTk2IP", &recoTk2IP);
+	inputTree->SetBranchAddress("recoTk3IP", &recoTk3IP);
+	inputTree->SetBranchAddress("recoTk4IP", &recoTk4IP);
+
+	// Loop through jets and fill sigTree and bkgTree
+	Int_t i;
+	for ( i = 0; i < inputTree->GetEntries(); i++ ) {
+	        inputTree->GetEntry(i);
+		if ( hadronFlavor == 5 ) {
+			sigTree->Fill();
+		}
+		else {
+			bkgTree->Fill();
+		}
+	} // end jet loop
+
+	//--------------------------------------------
+	// Set up TMVA
+	//--------------------------------------------	
+
+	// Create a ROOT output file where TMVA will store ntuples, hists, etc.
+	TString outputFilename = "out_" + key + ".root";
+	TFile *outFile = new TFile(outputFilename, "RECREATE");
+
+	// Create the factory object. Later we can choose the methods whose
+	// performance we'd like to investigate. The factory is the only 
+	// TMVA object we have to interact with.
+	//
+	// The first argument is the base of the name of all the weightfiles
+	// in the directory weight/
+	// 
+	// The second argument is the output file for the training results.
+	TString factoryOptions = "AnalysisType=Classification";
+
+	TMVA::Factory *factory = new TMVA::Factory("TMVAClassification",
+						   outFile,
+						   factoryOptions);
+
+	TMVA::DataLoader *dataloader = new TMVA::DataLoader("dataset");
+
+	// Define the input variables that will be used for the MVA training
+	// Note that you may also use variable expressions, such as: 
+	// "3*var1/var2*abs(var3)". [All types of expressions that can also be
+	// parsed by TTree::Draw( "expression" )]
+	dataloader.AddVariable("recoTk1IP", 'D');
+
+	// You can add an arbitrary number of signal or background trees
+	// Here we set the global event weights per tree to 1.0
+	// It is possible to set event-wise weights (see tutorial)
+	dataloader.AddSignalTree(sigTree, 1.0);
+	dataloader.AddBackgroundTree(bkgTree, 1.0);
+
+	// End of tree registration
+
+	// Apply additional cuts on the signal and background samples
+	// e.g. TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
+	TCut signalCut = "recoTk1IP > -99";   
+	TCut backgroundCut = "recoTk1IP > -99";
+
+	TString datasetOptions = "SplitMode=Random";
+	dataloader.PrepareTrainingAndTestTree(signalCut, backgroundCut, datasetOptions);
+
+	// Method specification
+	TString methodOptions = "";
+	factory.BookMethod(&dataloader, TMVA::Types::kBDT, "BDT", methodOptions);
+
+	// Training and Evaluation
+	factory.TrainAllMethods();
+	factory.TestAllMethods();
+	factory.EvaluateAllMethods();
+
+	// Clean up
+	outFile->Close();
+
+	delete outFile;
+	delete sigTree;
+	delete bkgTree;
+}
+

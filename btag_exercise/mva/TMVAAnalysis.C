@@ -9,12 +9,16 @@
 //    E.g. [keyword] is ZTT or ttbar.
 // 2. Run with
 //        `root -l -b -q TMVAAnalysis.C`.    (add `>logRun' after .C if desired)
-// 3. This will generate an output file "out_[keyword].root" that can be
-//    viewed with 
+// 3. This will generate an output file "out_[keyword].root". Create and view desired
+//    plots in the interactive TMVA GUI:
 //        `root -l -e 'TMVA::TMVAGui("out_[keyword].root")'`.
+//    Important: The output .eps files in `dataset/plots` will only be generated/
+//               updated by creating them afresh in the interactive TMVA GUI, which
+//               can be laggy. Check the Last Edited timestamp to avoid mistaking old
+//               plots for new ones.
 //
-// Note: A lot of "Failed filling branch:efficiencyTree.[..]" errors will pop up:
-//       these seem to be innocuous.
+// Note: During Step 2, a lot of "Failed filling branch:efficiencyTree.[..]" errors
+//       will pop up: these seem to be innocuous.
 // 
 // Based on ROOT tutorials/tmva/TMVAClassification.C and TMVAMinimalClassification.C
 // by Andreas Hoecker and Kim Albertsson respectively, as well as
@@ -40,16 +44,16 @@
 
 void TMVAAnalysis()
 {
-        //--------------------------------------------
-        // Choose TMVA methods to use
-        //--------------------------------------------
+    //--------------------------------------------
+    // Choose TMVA methods to use
+    //--------------------------------------------
 
-        // Use key-value pairs to indicate which TMVA methods we want to use
-        std::map<std::string, int> Use;
+    // Use key-value pairs to indicate which TMVA methods we want to use
+    std::map<std::string, int> Use;
 
-        // Neural Networks (all are feed-forward Multilayer Perceptrons)
-        Use["MLP"] = 1;  // Recommended ANN
-	//
+    // Neural Networks (all are feed-forward Multilayer Perceptrons)
+    Use["MLP"] = 1;  // Recommended ANN
+	
 	// Boosted Decision Trees
 	Use["BDT"] = 1;  // uses Adaptive Boost
 
@@ -75,9 +79,12 @@ void TMVAAnalysis()
 	// Declare variables to read from TTree
 	Double_t recoPt, recoEta, recoPhi, recoTk1IP, recoTk2IP, recoTk3IP, recoTk4IP, l1Pt, l1Eta, l1Phi;
 	Int_t hadronFlavor;
+	UShort_t recoTk1IP_uint, recoTk2IP_uint, recoTk3IP_uint, recoTk4IP_uint;
+	UShort_t muPt_uint, muEta_uint, muSIP2D_uint;
 
 	// Set branch addresses
-       	inputTree->SetBranchAddress("recoPt",  &recoPt);
+        /*
+        inputTree->SetBranchAddress("recoPt",  &recoPt);
 	inputTree->SetBranchAddress("recoEta", &recoEta);
 	inputTree->SetBranchAddress("recoPhi", &recoPhi);
 	inputTree->SetBranchAddress("hadronFlavor", &hadronFlavor);
@@ -85,6 +92,16 @@ void TMVAAnalysis()
 	inputTree->SetBranchAddress("recoTk2IP", &recoTk2IP);
 	inputTree->SetBranchAddress("recoTk3IP", &recoTk3IP);
 	inputTree->SetBranchAddress("recoTk4IP", &recoTk4IP);
+	*/
+
+	inputTree->SetBranchAddress("hadronFlavor", &hadronFlavor);
+	inputTree->SetBranchAddress("recoTk1IP_uint", &recoTk1IP_uint);
+	inputTree->SetBranchAddress("recoTk2IP_uint", &recoTk2IP_uint);
+	inputTree->SetBranchAddress("recoTk3IP_uint", &recoTk3IP_uint);
+	inputTree->SetBranchAddress("recoTk4IP_uint", &recoTk4IP_uint);
+	inputTree->SetBranchAddress("muPt_uint",    &muPt_uint);
+	inputTree->SetBranchAddress("muEta_uint",   &muEta_uint);
+	inputTree->SetBranchAddress("muSIP2D_uint", &muSIP2D_uint);
 
 	// Loop through jets and fill sigTree and bkgTree
 	Int_t i;
@@ -122,10 +139,21 @@ void TMVAAnalysis()
 	// Note that you may also use variable expressions, such as: 
 	// "3*var1/var2*abs(var3)". [All types of expressions that can also be
 	// parsed by TTree::Draw( "expression" )]
+
+	/*
 	dataloader->AddVariable("recoTk1IP", 'D');
 	dataloader->AddVariable("recoTk2IP", 'D');
 	dataloader->AddVariable("recoTk3IP", 'D');
 	dataloader->AddVariable("recoTk4IP", 'D');
+	*/
+
+	dataloader->AddVariable("recoTk1IP_uint", 's');
+	dataloader->AddVariable("recoTk2IP_uint", 's');
+	dataloader->AddVariable("recoTk3IP_uint", 's');
+	dataloader->AddVariable("recoTk4IP_uint", 's');
+	dataloader->AddVariable("muPt_uint",    's');
+	dataloader->AddVariable("muEta_uint",   's');
+	dataloader->AddVariable("muSIP2D_uint", 's');
 
 	// You can add an arbitrary number of signal or background trees
 	// Here we set the global event weights per tree to 1.0
@@ -137,8 +165,14 @@ void TMVAAnalysis()
 
 	// Apply additional cuts on the signal and background samples
 	// e.g. TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
+	
+	/*
 	TCut signalCut     = "recoTk1IP > -99 && recoTk2IP > -99 && recoTk3IP > -99  && recoTk4IP > -99";   
-	TCut backgroundCut = "recoTk1IP > -99 && recoTk2IP > -99 && recoTk3IP > -99  && recoTk4IP > -99";
+	TCut backgroundCut = "recoTk1IP > -99 && recoTk2IP > -99 && recoTk3IP > -99  && recoTk4IP > -99"; 
+	*/
+
+	TCut signalCut     = "recoTk1IP_uint > 0 && recoTk2IP_uint > 0 && recoTk3IP_uint > 0 && recoTk4IP_uint > 0 && muPt_uint > 0 && muEta_uint > 0 && muSIP2D_uint > 0";
+	TCut backgroundCut = "recoTk1IP_uint > 0 && recoTk2IP_uint > 0 && recoTk3IP_uint > 0 && recoTk4IP_uint > 0 && muPt_uint > 0 && muEta_uint > 0 && muSIP2D_uint > 0";
 
 	TString datasetOptions = "SplitMode=Random";
 	dataloader->PrepareTrainingAndTestTree(signalCut, backgroundCut, datasetOptions);

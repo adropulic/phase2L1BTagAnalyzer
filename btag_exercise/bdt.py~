@@ -1,0 +1,85 @@
+#=================================================================================
+# BDT trained on limited dataset from PhaseL1BTagAnalyzer
+# test-Analyzer.py. Based on Exercise 4 from CMSDAS
+# B-tagging exercise and 3-dense.ipynb from FNALLPC 
+# machine-learning-hats.
+# 
+# Instructions:
+# 1.  Convert the .ROOT file to a h5 format: at the terminal, run
+#     % root2hdf5 -f <file names, separated by a space for multiple filenames>
+# 2.  To run the script: % python bdt.py
+# 
+# A .pdf is output in the same directory.
+#=================================================================================
+
+# Import necessary libraries
+import ROOT
+import rootpy #hands down, a better version of PyROOT
+import rootpy.plotting as plt
+import pprint
+from DataFormats.FWLite import Events, Handle
+import pandas as pd
+import numpy as np
+import h5py
+ROOT.gStyle.SetOptStat(0)
+ROOT.gStyle.SetOptTitle(0)
+
+import matplotlib as mpl
+import matplotlib.pyplot as pyplt
+from sklearn.metrics import roc_curve, auc
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.multiclass import OneVsRestClassifier
+import sklearn
+
+#-----------------------------------------------
+# Loading data into pandas DataFrame
+#-----------------------------------------------
+
+# fix random seed for reproducibility
+seed = 7
+np.random.seed(seed)
+
+treename = 'L1BTagAnalyzer/efficiencyTree'
+homedir  = '/afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test'
+filename = 'analyzer_ttbar.root'
+
+h5File = h5py.File(homedir + filename, 'r')   # open read-only
+params = h5File[treename][()]
+
+VARS = ['hadronFlavor', 'recoPt', 'recoTk1IP']   # choose which variables to use
+
+# Read data into pandas DataFrames
+df = pd.DataFrame(params, columns = VARS)
+
+# Cut out undefined variables VARS[0] and VARS[1] > -99
+df = df[(df[VARS[0]] > -99) & df[VARS[1]] > -99]
+
+# Add a column to the DataFrame: True for signal and False for bkg
+df['isSignal'] = (df['hadronFlavor'] == 5);
+
+#-----------------------------------------------
+# Define the model
+#-----------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

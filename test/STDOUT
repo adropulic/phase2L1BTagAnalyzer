@@ -1,0 +1,328 @@
+Sender: LSF System <lsfadmin@p01001532262608.cern.ch>
+Subject: Job 183816704: <test-Analyzer> in cluster <batch> Exited
+
+Job <test-Analyzer> was submitted from host <lxplus067.cern.ch> by user <skkwan> in cluster <batch>.
+Job was executed on host(s) <p01001532262608.cern.ch>, in queue <8nm>, as user <skkwan> in cluster <batch>.
+</afs/cern.ch/user/s/skkwan> was used as the home directory.
+</afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test> was used as the working directory.
+Started at Mon Jul 30 03:11:32 2018
+Results reported on Mon Jul 30 03:11:53 2018
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+## Batch job file (batch file) for running test-Analyzer.py
+# 
+#  Usage:
+#  1. Obtain the needed grid proxy at the terminal:
+#       % voms-proxy-init --voms cms
+#  2. Copy the resulting proxy to an area in lfs, for example your home directory:
+#       % cp /tmp/x509up_uXXXX  /afs/cern.ch/user/u/username/
+#  3. If you are submitting a job with "bsub myscript.sh" (aka this file), set the
+#     environment variable 
+#       "export X509_USER_PROXY=/afs/cern.ch/user/u/username/x509up_uXXXX".
+#  4. Submit the job to the LSF system (if using defualt queue options) with the
+#     following command:
+#       bsub -J job_name -o /mydir/output_file -e /mydir/error_file < /mydir/job.job
+#  5. Check the job status using
+#       bjobs
+#  6. If you want to kill a job you can use
+#       bkill JOB_ID
+#     or, to kill ALL running jobs,
+#       bkill 0
+#
+#
+#  Submit to the LSF system using:
+#      bsub -J test-Analyzer -o /afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/STDOUT -e /afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/STDERR < /afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/test-Analyzer.job
+
+#Set the analyzer directory
+CURRDIR=/afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test
+
+#Set environment variable telling the batch farm where to look for the valid grid proxy
+export X509_USER_PROXY=/afs/cern.ch/work/s/skkwan/public/x509up_u103765
+
+#Run the analyzer
+cmsRun test-Analyzer.py
+
+
+------------------------------------------------------------
+
+Exited with exit code 255.
+
+Resource usage summary:
+
+    CPU time :                                   0.71 sec.
+    Max Memory :                                 6.20 MB
+    Average Memory :                             6.20 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   42 MB
+    Max Processes :                              4
+    Max Threads :                                5
+    Run time :                                   19 sec.
+    Turnaround time :                            16175 sec.
+
+The output (if any) follows:
+
+@(#)CERN job starter $Date: 2010/06/23 14:22:16 $
+Working directory is </pool/lsf/skkwan/183816704> on <p01001532262608.cern.ch>
+
+
+Job finished at Mon Jul 30 03:11:51 CEST 2018 on node 
+ under linux version Scientific Linux CERN SLC release 6.10 (Carbon)
+
+CERN statistics: This process used approximately : 0:00:00 KSI2K hours (0 KSI2K seconds)
+                 This process corresponds to     : 0:00:03 HS06  hours (3 HS06  seconds)
+
+
+PS:
+
+Read file </afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/STDERR> for stderr output of this job.
+
+Sender: LSF System <lsfadmin@p01001532133883.cern.ch>
+Subject: Job 183893808: <test-Analyzer> in cluster <batch> Exited
+
+Job <test-Analyzer> was submitted from host <lxplus054.cern.ch> by user <skkwan> in cluster <batch>.
+Job was executed on host(s) <p01001532133883.cern.ch>, in queue <8nm>, as user <skkwan> in cluster <batch>.
+</afs/cern.ch/user/s/skkwan> was used as the home directory.
+</afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test> was used as the working directory.
+Started at Mon Jul 30 11:51:50 2018
+Results reported on Mon Jul 30 11:53:29 2018
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+## Batch job file (batch file) for running test-Analyzer.py
+# 
+#  Usage:
+#  1. Obtain the needed grid proxy at the terminal:
+#       % voms-proxy-init --voms cms
+#  2. Copy the resulting proxy to an area in lfs, for example your home directory:
+#       % cp /tmp/x509up_uXXXX  /afs/cern.ch/user/u/username/
+#  3. If you are submitting a job with "bsub myscript.sh" (aka this file), set the
+#     environment variable 
+#       "export X509_USER_PROXY=/afs/cern.ch/user/u/username/x509up_uXXXX".
+#  4. Submit the job to the LSF system (if using defualt queue options) with the
+#     following command:
+#       bsub -J job_name -o /mydir/output_file -e /mydir/error_file < /mydir/job.job
+#  5. Check the job status using
+#       bjobs
+#  6. If you want to kill a job you can use
+#       bkill JOB_ID
+#     or, to kill ALL running jobs,
+#       bkill 0
+#
+#
+#  Submit to the LSF system using:
+#      bsub -J test-Analyzer -o /afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/STDOUT -e /afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/STDERR < /afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/test-Analyzer.job
+
+#Set the analyzer directory
+CURRDIR=/afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test
+
+#Set environment variable telling the batch farm where to look for the valid grid proxy
+export X509_USER_PROXY=/afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/x509up_u103765
+
+#Run the analyzer
+cmsRun test-Analyzer.py
+
+
+------------------------------------------------------------
+
+Exited with exit code 255.
+
+Resource usage summary:
+
+    CPU time :                                   1.41 sec.
+    Max Memory :                                 28.22 MB
+    Average Memory :                             16.61 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   205 MB
+    Max Processes :                              8
+    Max Threads :                                9
+    Run time :                                   96 sec.
+    Turnaround time :                            429 sec.
+
+The output (if any) follows:
+
+@(#)CERN job starter $Date: 2010/06/23 14:22:16 $
+Working directory is </pool/lsf/skkwan/183893808> on <p01001532133883.cern.ch>
+
+
+Job finished at Mon Jul 30 11:52:27 CEST 2018 on node 
+ under linux version Scientific Linux CERN SLC release 6.10 (Carbon)
+
+CERN statistics: This process used approximately : 0:00:02 KSI2K hours (2 KSI2K seconds)
+                 This process corresponds to     : 0:00:07 HS06  hours (7 HS06  seconds)
+
+
+PS:
+
+Read file </afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/STDERR> for stderr output of this job.
+
+Sender: LSF System <lsfadmin@b6c4922240.cern.ch>
+Subject: Job 183910570: <test-Analyzer> in cluster <batch> Exited
+
+Job <test-Analyzer> was submitted from host <lxplus054.cern.ch> by user <skkwan> in cluster <batch>.
+Job was executed on host(s) <b6c4922240.cern.ch>, in queue <8nm>, as user <skkwan> in cluster <batch>.
+</afs/cern.ch/user/s/skkwan> was used as the home directory.
+</afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test> was used as the working directory.
+Started at Mon Jul 30 12:42:50 2018
+Results reported on Mon Jul 30 12:45:22 2018
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+## Batch job file (batch file) for running test-Analyzer.py
+# 
+#  Usage:
+#  1. Obtain the needed grid proxy at the terminal:
+#       % voms-proxy-init --voms cms
+#  2. Copy the resulting proxy to an area in lfs, for example your home directory:
+#       % cp /tmp/x509up_uXXXX  /afs/cern.ch/user/u/username/
+#  3. If you are submitting a job with "bsub myscript.sh" (aka this file), set the
+#     environment variable 
+#       "export X509_USER_PROXY=/afs/cern.ch/user/u/username/x509up_uXXXX".
+#  4. Submit the job to the LSF system (if using defualt queue options) with the
+#     following command:
+#       bsub -J job_name -o /mydir/output_file -e /mydir/error_file < /mydir/job.job
+#  5. Check the job status using
+#       bjobs
+#  6. If you want to kill a job you can use
+#       bkill JOB_ID
+#     or, to kill ALL running jobs,
+#       bkill 0
+#
+#
+#  Submit to the LSF system using:
+#      bsub -J test-Analyzer -o /afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/STDOUT -e /afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/STDERR < /afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/test-Analyzer.job
+
+#Set the analyzer directory
+CURRDIR=/afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test
+
+#Set environment variable telling the batch farm where to look for the valid grid proxy
+export X509_USER_PROXY=/afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/x509up_u103765
+
+#Run the analyzer
+cmsRun /afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/test-Analyzer.py
+
+
+------------------------------------------------------------
+
+Exited with exit code 255.
+
+Resource usage summary:
+
+    CPU time :                                   7.86 sec.
+    Max Memory :                                 191.57 MB
+    Average Memory :                             68.68 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   463 MB
+    Max Processes :                              6
+    Max Threads :                                7
+    Run time :                                   149 sec.
+    Turnaround time :                            861 sec.
+
+The output (if any) follows:
+
+@(#)CERN job starter $Date: 2010/06/23 14:22:16 $
+Working directory is </pool/lsf/skkwan/183910570> on <b6c4922240.cern.ch>
+
+
+Job finished at Mon Jul 30 12:45:17 CEST 2018 on node 
+ under linux version Scientific Linux CERN SLC release 6.10 (Carbon)
+
+CERN statistics: This process used approximately : 0:00:16 KSI2K hours (16 KSI2K seconds)
+                 This process corresponds to     : 0:01:04 HS06  hours (64 HS06  seconds)
+
+
+PS:
+
+Read file </afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/STDERR> for stderr output of this job.
+
+Sender: LSF System <lsfadmin@b63d5804cc.cern.ch>
+Subject: Job 183929703: <test-Analyzer> in cluster <batch> Exited
+
+Job <test-Analyzer> was submitted from host <lxplus054.cern.ch> by user <skkwan> in cluster <batch>.
+Job was executed on host(s) <b63d5804cc.cern.ch>, in queue <8nm>, as user <skkwan> in cluster <batch>.
+</afs/cern.ch/user/s/skkwan> was used as the home directory.
+</afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test> was used as the working directory.
+Started at Mon Jul 30 15:07:19 2018
+Results reported on Mon Jul 30 15:21:48 2018
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+## Batch job file (batch file) for running test-Analyzer.py
+# 
+#  Usage:
+#  1. Obtain the needed grid proxy at the terminal:
+#       % voms-proxy-init --voms cms
+#  2. Copy the resulting proxy to an area in lfs, for example your home directory:
+#       % cp /tmp/x509up_uXXXX  /afs/cern.ch/user/u/username/
+#  3. If you are submitting a job with "bsub myscript.sh" (aka this file), set the
+#     environment variable 
+#       "export X509_USER_PROXY=/afs/cern.ch/user/u/username/x509up_uXXXX".
+#  4. Submit the job to the LSF system (if using defualt queue options) with the
+#     following command:
+#       bsub -J job_name -o /mydir/output_file -e /mydir/error_file < /mydir/job.job
+#  5. Check the job status using
+#       bjobs
+#  6. If you want to kill a job you can use
+#       bkill JOB_ID
+#     or, to kill ALL running jobs,
+#       bkill 0
+#
+#
+#  Submit to the LSF system using:
+#      bsub -J test-Analyzer -o /afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/STDOUT -e /afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/STDERR < /afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/test-Analyzer.job
+
+#Set the analyzer directory
+CURRDIR=/afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test
+
+#Set environment variable telling the batch farm where to look for the valid grid proxy
+export X509_USER_PROXY=/afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/x509up_u103765
+
+#Run the analyzer
+cmsRun /afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/test-Analyzer.py
+
+
+------------------------------------------------------------
+
+Exited with exit code 255.
+
+Resource usage summary:
+
+    CPU time :                                   4.83 sec.
+    Max Memory :                                 56.19 MB
+    Average Memory :                             18.86 MB
+    Total Requested Memory :                     -
+    Delta Memory :                               -
+    Max Swap :                                   226 MB
+    Max Processes :                              6
+    Max Threads :                                7
+    Run time :                                   551 sec.
+    Turnaround time :                            6614 sec.
+
+The output (if any) follows:
+
+@(#)CERN job starter $Date: 2010/06/23 14:22:16 $
+Working directory is </pool/lsf/skkwan/183929703> on <b63d5804cc.cern.ch>
+
+
+Job finished at Mon Jul 30 15:15:51 CEST 2018 on node 
+ under linux version Scientific Linux CERN SLC release 6.10 (Carbon)
+
+CERN statistics: This process used approximately : 0:00:11 KSI2K hours (11 KSI2K seconds)
+                 This process corresponds to     : 0:00:44 HS06  hours (44 HS06  seconds)
+
+
+PS:
+
+Read file </afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/STDERR> for stderr output of this job.
+

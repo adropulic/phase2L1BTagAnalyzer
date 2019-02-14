@@ -1,0 +1,111 @@
+DataSetInfo              : [dataset] : Added class "Signal"
+                         : Add Tree efficiencyTree of type Signal with 2 events
+DataSetInfo              : [dataset] : Added class "Background"
+                         : Add Tree efficiencyTree of type Background with 188 events
+Factory                  : Booking method: BDT
+                         : 
+DataSetFactory           : [dataset] : Number of events in input trees
+                         : 
+                         : 
+                         : Dataset[dataset] : Weight renormalisation mode: "EqualNumEvents": renormalises all event classes ...
+                         : Dataset[dataset] :  such that the effective (weighted) number of events in each class is the same 
+                         : Dataset[dataset] :  (and equals the number of events (entries) given for class=0 )
+                         : Dataset[dataset] : ... i.e. such that Sum[i=1..N_j]{w_i} = N_classA, j=classA, classB, ...
+                         : Dataset[dataset] : ... (note that N_j is the sum of TRAINING events
+                         : Dataset[dataset] :  ..... Testing events are not renormalised nor included in the renormalisation factor!)
+                         : Number of training and testing events
+                         : ---------------------------------------------------------------------------
+                         : Signal     -- training events            : 1
+                         : Signal     -- testing events             : 1
+                         : Signal     -- training and testing events: 2
+                         : Background -- training events            : 94
+                         : Background -- testing events             : 94
+                         : Background -- training and testing events: 188
+                         : 
+DataSetInfo              : Correlation matrix (Signal):
+                         : --------------------
+                         :            recoTk1IP
+                         : recoTk1IP:    +1.000
+                         : --------------------
+DataSetInfo              : Correlation matrix (Background):
+                         : --------------------
+                         :            recoTk1IP
+                         : recoTk1IP:    +1.000
+                         : --------------------
+DataSetFactory           : [dataset] :  
+                         : 
+Factory                  : Train all methods
+Factory                  : [dataset] : Create Transformation "I" with events from all classes.
+                         : 
+                         : Transformation, Variable selection : 
+                         : Input : variable 'recoTk1IP' <---> Output : variable 'recoTk1IP'
+<WARNING>                : Variable "recoTk1IP" has zero or negative RMS^2 ==> set to zero. Please check the variable content
+TFHandler_Factory        :  Variable         Mean         RMS   [        Min         Max ]
+                         : ----------------------------------------------------------------
+                         : recoTk1IP:    -6.8116     25.126   [    -99.000    0.19375 ]
+                         : ----------------------------------------------------------------
+                         : Ranking input variables (method unspecific)...
+IdTransformation         : Ranking result (top variable is best ranked)
+                         : ----------------------------------
+                         : Rank : Variable  : Separation
+                         : ----------------------------------
+                         :    1 : recoTk1IP : 8.046e-02
+                         : ----------------------------------
+Factory                  : Train method: BDT for Classification
+                         : 
+BDT                      : #events: (reweighted) sig: 47.5 bkg: 47.5
+                         : #events: (unweighted) sig: 1 bkg: 94
+                         : Training 800 Decision Trees ... patience please
+                         : Elapsed time for training with 95 events: 0.517 sec         
+BDT                      : [dataset] : Evaluation of BDT on training sample (95 events)
+                         : Elapsed time for evaluation of 95 events: 0.0115 sec       
+                         : Creating xml weight file: dataset/weights/_BDT.weights.xml
+                         : Creating standalone class: dataset/weights/_BDT.class.C
+Factory                  : Training finished
+                         : 
+                         : Ranking input variables (method specific)...
+BDT                      : Ranking result (top variable is best ranked)
+                         : -------------------------------------------
+                         : Rank : Variable  : Variable Importance
+                         : -------------------------------------------
+                         :    1 : recoTk1IP : 1.000e+00
+                         : -------------------------------------------
+Factory                  : === Destroy and recreate all methods via weight files for testing ===
+                         : 
+Factory                  : Test all methods
+Factory                  : Test method: BDT for Classification performance
+                         : 
+BDT                      : [dataset] : Evaluation of BDT on testing sample (95 events)
+                         : Elapsed time for evaluation of 95 events: 0.0167 sec       
+Factory                  : Evaluate all methods
+Factory                  : Evaluate classifier: BDT
+                         : 
+BDT                      : [dataset] : Loop over test events and fill histograms with classifier response...
+                         : 
+<WARNING>                : Variable "recoTk1IP" has zero or negative RMS^2 ==> set to zero. Please check the variable content
+TFHandler_BDT            :  Variable         Mean         RMS   [        Min         Max ]
+                         : ----------------------------------------------------------------
+                         : recoTk1IP:    -13.545     34.025   [    -99.000    0.14195 ]
+                         : ----------------------------------------------------------------
+                         : 
+                         : Evaluation results ranked by best signal efficiency and purity (area)
+                         : -------------------------------------------------------------------------------------------------------------------
+                         : DataSet       MVA                       
+                         : Name:         Method:          ROC-integ
+                         : dataset       BDT            : 0.463
+                         : -------------------------------------------------------------------------------------------------------------------
+                         : 
+                         : Testing efficiency compared to training efficiency (overtraining check)
+                         : -------------------------------------------------------------------------------------------------------------------
+                         : DataSet              MVA              Signal efficiency: from test sample (from training sample) 
+                         : Name:                Method:          @B=0.01             @B=0.10            @B=0.30   
+                         : -------------------------------------------------------------------------------------------------------------------
+                         : dataset              BDT            : 0.010 (0.010)       0.100 (0.100)      0.300 (0.300)
+                         : -------------------------------------------------------------------------------------------------------------------
+                         : 
+Dataset:dataset          : Created tree 'TestTree' with 95 events
+                         : 
+Dataset:dataset          : Created tree 'TrainTree' with 95 events
+                         : 
+Factory                  : Thank you for using TMVA!
+                         : For citation information, please visit: http://tmva.sf.net/citeTMVA.html
