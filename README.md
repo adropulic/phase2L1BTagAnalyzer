@@ -10,7 +10,7 @@ To run the Analyzer:
 ```
 cd $CMSSW_BASE/src/L1Trigger/phase2L1BTagAnalyzer/test/
 cmsenv
-voms-proxy-init -voms cms #provide GRID password
+voms-proxy-init --rfc --voms cms  # provide GRID password
 cmsRun test-Analyzer.py #this will produce an analyzer.root
 ```
 
@@ -19,13 +19,14 @@ Alternatively, you can ensure that it keeps running after logging out and write 
 nohup cmsRun test-Analyzer.py > logRun &
 ```
 
-The output file should have the name `analyzer_<keyword>.root`, where <keyword> describes the type of events in the input files, e.g. ttbar.
+The output file is written to the same directory (usually called `analyzer.root`). Rename it and save it to a folder (e.g. `outputs/`) and update a `README` in the folder that describes which miniAOD/FEVT files were input to the analyzer.
 
 # Plotting reconstructed jet properties
-To visualize the features of the reconstructed jets, use the `plotRecoJetProperties.C` macro to generate a .pdf. Make sure to update the input file path and the output .pdf name (near the end of the script).
+To plot histograms of the reconstructed jets' pT, Eta, Phi, and (up to 4) track impact parameters, with b-jets in red and non-b jets in blue, use `plotRecoJetProperties.C` macro with command line arguments to generate a .pdf.
 ```
 cd $CMSSW_BASE/src/L1Trigger/phase2L1BTagAnalyzer/btag_exercise/plot_jet_features/
-root -l plotRecoJetProperties.C
+root -l "plotRecoJetProperties.C(\"path/to/input/file.root\", \"outputname.pdf\")"	
+
 ```
 
 # ROOT TMVA analysis

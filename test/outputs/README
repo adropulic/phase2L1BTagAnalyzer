@@ -1,0 +1,101 @@
+
+README
+author: Stephanie Kwan
+
+Log of output files and which input files they correspond to.
+
+-------------------------------------------------------
+output_1.root and logRun_1 correspond to the FEVT file with logical path name
+"/store/mc/PhaseIIMTDTDRAutumn18DR/DYToLL_M-50_14TeV_TuneCP5_pythia8/FEVT/PU200_103X_upgr\
+ade2023_realistic_v2-v2/910000/F37B1F94-AD89-DF40-8D40-3EE87E8339A1.root"
+
+
+# Input source                                                                            
+process.source = cms.Source("PoolSource",
+   fileNames = cms.untracked.vstring('root://cmsxrootd.fnal.gov///store/mc/PhaseIIMTDTDRA\
+utumn18MiniAOD/DYToLL_M-50_14TeV_TuneCP5_pythia8/MINIAODSIM/PU200_103X_upgrade2023_realis\
+tic_v2-v2/90000/76B29BD2-951D-344C-B9D1-A1FF88850962.root'),
+   secondaryFileNames = cms.untracked.vstring('file:/afs/cern.ch/work/s/skkwan/public/tri\
+ggerDevel/feb2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/test/testfiles/DYT\
+oLL/F37B1F94-AD89-DF40-8D40-3EE87E8339A1.root')
+)
+
+process.source.lumisToProcess = cms.untracked.VLuminosityBlockRange("1:3184")
+
+and were produced on Friday March 15 2019.
+
+-------------------------------------------------------
+output_2.root and logRun_2 correspond to the FEVT file with logical path name
+"/store/mc/PhaseIIMTDTDRAutumn18DR/DYToLL_M-50_14TeV_TuneCP5_pythia8/FEVT/PU200_103X_upgr\
+ade2023_realistic_v2-v2/910000/E4590EF0-336D-CB48-B5D8-2349E8573FCF.root"
+
+# Input source                                                                            
+process.source = cms.Source("PoolSource",
+   fileNames = cms.untracked.vstring('root://cmsxrootd.fnal.gov///store/mc/PhaseIIMTDTDRA\
+utumn18MiniAOD/DYToLL_M-50_14TeV_TuneCP5_pythia8/MINIAODSIM/PU200_103X_upgrade2023_realis\
+tic_v2-v2/90000/A8118BC3-FF51-264E-9224-3CE8A8BF209C.root'),
+   secondaryFileNames = cms.untracked.vstring('file:/afs/cern.ch/work/s/skkwan/public/tri\
+ggerDevel/feb2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/test/testfiles/DYT\
+oLL/E4590EF0-336D-CB48-B5D8-2349E8573FCF.root')
+)
+
+process.source.lumisToProcess = cms.untracked.VLuminosityBlockRange("1:1606")
+
+and were produced on Saturday March 16 2019.
+
+-------------------------------------------------------
+output_3.root and logrun_3 were made with the FEVT with the logical file name
+"/store/mc/PhaseIIMTDTDRAutumn18DR/DYToLL_M-50_14TeV_TuneCP5_pythia8/FEVT/PU200_103X_upgrade2023_realistic_v2-v2/910000/9D485410-BBF7-D841-9048-E273729D9E24.root"
+
+# Input source                                                                            
+process.source = cms.Source("PoolSource",
+   fileNames = cms.untracked.vstring('root://cmsxrootd.fnal.gov///store/mc/PhaseIIMTDTDRA\
+utumn18MiniAOD/DYToLL_M-50_14TeV_TuneCP5_pythia8/MINIAODSIM/PU200_103X_upgrade2023_realis\
+tic_v2-v2/90000/A8118BC3-FF51-264E-9224-3CE8A8BF209C.root'),
+   secondaryFileNames = cms.untracked.vstring('file:/afs/cern.ch/work/o/ojalvo/public/fil\
+es_for_stephanie/9D485410-BBF7-D841-9048-E273729D9E24.root')
+
+)
+
+process.source.lumisToProcess = cms.untracked.VLuminosityBlockRange("1:2155")
+
+and were produced on Saturday March 16 2019.
+-------------------------------------------------------
+[Did not run on]
+
+output_*.root and logRun_* were with the FEVT with the logical file name
+"/store/mc/PhaseIIMTDTDRAutumn18DR/DYToLL_M-50_14TeV_TuneCP5_pythia8/FEVT/PU200_103X_upgrade2023_realistic_v2-v2/910000/97A38B8C-B7B7-C041-AC10-B2794F5B81CB.root"
+
+
+
+process.source = cms.Source("PoolSource",
+   fileNames = cms.untracked.vstring('root://cmsxrootd.fnal.gov///store/mc/PhaseIIMTDTDRAutumn18MiniAOD/DYToLL_M-50_1\
+4TeV_TuneCP5_pythia8/MINIAODSIM/PU200_103X_upgrade2023_realistic_v2-v2/90000/A8118BC3-FF51-264E-9224-3CE8A8BF209C.roo\
+t'),
+   secondaryFileNames = cms.untracked.vstring('file:/afs/cern.ch/work/o/ojalvo/public/files_for_stephanie/97A38B8C-B7\
+B7-C041-AC10-B2794F5B81CB.root')
+
+)
+
+process.source.lumisToProcess = cms.untracked.VLuminosityBlockRange("1:2065")
+-------------------------------------------------------
+[Did not run on]
+
+"/store/mc/PhaseIIMTDTDRAutumn18DR/DYToLL_M-50_14TeV_TuneCP5_pythia8/FEVT/PU200_103X_upgrade2023_realistic_v2-v2/910000/3C7584B3-CD5A-854E-A181-0EB4F5347343.root"
+
+
+-------------------------------------------------------
+
+output_4.root and logRun_4 were run with
+
+process.source = cms.Source("PoolSource",
+   fileNames = cms.untracked.vstring('/store/mc/PhaseIIMTDTDRAutumn18MiniAOD/GluGluToHHTo4B_node_SM_14TeV-madgraph/MI\
+NIAODSIM/PU200_103X_upgrade2023_realistic_v2-v1/90000/FB21FB37-11FC-D948-8922-2690CD8B5BCB.root'),
+   secondaryFileNames = cms.untracked.vstring('/store/mc/PhaseIIMTDTDRAutumn18DR/GluGluToHHTo4B_node_SM_14TeV-madgrap\
+h/FEVT/PU200_103X_upgrade2023_realistic_v2-v1/90000/2B449275-7BDC-B04A-9447-A656A3DA6A36.root')
+
+)
+
+process.source.lumisToProcess = cms.untracked.VLuminosityBlockRange("1:337")
+
+-------------------------------------------------------
