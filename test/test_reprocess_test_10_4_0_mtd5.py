@@ -31,11 +31,12 @@ process.maxEvents = cms.untracked.PSet(
 
 # Input source
 process.source = cms.Source("PoolSource",
-   fileNames = cms.untracked.vstring('root://cmsxrootd.fnal.gov///store/mc/PhaseIIMTDTDRAutumn18MiniAOD/DYToLL_M-50_14TeV_TuneCP5_pythia8/MINIAODSIM/PU200_103X_upgrade2023_realistic_v2-v2/90000/76B29BD2-951D-344C-B9D1-A1FF88850962.root'),
-   secondaryFileNames = cms.untracked.vstring('file:/afs/cern.ch/work/s/skkwan/public/triggerDevel/feb2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/test/testfiles/DYToLL/F37B1F94-AD89-DF40-8D40-3EE87E8339A1.root')
+   fileNames = cms.untracked.vstring('/store/mc/PhaseIIMTDTDRAutumn18MiniAOD/GluGluToHHTo4B_node_SM_14TeV-madgraph/MINIAODSIM/PU200_103X_upgrade2023_realistic_v2-v1/90000/FB21FB37-11FC-D948-8922-2690CD8B5BCB.root'),
+   secondaryFileNames = cms.untracked.vstring('/store/mc/PhaseIIMTDTDRAutumn18DR/GluGluToHHTo4B_node_SM_14TeV-madgraph/FEVT/PU200_103X_upgrade2023_realistic_v2-v1/90000/2B449275-7BDC-B04A-9447-A656A3DA6A36.root')
+
 )
 
-process.source.lumisToProcess = cms.untracked.VLuminosityBlockRange("1:3184")
+process.source.lumisToProcess = cms.untracked.VLuminosityBlockRange("1:337")
 
 
 process.options = cms.untracked.PSet(
