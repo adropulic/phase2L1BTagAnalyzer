@@ -6,7 +6,7 @@
 // 1. Under the "Load data" section, make sure that dir and key together point
 //    to a file that exists. The name of the .root file produced by the
 //    Phase2L1BTagAnalyzer should be of the format "output_[keyword].root",
-//    E.g. [keyword] is ZTT or ttbar.
+//    E.g. [keyword] is ZTT or ttbar or 1, 2, 3, ...
 // 2. Run with
 //        `root -l -b -q TMVAAnalysis.C`.    (add `>logRun' after .C if desired)
 // 3. This will generate an output file "out_[keyword].root". Create and view desired
@@ -60,21 +60,21 @@ void TMVAAnalysis()
 	//--------------------------------------------
 	// Load data
 	//--------------------------------------------
-	TString dir = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/test/";
-	TString key = "ttbar";
+	TString dir = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/feb2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/test/outputs/";
+	TString key = "4";
 	TString inputFilename = dir + "analyzer_" + key + ".root";
 
-	// Get input file and tree
+	// Get input file and declare output file where TMVA will store ntuples, hists, etc.
 	TFile *inputFile = new TFile(inputFilename.Data());
+	TString outputFilename = "out_" + key + ".root";
+	TFile *outFile = new TFile(outputFilename, "RECREATE");
+	
+	// Get input tree
 	TTree *inputTree = (TTree*) inputFile->Get("L1BTagAnalyzer/efficiencyTree");
 
 	// Split the signal and background into two trees
 	TTree *sigTree = inputTree->CloneTree(0);    // Create a clone of oldtree and copy 0 entries
 	TTree *bkgTree = inputTree->CloneTree(0);
-
-	// Create a ROOT output file where TMVA will store ntuples, hists, etc.
-	TString outputFilename = "out_" + key + ".root";
-	TFile *outFile = new TFile(outputFilename, "RECREATE");
 
 	// Declare variables to read from TTree
 	Double_t recoPt, recoEta, recoPhi, recoTk1IP, recoTk2IP, recoTk3IP, recoTk4IP, l1Pt, l1Eta, l1Phi;
@@ -195,7 +195,5 @@ void TMVAAnalysis()
 	outFile->Close();
 
 	delete outFile;
-	delete sigTree;
-	delete bkgTree;
 }
 
