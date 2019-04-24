@@ -140,20 +140,13 @@ void TMVAAnalysis()
 	// "3*var1/var2*abs(var3)". [All types of expressions that can also be
 	// parsed by TTree::Draw( "expression" )]
 
-	/*
-	dataloader->AddVariable("recoTk1IP", 'D');
-	dataloader->AddVariable("recoTk2IP", 'D');
-	dataloader->AddVariable("recoTk3IP", 'D');
-	dataloader->AddVariable("recoTk4IP", 'D');
-	*/
-
-	dataloader->AddVariable("recoTk1IP_uint", 's');
-	dataloader->AddVariable("recoTk2IP_uint", 's');
-	dataloader->AddVariable("recoTk3IP_uint", 's');
-	dataloader->AddVariable("recoTk4IP_uint", 's');
-	dataloader->AddVariable("muPt_uint",    's');
-	dataloader->AddVariable("muEta_uint",   's');
-	dataloader->AddVariable("muSIP2D_uint", 's');
+	dataloader->AddVariable("recoTk1IP_uint", 'I');
+	dataloader->AddVariable("recoTk2IP_uint", 'I');
+	dataloader->AddVariable("recoTk3IP_uint", 'I');
+	dataloader->AddVariable("recoTk4IP_uint", 'I');
+	dataloader->AddVariable("muPt_uint",    'I');
+	dataloader->AddVariable("muEta_uint",   'I');
+	dataloader->AddVariable("muSIP2D_uint", 'I');
 
 	// You can add an arbitrary number of signal or background trees
 	// Here we set the global event weights per tree to 1.0
