@@ -3,8 +3,8 @@
 /* file created by the phase2L1BTagTrigger analyzer.                    */
 /*                                                                      */
 /* Example usage (note escape backslashes for strings "")               */
-/* % root -l "plotRecoJetProperties_cmdlineargs.C(\"path/to/            */
-/*            input/file.root\", \"outputname.pdf\")"                   */
+/* % root -l "plotRecoJetProperties.C(\"path/to/input/file.root\",      */
+/*                                    \"outputname.pdf\")"              */
 /*                                                                      */
 /* Based on mlpHiggs.C in official ROOT tutorials.                      */
 /************************************************************************/

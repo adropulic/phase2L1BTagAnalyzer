@@ -8,12 +8,12 @@
 
 Method         : MLP::MLP
 TMVA Release   : 4.2.1         [262657]
-ROOT Release   : 6.10/09       [395785]
+ROOT Release   : 6.12/07       [396295]
 Creator        : skkwan
-Date           : Fri Sep  7 16:13:18 2018
-Host           : Linux cmsbuild09.cern.ch 2.6.32-696.18.7.el6.x86_64 #1 SMP Thu Jan 4 13:27:39 CET 2018 x86_64 x86_64 x86_64 GNU/Linux
-Dir            : /afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/btag_exercise/mva
-Training events: 13352
+Date           : Fri Mar 22 01:36:53 2019
+Host           : Linux cmsbuild87.cern.ch 2.6.32-696.30.1.el6.x86_64 #1 SMP Tue May 22 06:09:36 CEST 2018 x86_64 x86_64 x86_64 GNU/Linux
+Dir            : /afs/cern.ch/work/s/skkwan/public/triggerDevel/feb2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/btag_exercise/mva
+Training events: 179
 Analysis type  : [Classification]
 
 
@@ -58,16 +58,20 @@ WeightRange: "1.000000e+00" [Take the events for the estimator calculations from
 
 #VAR -*-*-*-*-*-*-*-*-*-*-*-* variables *-*-*-*-*-*-*-*-*-*-*-*-
 
-NVar 4
-recoTk1IP_uint                recoTk1IP_uint                recoTk1IP_uint                recoTk1IP_uint                                                  't'    [1,255]
-recoTk2IP_uint                recoTk2IP_uint                recoTk2IP_uint                recoTk2IP_uint                                                  't'    [1,255]
-recoTk3IP_uint                recoTk3IP_uint                recoTk3IP_uint                recoTk3IP_uint                                                  't'    [1,255]
-recoTk4IP_uint                recoTk4IP_uint                recoTk4IP_uint                recoTk4IP_uint                                                  't'    [1,255]
+NVar 7
+recoTk1IP_uint                recoTk1IP_uint                recoTk1IP_uint                recoTk1IP_uint                                                  's'    [1,255]
+recoTk2IP_uint                recoTk2IP_uint                recoTk2IP_uint                recoTk2IP_uint                                                  's'    [1,255]
+recoTk3IP_uint                recoTk3IP_uint                recoTk3IP_uint                recoTk3IP_uint                                                  's'    [1,232]
+recoTk4IP_uint                recoTk4IP_uint                recoTk4IP_uint                recoTk4IP_uint                                                  's'    [1,173]
+muPt_uint                     muPt_uint                     muPt_uint                     muPt_uint                                                       's'    [1,32]
+muEta_uint                    muEta_uint                    muEta_uint                    muEta_uint                                                      's'    [3,88]
+muSIP2D_uint                  muSIP2D_uint                  muSIP2D_uint                  muSIP2D_uint                                                    's'    [1,906]
 NSpec 0
 
 
 ============================================================================ */
 
+#include <array>
 #include <vector>
 #include <cmath>
 #include <string>
@@ -105,11 +109,11 @@ class ReadMLP : public IClassifierReader {
    ReadMLP( std::vector<std::string>& theInputVars ) 
       : IClassifierReader(),
         fClassName( "ReadMLP" ),
-        fNvars( 4 ),
+        fNvars( 7 ),
         fIsNormalised( false )
    {      
       // the training input variables
-      const char* inputVars[] = { "recoTk1IP_uint", "recoTk2IP_uint", "recoTk3IP_uint", "recoTk4IP_uint" };
+      const char* inputVars[] = { "recoTk1IP_uint", "recoTk2IP_uint", "recoTk3IP_uint", "recoTk4IP_uint", "muPt_uint", "muEta_uint", "muSIP2D_uint" };
 
       // sanity checks
       if (theInputVars.size() <= 0) {
@@ -141,12 +145,21 @@ class ReadMLP : public IClassifierReader {
       fVmax[2] = 0;
       fVmin[3] = 0;
       fVmax[3] = 0;
+      fVmin[4] = 0;
+      fVmax[4] = 0;
+      fVmin[5] = 0;
+      fVmax[5] = 0;
+      fVmin[6] = 0;
+      fVmax[6] = 0;
 
       // initialize input variable types
-      fType[0] = 't';
-      fType[1] = 't';
-      fType[2] = 't';
-      fType[3] = 't';
+      fType[0] = 's';
+      fType[1] = 's';
+      fType[2] = 's';
+      fType[3] = 's';
+      fType[4] = 's';
+      fType[5] = 's';
+      fType[6] = 's';
 
       // initialize constants
       Initialize();
@@ -178,15 +191,15 @@ class ReadMLP : public IClassifierReader {
    // normalisation of input variables
    const bool fIsNormalised;
    bool IsNormalised() const { return fIsNormalised; }
-   double fVmin[4];
-   double fVmax[4];
+   double fVmin[7];
+   double fVmax[7];
    double NormVariable( double x, double xmin, double xmax ) const {
       // normalise to output range: [-1, 1]
       return 2*(x - xmin)/(xmax - xmin) - 1.0;
    }
 
    // type of input variable: 'F' or 'I'
-   char   fType[4];
+   char   fType[7];
 
    // initialize internal variables
    void Initialize();
@@ -199,63 +212,134 @@ class ReadMLP : public IClassifierReader {
 
    int fLayers;
    int fLayerSize[4];
-   double fWeightMatrix0to1[5][5];   // weight matrix from layer 0 to 1
-   double fWeightMatrix1to2[4][5];   // weight matrix from layer 1 to 2
-   double fWeightMatrix2to3[1][4];   // weight matrix from layer 2 to 3
+   double fWeightMatrix0to1[8][8];   // weight matrix from layer 0 to 1
+   double fWeightMatrix1to2[7][8];   // weight matrix from layer 1 to 2
+   double fWeightMatrix2to3[1][7];   // weight matrix from layer 2 to 3
 
-   double * fWeights[4];
 };
 
 inline void ReadMLP::Initialize()
 {
    // build network structure
    fLayers = 4;
-   fLayerSize[0] = 5; fWeights[0] = new double[5]; 
-   fLayerSize[1] = 5; fWeights[1] = new double[5]; 
-   fLayerSize[2] = 4; fWeights[2] = new double[4]; 
-   fLayerSize[3] = 1; fWeights[3] = new double[1]; 
+   fLayerSize[0] = 8;
+   fLayerSize[1] = 8;
+   fLayerSize[2] = 7;
+   fLayerSize[3] = 1;
    // weight matrix from layer 0 to 1
    fWeightMatrix0to1[0][0] = -nan;
-   fWeightMatrix0to1[1][0] = nan;
-   fWeightMatrix0to1[2][0] = nan;
+   fWeightMatrix0to1[1][0] = -nan;
+   fWeightMatrix0to1[2][0] = -nan;
    fWeightMatrix0to1[3][0] = nan;
+   fWeightMatrix0to1[4][0] = -nan;
+   fWeightMatrix0to1[5][0] = -nan;
+   fWeightMatrix0to1[6][0] = -nan;
    fWeightMatrix0to1[0][1] = -nan;
-   fWeightMatrix0to1[1][1] = nan;
-   fWeightMatrix0to1[2][1] = nan;
+   fWeightMatrix0to1[1][1] = -nan;
+   fWeightMatrix0to1[2][1] = -nan;
    fWeightMatrix0to1[3][1] = nan;
+   fWeightMatrix0to1[4][1] = -nan;
+   fWeightMatrix0to1[5][1] = -nan;
+   fWeightMatrix0to1[6][1] = -nan;
    fWeightMatrix0to1[0][2] = -nan;
-   fWeightMatrix0to1[1][2] = nan;
-   fWeightMatrix0to1[2][2] = nan;
+   fWeightMatrix0to1[1][2] = -nan;
+   fWeightMatrix0to1[2][2] = -nan;
    fWeightMatrix0to1[3][2] = nan;
+   fWeightMatrix0to1[4][2] = -nan;
+   fWeightMatrix0to1[5][2] = -nan;
+   fWeightMatrix0to1[6][2] = -nan;
    fWeightMatrix0to1[0][3] = -nan;
-   fWeightMatrix0to1[1][3] = nan;
-   fWeightMatrix0to1[2][3] = nan;
+   fWeightMatrix0to1[1][3] = -nan;
+   fWeightMatrix0to1[2][3] = -nan;
    fWeightMatrix0to1[3][3] = nan;
+   fWeightMatrix0to1[4][3] = -nan;
+   fWeightMatrix0to1[5][3] = -nan;
+   fWeightMatrix0to1[6][3] = -nan;
    fWeightMatrix0to1[0][4] = -nan;
-   fWeightMatrix0to1[1][4] = nan;
-   fWeightMatrix0to1[2][4] = nan;
+   fWeightMatrix0to1[1][4] = -nan;
+   fWeightMatrix0to1[2][4] = -nan;
    fWeightMatrix0to1[3][4] = nan;
+   fWeightMatrix0to1[4][4] = -nan;
+   fWeightMatrix0to1[5][4] = -nan;
+   fWeightMatrix0to1[6][4] = -nan;
+   fWeightMatrix0to1[0][5] = -nan;
+   fWeightMatrix0to1[1][5] = -nan;
+   fWeightMatrix0to1[2][5] = -nan;
+   fWeightMatrix0to1[3][5] = nan;
+   fWeightMatrix0to1[4][5] = -nan;
+   fWeightMatrix0to1[5][5] = -nan;
+   fWeightMatrix0to1[6][5] = -nan;
+   fWeightMatrix0to1[0][6] = -nan;
+   fWeightMatrix0to1[1][6] = -nan;
+   fWeightMatrix0to1[2][6] = -nan;
+   fWeightMatrix0to1[3][6] = nan;
+   fWeightMatrix0to1[4][6] = -nan;
+   fWeightMatrix0to1[5][6] = -nan;
+   fWeightMatrix0to1[6][6] = -nan;
+   fWeightMatrix0to1[0][7] = -nan;
+   fWeightMatrix0to1[1][7] = -nan;
+   fWeightMatrix0to1[2][7] = -nan;
+   fWeightMatrix0to1[3][7] = nan;
+   fWeightMatrix0to1[4][7] = -nan;
+   fWeightMatrix0to1[5][7] = -nan;
+   fWeightMatrix0to1[6][7] = -nan;
    // weight matrix from layer 1 to 2
    fWeightMatrix1to2[0][0] = -nan;
    fWeightMatrix1to2[1][0] = -nan;
    fWeightMatrix1to2[2][0] = -nan;
-   fWeightMatrix1to2[0][1] = nan;
-   fWeightMatrix1to2[1][1] = nan;
-   fWeightMatrix1to2[2][1] = nan;
-   fWeightMatrix1to2[0][2] = nan;
-   fWeightMatrix1to2[1][2] = nan;
-   fWeightMatrix1to2[2][2] = nan;
+   fWeightMatrix1to2[3][0] = -nan;
+   fWeightMatrix1to2[4][0] = -nan;
+   fWeightMatrix1to2[5][0] = -nan;
+   fWeightMatrix1to2[0][1] = -nan;
+   fWeightMatrix1to2[1][1] = -nan;
+   fWeightMatrix1to2[2][1] = -nan;
+   fWeightMatrix1to2[3][1] = -nan;
+   fWeightMatrix1to2[4][1] = -nan;
+   fWeightMatrix1to2[5][1] = -nan;
+   fWeightMatrix1to2[0][2] = -nan;
+   fWeightMatrix1to2[1][2] = -nan;
+   fWeightMatrix1to2[2][2] = -nan;
+   fWeightMatrix1to2[3][2] = -nan;
+   fWeightMatrix1to2[4][2] = -nan;
+   fWeightMatrix1to2[5][2] = -nan;
    fWeightMatrix1to2[0][3] = nan;
    fWeightMatrix1to2[1][3] = nan;
    fWeightMatrix1to2[2][3] = nan;
-   fWeightMatrix1to2[0][4] = nan;
-   fWeightMatrix1to2[1][4] = nan;
-   fWeightMatrix1to2[2][4] = nan;
+   fWeightMatrix1to2[3][3] = nan;
+   fWeightMatrix1to2[4][3] = nan;
+   fWeightMatrix1to2[5][3] = nan;
+   fWeightMatrix1to2[0][4] = -nan;
+   fWeightMatrix1to2[1][4] = -nan;
+   fWeightMatrix1to2[2][4] = -nan;
+   fWeightMatrix1to2[3][4] = -nan;
+   fWeightMatrix1to2[4][4] = -nan;
+   fWeightMatrix1to2[5][4] = -nan;
+   fWeightMatrix1to2[0][5] = -nan;
+   fWeightMatrix1to2[1][5] = -nan;
+   fWeightMatrix1to2[2][5] = -nan;
+   fWeightMatrix1to2[3][5] = -nan;
+   fWeightMatrix1to2[4][5] = -nan;
+   fWeightMatrix1to2[5][5] = -nan;
+   fWeightMatrix1to2[0][6] = -nan;
+   fWeightMatrix1to2[1][6] = -nan;
+   fWeightMatrix1to2[2][6] = -nan;
+   fWeightMatrix1to2[3][6] = -nan;
+   fWeightMatrix1to2[4][6] = -nan;
+   fWeightMatrix1to2[5][6] = -nan;
+   fWeightMatrix1to2[0][7] = -nan;
+   fWeightMatrix1to2[1][7] = -nan;
+   fWeightMatrix1to2[2][7] = -nan;
+   fWeightMatrix1to2[3][7] = -nan;
+   fWeightMatrix1to2[4][7] = -nan;
+   fWeightMatrix1to2[5][7] = -nan;
    // weight matrix from layer 2 to 3
-   fWeightMatrix2to3[0][0] = nan;
-   fWeightMatrix2to3[0][1] = nan;
-   fWeightMatrix2to3[0][2] = nan;
+   fWeightMatrix2to3[0][0] = -nan;
+   fWeightMatrix2to3[0][1] = -nan;
+   fWeightMatrix2to3[0][2] = -nan;
    fWeightMatrix2to3[0][3] = -nan;
+   fWeightMatrix2to3[0][4] = -nan;
+   fWeightMatrix2to3[0][5] = -nan;
+   fWeightMatrix2to3[0][6] = nan;
 }
 
 inline double ReadMLP::GetMvaValue__( const std::vector<double>& inputValues ) const
@@ -265,41 +349,43 @@ inline double ReadMLP::GetMvaValue__( const std::vector<double>& inputValues ) c
       return 0;
    }
 
-   for (int l=0; l<fLayers; l++)
-      for (int i=0; i<fLayerSize[l]; i++) fWeights[l][i]=0;
-
-   for (int l=0; l<fLayers-1; l++)
-      fWeights[l][fLayerSize[l]-1]=1;
+   std::array<double, 8> fWeights0 {{}};
+   std::array<double, 8> fWeights1 {{}};
+   std::array<double, 7> fWeights2 {{}};
+   std::array<double, 1> fWeights3 {{}};
+   fWeights0.back() = 1.;
+   fWeights1.back() = 1.;
+   fWeights2.back() = 1.;
 
    for (int i=0; i<fLayerSize[0]-1; i++)
-      fWeights[0][i]=inputValues[i];
+      fWeights0[i]=inputValues[i];
 
    // layer 0 to 1
    for (int o=0; o<fLayerSize[1]-1; o++) {
       for (int i=0; i<fLayerSize[0]; i++) {
-         double inputVal = fWeightMatrix0to1[o][i] * fWeights[0][i];
-         fWeights[1][o] += inputVal;
-      }
-      fWeights[1][o] = ActivationFnc(fWeights[1][o]);
-   }
+         double inputVal = fWeightMatrix0to1[o][i] * fWeights0[i];
+         fWeights1[o] += inputVal;
+      } // loop over i
+      fWeights1[o] = ActivationFnc(fWeights1[o]);
+   } // loop over o
    // layer 1 to 2
    for (int o=0; o<fLayerSize[2]-1; o++) {
       for (int i=0; i<fLayerSize[1]; i++) {
-         double inputVal = fWeightMatrix1to2[o][i] * fWeights[1][i];
-         fWeights[2][o] += inputVal;
-      }
-      fWeights[2][o] = ActivationFnc(fWeights[2][o]);
-   }
+         double inputVal = fWeightMatrix1to2[o][i] * fWeights1[i];
+         fWeights2[o] += inputVal;
+      } // loop over i
+      fWeights2[o] = ActivationFnc(fWeights2[o]);
+   } // loop over o
    // layer 2 to 3
    for (int o=0; o<fLayerSize[3]; o++) {
       for (int i=0; i<fLayerSize[2]; i++) {
-         double inputVal = fWeightMatrix2to3[o][i] * fWeights[2][i];
-         fWeights[3][o] += inputVal;
-      }
-      fWeights[3][o] = OutputActivationFnc(fWeights[3][o]);
-   }
+         double inputVal = fWeightMatrix2to3[o][i] * fWeights2[i];
+         fWeights3[o] += inputVal;
+      } // loop over i
+      fWeights3[o] = OutputActivationFnc(fWeights3[o]);
+   } // loop over o
 
-   return fWeights[3][0];
+   return fWeights3[0];
 }
 
 double ReadMLP::ActivationFnc(double x) const {
@@ -314,10 +400,6 @@ double ReadMLP::OutputActivationFnc(double x) const {
 // Clean up
 inline void ReadMLP::Clear() 
 {
-   // clean up the arrays
-   for (int lIdx = 0; lIdx < 4; lIdx++) {
-      delete[] fWeights[lIdx];
-   }
 }
    inline double ReadMLP::GetMvaValue( const std::vector<double>& inputValues ) const
    {

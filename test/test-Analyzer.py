@@ -199,7 +199,7 @@ process.L1BTagAnalyzer.slimmedJets = cms.InputTag("patJetsNewSlimmedJets")
 process.L1BTagAnalyzer.slimmedMuons = cms.InputTag("slimmedMuons")
 
 process.TFileService = cms.Service("TFileService", 
-                                   fileName = cms.string("analyzer_eval_on_Ztt.root")
+                                   fileName = cms.string("analyzer.root")
                                    )
 
 ## Define a Path
