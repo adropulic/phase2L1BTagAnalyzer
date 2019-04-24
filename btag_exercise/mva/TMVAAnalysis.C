@@ -52,7 +52,7 @@ void TMVAAnalysis()
     std::map<std::string, int> Use;
 
     // Neural Networks (all are feed-forward Multilayer Perceptrons)
-    Use["MLP"] = 1;  // Recommended ANN
+    //    Use["MLP"] = 1;  // Recommended ANN
 	
 	// Boosted Decision Trees
 	Use["BDT"] = 1;  // uses Adaptive Boost
@@ -61,7 +61,7 @@ void TMVAAnalysis()
 	// Load data
 	//--------------------------------------------
 	TString dir = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/feb2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/test/outputs/";
-	TString key = "4";
+	TString key = "1";
 	TString inputFilename = dir + "analyzer_" + key + ".root";
 
 	// Get input file and declare output file where TMVA will store ntuples, hists, etc.
@@ -164,8 +164,12 @@ void TMVAAnalysis()
 	TCut backgroundCut = "recoTk1IP > -99 && recoTk2IP > -99 && recoTk3IP > -99  && recoTk4IP > -99"; 
 	*/
 
-	TCut signalCut     = "recoTk1IP_uint > 0 && recoTk2IP_uint > 0 && recoTk3IP_uint > 0 && recoTk4IP_uint > 0 && muPt_uint > 0 && muEta_uint > 0 && muSIP2D_uint > 0";
+	/*	TCut signalCut     = "recoTk1IP_uint > 0 && recoTk2IP_uint > 0 && recoTk3IP_uint > 0 && recoTk4IP_uint > 0 && muPt_uint > 0 && muEta_uint > 0 && muSIP2D_uint > 0";
 	TCut backgroundCut = "recoTk1IP_uint > 0 && recoTk2IP_uint > 0 && recoTk3IP_uint > 0 && recoTk4IP_uint > 0 && muPt_uint > 0 && muEta_uint > 0 && muSIP2D_uint > 0";
+	*/
+
+	TCut signalCut = "";
+	TCut backgroundCut = "";
 
 	TString datasetOptions = "SplitMode=Random";
 	dataloader->PrepareTrainingAndTestTree(signalCut, backgroundCut, datasetOptions);
