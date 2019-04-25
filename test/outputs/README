@@ -99,3 +99,8 @@ h/FEVT/PU200_103X_upgrade2023_realistic_v2-v1/90000/2B449275-7BDC-B04A-9447-A656
 process.source.lumisToProcess = cms.untracked.VLuminosityBlockRange("1:337")
 
 -------------------------------------------------------
+
+Insufficient events with b-jets: try running analyzer with more files in the secondary file list.
+
+output_5.root and logRun_5 were run with more secondary root files on Wednesday April 24 2019
+
