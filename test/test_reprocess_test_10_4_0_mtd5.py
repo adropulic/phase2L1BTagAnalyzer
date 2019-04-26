@@ -199,7 +199,7 @@ process.btaggingPath = cms.Path(
 
 # Schedule definition
 process.schedule = cms.Schedule(process.L1simulation_step,
-                                process.FEVTDEBUGHLToutput_step,
+                                #process.FEVTDEBUGHLToutput_step, # Uncomment to save step2_2ev_reprocess_slim.root
                                 process.EcalEBtp_step,
                                 process.L1TrackTrigger_step,
                                 process.btaggingPath,
