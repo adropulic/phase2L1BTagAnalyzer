@@ -260,7 +260,9 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
    edm::Handle<vector<reco::Vertex> > primaryVertex;
    iEvent.getByToken(primaryVertexToken_,primaryVertex);
    bool pvFound = (primaryVertex->size() != 0);
-   if ( pvFound ) {
+   // Use the isValid method to check that the vertex is valid.
+   bool pvValid = (primaryVertex.isValid());
+   if ( pvFound && pvValid ) {
      pv = &(*primaryVertex->begin());
    }
 
@@ -301,7 +303,7 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   edm::Handle< std::vector<pat::Muon> > miniMuons;
   if(!iEvent.getByToken( MiniMuonsToken_, miniMuons))
     std::cout<<"No miniAOD muons found"<<std::endl;
-
+  
   //std::cout<<"looping over jets"<<std::endl;
   for( std::vector<pat::Jet>::const_iterator jet = miniJets->begin(); jet != miniJets->end(); ++jet )
     {
