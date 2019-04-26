@@ -7,8 +7,9 @@ import FWCore.ParameterSet.Config as cms
 
 from Configuration.StandardSequences.Eras import eras
 
-process = cms.Process('REPR',eras.Phase2C4_trigger)
+#process = cms.Process('REPR',eras.Phase2C4_trigger)
 #process = cms.Process('REPR',eras.Phase2C4_timing_layer_bar)
+process = cms.Process('REPR')
 
 # import of standard configurations
 process.load('Configuration.StandardSequences.Services_cff')
