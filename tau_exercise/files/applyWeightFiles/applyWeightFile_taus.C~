@@ -130,7 +130,7 @@ void applyWeightFile_taus()
    // hist["MLP"] = new TH1F("MVA_MLP", "MVA_MLP", nbin, -1.25, 1.25);
 
    /* Prepare input tree. */
-   TString fname = TString("/afs/cern.ch/work/s/skkwan/public/triggerDevel/feb2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/tau_exercise/files/dyll-pilot.root");
+   TString fname = TString("/afs/cern.ch/work/s/skkwan/public/triggerDevel/feb2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/tau_exercise/files/qcd.root");
    std::cout << "--- TMVAClassificationApp    : Accessing " << fname << "!" << std::endl;
    TFile *input = TFile::Open(fname);
    if (!input)
@@ -231,8 +231,6 @@ void applyWeightFile_taus()
       // Return the MVA outputs and fill into histograms
       for (std::map<std::string,int>::iterator it = Use.begin(); it != Use.end(); it++) {
          if (!it->second) continue;
-	 // TEMPORARY: only keep genPt > 20 to see if discriminant distribution is higher
-	 // if (genPt_f <= 20.0) continue;
          TString methodName = it->first + " method";
          hist[it->first]->Fill( reader->EvaluateMVA( methodName ) );
       }
@@ -241,7 +239,7 @@ void applyWeightFile_taus()
    std::cout << "--- End of event loop: "; sw.Print();
 
    /* Write histograms */
-   TFile *target  = new TFile( "appliedWeightFile_dyll-pilot.root", "RECREATE" );
+   TFile *target  = new TFile( "appliedWeightFile_qcd.root", "RECREATE" );
    for (std::map<std::string,int>::iterator it = Use.begin(); it != Use.end(); it++)
       if (it->second) hist[it->first]->Write();
 
