@@ -2,11 +2,11 @@
 
 void runValidationPlots()
 {
-  gROOT->ProcessLine(".L /afs/cern.ch/work/s/skkwan/public/triggerDevel/feb2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/tau_exercise/plot_tau_features/comparisonPlots.C");
+  gROOT->ProcessLine(".L comparisonPlots.C");
  
   TString treePath = "L1MTDAnalyzer/L1TauTree";
-  TString inputDirectory  = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/feb2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/tau_exercise/files/qcd.root";
-  TString outputDirectory = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/feb2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/tau_exercise/plot_tau_features/validationPlots/qcd_";
+  TString inputDirectory  = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/apr2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/tau_exercise/files/inputs/dyll.root";
+  TString outputDirectory = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/apr2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/tau_exercise/plot_tau_features/validationPlots/dyll_";
   //  TString outputDirectory = "~/Dropbox/Taus/validationPlots/";
 
   comparisonPlots("l1Pt", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "l1Pt", 200, 0, 100);
