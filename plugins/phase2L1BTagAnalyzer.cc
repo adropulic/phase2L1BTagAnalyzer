@@ -260,9 +260,7 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
    edm::Handle<vector<reco::Vertex> > primaryVertex;
    iEvent.getByToken(primaryVertexToken_,primaryVertex);
    bool pvFound = (primaryVertex->size() != 0);
-   // Use the isValid method to check that the vertex is valid.
-   bool pvValid = (primaryVertex.isValid());
-   if ( pvFound && pvValid ) {
+   if ( pvFound ) {
      pv = &(*primaryVertex->begin());
    }
 
