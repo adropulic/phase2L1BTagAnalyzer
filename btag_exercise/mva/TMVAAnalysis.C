@@ -9,9 +9,9 @@
 //    E.g. [keyword] is ZTT or ttbar or 1, 2, 3, ...
 // 2. Run with
 //        `root -l -b -q TMVAAnalysis.C`.    (add `>logRun' after .C if desired)
-// 3. This will generate an output file "out_[keyword].root". Create and view desired
+// 3. This will generate an output file "TMVA_output[keyword].root". Create and view desired
 //    plots in the interactive TMVA GUI:
-//        `root -l -e 'TMVA::TMVAGui("out_[keyword].root")'`.
+//        `root -l -e 'TMVA::TMVAGui("TMVA_output[keyword].root")'`.
 //    Important: The output .eps files in `dataset/plots` will only be generated/
 //               updated by creating them afresh in the interactive TMVA GUI, which
 //               can be laggy. Check the Last Edited timestamp to avoid mistaking old
@@ -60,13 +60,13 @@ void TMVAAnalysis()
 	//--------------------------------------------
 	// Load data
 	//--------------------------------------------
-	TString dir = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/feb2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/test/outputs/";
-	TString key = "1";
+	TString dir = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/apr2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/test/outputs/";
+	TString key = "5";
 	TString inputFilename = dir + "analyzer_" + key + ".root";
 
 	// Get input file and declare output file where TMVA will store ntuples, hists, etc.
 	TFile *inputFile = new TFile(inputFilename.Data());
-	TString outputFilename = "out_" + key + ".root";
+	TString outputFilename = "TMVA_output" + key + ".root";
 	TFile *outFile = new TFile(outputFilename, "RECREATE");
 	
 	// Get input tree
