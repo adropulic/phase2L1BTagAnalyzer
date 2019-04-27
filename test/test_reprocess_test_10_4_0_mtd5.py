@@ -26,9 +26,9 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.load("RecoBTag.Configuration.RecoBTag_cff") # this loads all available b-taggers
 
-process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(-1)
-)
+#process.maxEvents = cms.untracked.PSet(
+#    input = cms.untracked.int32(-1)
+#)
 
 # Input source
 process.source = cms.Source("PoolSource",
@@ -39,7 +39,8 @@ process.source = cms.Source("PoolSource",
                                                                        '/store/mc/PhaseIIMTDTDRAutumn18DR/DYToLL_M-50_14TeV_TuneCP5_pythia8/FEVT/PU200_103X_upgrade2023_realistic_v2-v2/910000/E4590EF0-336D-CB48-B5D8-2349E8573FCF.root',
                                                                        '/store/mc/PhaseIIMTDTDRAutumn18DR/DYToLL_M-50_14TeV_TuneCP5_pythia8/FEVT/PU200_103X_upgrade2023_realistic_v2-v2/910000/F37B1F94-AD89-DF40-8D40-3EE87E8339A1.root'
 ),
-                            eventsToSkip = cms.untracked.VEventRange('1:84182')
+                            eventsToProcess = cms.untracked.VEventRange('1:1-1:84181'),
+                            eventsToSkip = cms.untracked.VEventRange('1:84182'),
 )
 
 process.source.lumisToProcess = cms.untracked.VLuminosityBlockRange("1:337")
