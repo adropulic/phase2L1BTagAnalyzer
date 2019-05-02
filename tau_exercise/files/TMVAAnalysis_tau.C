@@ -64,7 +64,7 @@ void TMVAAnalysis_tau()
 
 	// Get input file and declare output file where TMVA will store ntuples, hists, etc.
 	TFile *inputFile = new TFile(inputFilename.Data());
-	TString outputFilename = "out_" + file + ".root";
+	TString outputFilename = "TMVA_training_taus_out_" + file + ".root";
 	TFile *outFile = new TFile(outputFilename, "RECREATE");
 	
 	// Get input tree
