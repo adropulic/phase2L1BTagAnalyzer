@@ -1,5 +1,5 @@
 # Summary
-This in-development analyzer and associated plotting scripts are for developing tau and b-jet Level-1 Trigger for the CMS Experiment's Run 3 and Phase 2. 
+This in-development analyzer and associated plotting scripts are for developing tau and b-jet Level-1 Triggers for the CMS Experiment's Run 3 and Phase 2. 
 
 # Installation
 Installation instructions are in `checkout.sh`.
@@ -50,4 +50,22 @@ root -l -e 'TMVA::TMVAGui("TMVA_output<keyword>.root")'
 To apply the standalone classifiers to other .ROOT samples, set the input and output file paths in `applyWeightFile.C` and run:
 ```
 root -l -b -q applyWeightFile.C
+```
+
+## Tau tagging
+### Workflow
+This repository does not include the tau analyzer, so the workflow for training TMVA classifiers on tau ttrees is:
+1. In `tau_exercise`, set input and output file paths in `TMVAAnalysis_tau.C`. Run the macro to generate an output file (replace X with whatever identifier the input file has):
+```
+root -l -b -q TMVAAnalysis_tau.C > files/trainingOutputs/TMVA_taus_logX 
+```
+Create and view desired plots in the interactive TMVA GUI:
+```
+root -l -e 'TMVA::TMVAGui("out_[keyword].root")
+```
+The output .eps files in `dataset/plots` will only be generated/ updated by creating them afresh in the interactive TMV GUI, which can be laggy. Check the Last Edited timestamp to avoid mistaking old plots for new ones. 
+ 
+2. In `/applyWeightFiles`, set the input tree path and output file name.
+```
+root -l -b -q applyWeightFile_taus.C
 ```
