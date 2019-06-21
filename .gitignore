@@ -1,2 +1,6 @@
 # ignore file types
 *.root
+
+*/btag_exercise/mva/myOutputs/
+*.pdf
+*~
