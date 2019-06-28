@@ -1,0 +1,152 @@
+
+Processing TMVAAnalysis_tau.C...
+<HEADER> DataSetInfo              : [dataset] : Added class "Signal"
+                         : Add Tree L1TauTree of type Signal with 1434 events
+<HEADER> DataSetInfo              : [dataset] : Added class "Background"
+                         : Add Tree L1TauTree of type Background with 123966 events
+<HEADER> Factory                  : Booking method: BDT
+                         : 
+<HEADER> DataSetFactory           : [dataset] : Number of events in input trees
+                         : Dataset[dataset] :     Signal     requirement: "pfCand2HoE < 20 && pfCand3HoE < 20 && l1TauEGTime < 30 "
+                         : Dataset[dataset] :     Signal          -- number of events passed: 1314   / sum of weights: 1314 
+                         : Dataset[dataset] :     Signal          -- efficiency             : 0.916318
+                         : Dataset[dataset] :     Background requirement: "pfCand2HoE < 20 && pfCand3HoE < 20 && l1TauEGTime < 30"
+                         : Dataset[dataset] :     Background      -- number of events passed: 111025  / sum of weights: 111025
+                         : Dataset[dataset] :     Background      -- efficiency             : 0.895608
+                         : Dataset[dataset] :  you have opted for interpreting the requested number of training/testing events
+                         :  to be the number of events AFTER your preselection cuts
+                         : 
+                         : Dataset[dataset] :  you have opted for interpreting the requested number of training/testing events
+                         :  to be the number of events AFTER your preselection cuts
+                         : 
+                         : Dataset[dataset] : Weight renormalisation mode: "EqualNumEvents": renormalises all event classes ...
+                         : Dataset[dataset] :  such that the effective (weighted) number of events in each class is the same 
+                         : Dataset[dataset] :  (and equals the number of events (entries) given for class=0 )
+                         : Dataset[dataset] : ... i.e. such that Sum[i=1..N_j]{w_i} = N_classA, j=classA, classB, ...
+                         : Dataset[dataset] : ... (note that N_j is the sum of TRAINING events
+                         : Dataset[dataset] :  ..... Testing events are not renormalised nor included in the renormalisation factor!)
+                         : Number of training and testing events
+                         : ---------------------------------------------------------------------------
+                         : Signal     -- training events            : 657
+                         : Signal     -- testing events             : 657
+                         : Signal     -- training and testing events: 1314
+                         : Dataset[dataset] : Signal     -- due to the preselection a scaling factor has been applied to the numbers of requested events: 0.916318
+                         : Background -- training events            : 55512
+                         : Background -- testing events             : 55512
+                         : Background -- training and testing events: 111024
+                         : Dataset[dataset] : Background -- due to the preselection a scaling factor has been applied to the numbers of requested events: 0.895608
+                         : 
+<HEADER> DataSetInfo              : Correlation matrix (Signal):
+                         : ------------------------------------------------------------------
+                         :                      l1Pt    zVTX   l1Eta track1ChiSquared  l1Time
+                         :             l1Pt:  +1.000  -0.037  +0.103           -0.077  -0.017
+                         :             zVTX:  -0.037  +1.000  -0.025           -0.004  -0.021
+                         :            l1Eta:  +0.103  -0.025  +1.000           -0.014  +0.023
+                         : track1ChiSquared:  -0.077  -0.004  -0.014           +1.000  +0.125
+                         :           l1Time:  -0.017  -0.021  +0.023           +0.125  +1.000
+                         : ------------------------------------------------------------------
+<HEADER> DataSetInfo              : Correlation matrix (Background):
+                         : ------------------------------------------------------------------
+                         :                      l1Pt    zVTX   l1Eta track1ChiSquared  l1Time
+                         :             l1Pt:  +1.000  +0.003  +0.002           -0.079  -0.022
+                         :             zVTX:  +0.003  +1.000  -0.000           +0.007  +0.007
+                         :            l1Eta:  +0.002  -0.000  +1.000           +0.000  -0.003
+                         : track1ChiSquared:  -0.079  +0.007  +0.000           +1.000  +0.138
+                         :           l1Time:  -0.022  +0.007  -0.003           +0.138  +1.000
+                         : ------------------------------------------------------------------
+<HEADER> DataSetFactory           : [dataset] :  
+                         : 
+<HEADER> Factory                  : Train all methods
+<HEADER> Factory                  : [dataset] : Create Transformation "I" with events from all classes.
+                         : 
+<HEADER>                          : Transformation, Variable selection : 
+                         : Input : variable 'l1Pt' <---> Output : variable 'l1Pt'
+                         : Input : variable 'zVTX' <---> Output : variable 'zVTX'
+                         : Input : variable 'l1Eta' <---> Output : variable 'l1Eta'
+                         : Input : variable 'track1ChiSquared' <---> Output : variable 'track1ChiSquared'
+                         : Input : variable 'l1Time' <---> Output : variable 'l1Time'
+<HEADER> TFHandler_Factory        :         Variable                Mean                RMS        [        Min                Max ]
+                         : ---------------------------------------------------------------------------------------------------
+                         :             l1Pt:            26.067            14.913   [            6.5005            370.25 ]
+                         :             zVTX:         0.0079085            3.7240   [           -14.152            14.988 ]
+                         :            l1Eta:         -0.046302            1.7188   [           -2.5565            2.5917 ]
+                         : track1ChiSquared:            24.162            21.078   [          0.031723            139.58 ]
+                         :           l1Time:            7.4121            5.3583   [            0.0000            18.993 ]
+                         : ---------------------------------------------------------------------------------------------------
+                         : Ranking input variables (method unspecific)...
+<HEADER> IdTransformation         : Ranking result (top variable is best ranked)
+                         : -----------------------------------------
+                         : Rank : Variable         : Separation
+                         : -----------------------------------------
+                         :    1 : l1Pt             : 6.013e-01
+                         :    2 : l1Eta            : 3.210e-01
+                         :    3 : l1Time           : 1.847e-01
+                         :    4 : track1ChiSquared : 9.328e-02
+                         :    5 : zVTX             : 1.803e-02
+                         : -----------------------------------------
+<HEADER> Factory                  : Train method: BDT for Classification
+                         : 
+<HEADER> BDT                      : #events: (reweighted) sig: 28084.5 bkg: 28084.5
+                         : #events: (unweighted) sig: 657 bkg: 55512
+                         : Training 800 Decision Trees ... patience please
+                         : Elapsed time for training with 56169 events: 23.5 sec         
+<HEADER> BDT                      : [dataset] : Evaluation of BDT on training sample (56169 events)
+                         : Elapsed time for evaluation of 56169 events: 7.34 sec       
+                         : Creating xml weight file: dataset/weights/TMVAClassification_BDT.weights.xml
+                         : Creating standalone class: dataset/weights/TMVAClassification_BDT.class.C
+                         : TMVA_training_taus_out_top5varsdyll.root:/dataset/Method_BDT/BDT
+<HEADER> Factory                  : Training finished
+                         : 
+                         : Ranking input variables (method specific)...
+<HEADER> BDT                      : Ranking result (top variable is best ranked)
+                         : --------------------------------------------------
+                         : Rank : Variable         : Variable Importance
+                         : --------------------------------------------------
+                         :    1 : l1Eta            : 2.249e-01
+                         :    2 : l1Pt             : 1.979e-01
+                         :    3 : track1ChiSquared : 1.960e-01
+                         :    4 : zVTX             : 1.913e-01
+                         :    5 : l1Time           : 1.899e-01
+                         : --------------------------------------------------
+<HEADER> Factory                  : === Destroy and recreate all methods via weight files for testing ===
+                         : 
+<HEADER> Factory                  : Test all methods
+<HEADER> Factory                  : Test method: BDT for Classification performance
+                         : 
+<HEADER> BDT                      : [dataset] : Evaluation of BDT on testing sample (56169 events)
+                         : Elapsed time for evaluation of 56169 events: 3.52 sec       
+<HEADER> Factory                  : Evaluate all methods
+<HEADER> Factory                  : Evaluate classifier: BDT
+                         : 
+<HEADER> BDT                      : [dataset] : Loop over test events and fill histograms with classifier response...
+                         : 
+<HEADER> TFHandler_BDT            :         Variable                Mean                RMS        [        Min                Max ]
+                         : ---------------------------------------------------------------------------------------------------
+                         :             l1Pt:            17.946            27.771   [            5.2514            6349.5 ]
+                         :             zVTX:          0.051779            3.7025   [           -14.152            14.988 ]
+                         :            l1Eta:         0.0053034            1.9605   [           -2.5955            2.5914 ]
+                         : track1ChiSquared:            29.799            23.754   [          0.090978            145.84 ]
+                         :           l1Time:            7.7728            5.8369   [            0.0000            18.995 ]
+                         : ---------------------------------------------------------------------------------------------------
+                         : 
+                         : Evaluation results ranked by best signal efficiency and purity (area)
+                         : -------------------------------------------------------------------------------------------------------------------
+                         : DataSet       MVA                       
+                         : Name:         Method:          ROC-integ
+                         : dataset       BDT            : 0.949
+                         : -------------------------------------------------------------------------------------------------------------------
+                         : 
+                         : Testing efficiency compared to training efficiency (overtraining check)
+                         : -------------------------------------------------------------------------------------------------------------------
+                         : DataSet              MVA              Signal efficiency: from test sample (from training sample) 
+                         : Name:                Method:          @B=0.01             @B=0.10            @B=0.30   
+                         : -------------------------------------------------------------------------------------------------------------------
+                         : dataset              BDT            : 0.174 (0.215)       0.905 (0.903)      0.979 (0.978)
+                         : -------------------------------------------------------------------------------------------------------------------
+                         : 
+<HEADER> Dataset:dataset          : Created tree 'TestTree' with 56169 events
+                         : 
+<HEADER> Dataset:dataset          : Created tree 'TrainTree' with 56169 events
+                         : 
+<HEADER> Factory                  : Thank you for using TMVA!
+                         : For citation information, please visit: http://tmva.sf.net/citeTMVA.html
