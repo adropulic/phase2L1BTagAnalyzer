@@ -55,16 +55,16 @@ void TMVAAnalysis_tau()
     // Boosted Decision Trees
     Use["BDT"] = 1;  // uses Adaptive Boost
 
-	//--------------------------------------------
-	// Load data
-	//--------------------------------------------
-	TString dir = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/feb2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/tau_exercise/files/";
-	TString file = "dyll";
-	TString inputFilename = dir + file + ".root";
+    //--------------------------------------------
+    // Load data
+    //--------------------------------------------
+    TString dir = "inputs/";
+    TString file = "dyll";
+    TString inputFilename = dir + file + ".root";
 
 	// Get input file and declare output file where TMVA will store ntuples, hists, etc.
 	TFile *inputFile = new TFile(inputFilename.Data());
-	TString outputFilename = "TMVA_training_taus_out_" + file + ".root";
+	TString outputFilename = "TMVA_training_taus_out_top5vars" + file + ".root";
 	TFile *outFile = new TFile(outputFilename, "RECREATE");
 	
 	// Get input tree
@@ -159,6 +159,15 @@ void TMVAAnalysis_tau()
 	// "3*var1/var2*abs(var3)". [All types of expressions that can also be
 	// parsed by TTree::Draw( "expression" )]
 
+	// Top five variables are:
+	dataloader->AddVariable("l1Pt", 'D');
+	dataloader->AddVariable("zVTX", 'D');
+	dataloader->AddVariable("l1Eta", 'D');
+	dataloader->AddVariable("track1ChiSquared", 'D');
+	dataloader->AddVariable("l1Time", 'D');
+
+	// If you want to train on all available variables, uncomment below:
+	/*
 	dataloader->AddVariable("l1Pt", 'D');
 	dataloader->AddVariable("l1Eta", 'D');
 	dataloader->AddVariable("l1Phi", 'D');
@@ -179,7 +188,7 @@ void TMVAAnalysis_tau()
 	dataloader->AddVariable("track1ChiSquared", 'D');
 	dataloader->AddVariable("track2ChiSquared", 'D');
 	dataloader->AddVariable("track3ChiSquared", 'D');
-	dataloader->AddVariable("zVTX", 'D');
+ 	dataloader->AddVariable("zVTX", 'D');
 	dataloader->AddVariable("track1Z", 'D');
 	dataloader->AddVariable("track2Z", 'D');
 	dataloader->AddVariable("track3Z", 'D');
@@ -193,6 +202,7 @@ void TMVAAnalysis_tau()
 	dataloader->AddVariable("tauL1nEG", 'D');
 	dataloader->AddVariable("tauL1EGPt", 'D');
 	dataloader->AddVariable("l1TauEGTime", 'D');
+	*/
 
 	// You can add an arbitrary number of signal or background trees
 	// Here we set the global event weights per tree to 1.0
@@ -204,7 +214,7 @@ void TMVAAnalysis_tau()
 
 	// Apply additional cuts on the signal and background samples
 	// e.g. TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
-	
+	// Commenting out the below, which were cuts used for b jets. 
 	/*
 	TCut signalCut     = "recoTk1IP > -99 && recoTk2IP > -99 && recoTk3IP > -99  && recoTk4IP > -99";   
 	TCut backgroundCut = "recoTk1IP > -99 && recoTk2IP > -99 && recoTk3IP > -99  && recoTk4IP > -99"; 
@@ -222,8 +232,9 @@ void TMVAAnalysis_tau()
 	if (Use["BDT"])
 	  factory->BookMethod(dataloader, TMVA::Types::kBDT, "BDT", methodOptions);
 	//  TMVA ANN: MLP (recommended ANN) -- all ANNs in TMVA are Multilayer Perceptrons
+	/*
 	if (Use["MLP"])
-	  factory->BookMethod(dataloader, TMVA::Types::kMLP, "MLP", methodOptions);
+	factory->BookMethod(dataloader, TMVA::Types::kMLP, "MLP", methodOptions); */
 
 	// Training and Evaluation
 	factory->TrainAllMethods();
