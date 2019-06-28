@@ -1,5 +1,5 @@
 //
-// Macro for training Phase2L1BTagAnalyzer TTree using TMVA classifiers.
+// Macro for training tau TTrees using TMVA classifiers.
 // TMVA is a ROOT-integrated toolkit for multivariate data analysis.
 //
 // Instructions:
