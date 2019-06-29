@@ -161,10 +161,11 @@ void TMVAAnalysis_tau()
 
 	// Top five variables are:
 	dataloader->AddVariable("l1Pt", 'D');
-	dataloader->AddVariable("zVTX", 'D');
+	// dataloader->AddVariable("zVTX", 'D');
 	dataloader->AddVariable("l1Eta", 'D');
+	dataloader->AddVariable("tauL1StripPt", 'D');
 	dataloader->AddVariable("track1ChiSquared", 'D');
-	dataloader->AddVariable("l1Time", 'D');
+	dataloader->AddVariable("l1DecayMode", 'D');
 
 	// If you want to train on all available variables, uncomment below:
 	/*
