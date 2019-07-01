@@ -8,6 +8,7 @@
    
 #include <iostream>
 #include <array>
+#include <stdio.h>
 
 /**************************************************************/
 
@@ -42,10 +43,60 @@ void printTable(double *pdArray[], int iNumVars, int piBins[])
     }
 }
 
-/**********************************************************/
+/**************************************************************/
+
+/* Prepare 2D array of doubles, with an extra column for the
+   discriminant value. iNumVars is the number of variables, 
+   piBins is a list of ints that are the (variable ok) number 
+   of bins. */
+
+/* double**   */
+double** create2DArray(int numVars, int piBins[])
+{
+  /* The 2D array of doubles. */
+  double **table;
+
+  /* Total number of rows. */
+  int nRows = 1;
+
+  /* Index to loop over rows. */
+  int iRow;
+
+  /* Calculate total number of rows. */
+  for (int i = 0; i < numVars; i++)
+      nRows *= piBins[i];
+
+  /* Allocate memory for the new table. */
+  table = new double*[nRows];
+  for (int iRow = 0; iRow < nRows; iRow++)
+      table[iRow] = new double[numVars + 1];
+
+  /* For each variable, */
+  for (int i = 0; i < numVars; i++)
+    {
+      /* Start at the top of a column: */
+      iRow = 0;
+      
+      
+
+    }
+
+
+  return table;
+}
+
+
+
+/**************************************************************/
 
 /* Main function. */
 void makeTable(void)
 {
-  printTable(Bins, NumVars, NumBins);
+  double **table = create2DArray(NumVars, NumBins);
+
+  /* Fill the array. */
+
+  //  printTable(Bins, NumVars, NumBins);
+
+  delete(table);
 }
