@@ -7,37 +7,45 @@
    root .x makeTable.C */
 
 #include <vector>
-
 #include <iostream>
 #include <array>
 #include <stdio.h>
+#include <string>
 
 #include "TROOT.h"
 #include "TFile.h"
 #include "TTree.h"
 #include "TCanvas.h"
+#include "TSystem.h"
 #include "TFrame.h"
 #include "TH1F.h"
+
+#if not defined(__CINT__) || defined(__MAKECINT__)
+#include "TMVA/Tools.h"
+#include "TMVA/Reader.h"
+#include "TMVA/MethodCuts.h"
+#endif
 
 /**************************************************************/
 
 /* Number of variables */
-int NumVars = 5;
+Int_t NumVars = 5;
 
 /* Number of bins for each variable */
-int NumBins[] = {4, 4, 4, 4, 3};
+Int_t NumBins[] = {4, 4, 4, 4, 3};
 
 /* Declare values for each variable (must be in the same order
    as iNumBins). */ 
-double ValsL1Pt[] = {10., 35., 75., 300.};
-double ValsL1Eta[] = {-2.25, -0.75, 0.75, 2.25};
-double ValsTrack1ChiSquared[] = {12.5, 42.5, 80, 130};
-double ValsTauL1StripPt[] = {6.0, 31.0, 65.0, 90.0};
-double ValsL1DecayMode[] = {0, 1, 10};
-double *Vals[] = {ValsL1Pt, ValsL1Eta, ValsTrack1ChiSquared,
-		  ValsTauL1StripPt,
-                  ValsL1DecayMode};
-
+Double_t ValsL1Pt[] = {10., 35., 75., 300.};
+Double_t ValsL1Eta[] = {-2.25, -0.75, 0.75, 2.25};
+Double_t ValsTauL1StripPt[] = {6.0, 31.0, 65.0, 90.0};
+Double_t ValsTrack1ChiSquared[] = {12.5, 42.5, 80, 130};
+Double_t ValsL1DecayMode[] = {0, 1, 10};
+Double_t *Vals[] = {ValsL1Pt,
+		    ValsL1Eta,
+		    ValsTauL1StripPt,
+		    ValsTrack1ChiSquared,
+		    ValsL1DecayMode};
 
 /**************************************************************/
 
@@ -45,7 +53,7 @@ double *Vals[] = {ValsL1Pt, ValsL1Eta, ValsTrack1ChiSquared,
    pointers, which point to lists of doubles. These lists can
    have variable lengths, which are specified in piBins. */
 
-void printTable(double **pdArray, Int_t numRows, Int_t numCols)
+void printTable(Double_t **pdArray, Int_t numRows, Int_t numCols)
 {
   for (int i = 0; i < numRows; i++)
     {
@@ -59,7 +67,7 @@ void printTable(double **pdArray, Int_t numRows, Int_t numCols)
 
 /* Returns the number of rows, where numVars is the number of
    variables and numBins[] is an array of the number of bins. */
-Int_t getNumRows(int numVars, int numBins[])
+Int_t getNumRows(Int_t numVars, Int_t numBins[])
 {
   assert(numVars > 0);
   assert(piBins != NULL);
@@ -73,21 +81,25 @@ Int_t getNumRows(int numVars, int numBins[])
 
 /**************************************************************/
 
-/* Prepare 2D array of doubles, with an extra column for the
-   discriminant value. iNumVars is the number of variables, 
-   piBins lists the number of bins. */
+/* Creates and fills in 2D array containing all possible
+   permutations of numVars variables with values as listed in the
+   global variables, plus one extra column for the TMVA
+   discriminant (initialized to a dummy value).
 
-double** fillTableWithPermutedValues(int numVars,
-				     int numBins[])
+   Takes two arguments: numVars, the number of variables, and
+   numBins[], a list of ints which is the number of bins. */
+
+Double_t** fillTableWithPermutedValues(Int_t numVars,
+				       Int_t numBins[])
 {
   /* Number of rows. */
   Int_t nRows = getNumRows(numVars, numBins);
 
   /* Allocate memory for the new table, adding an extra 
      column for the discriminant value. */
-  double** table = new double*[nRows];
+  Double_t** table = new Double_t*[nRows];
   for (Int_t r = 0; r < nRows; r++)
-    table[r] = new double[numVars + 1];
+    table[r] = new Double_t[numVars + 1];
 
   /* Fill the table with permutations of the variables' possible
      values. */
@@ -96,9 +108,6 @@ double** fillTableWithPermutedValues(int numVars,
   for (Int_t iVar = 0; iVar < numVars; iVar++)
     {
       // printf("iVar = %d\n", iVar);
-
-      /* Start at the top of a column: */
-      Int_t iRow = 0;
       
       /* Calculate the product of the remaining variables' number
 	 of bins. This is the "block size" that we need to fill
@@ -108,7 +117,9 @@ double** fillTableWithPermutedValues(int numVars,
 	blockSize *= numBins[i];
       
       // printf("Blocksize: %d\n", blockSize);
-      
+  
+      /* Start at the top of a column: */
+      Int_t iRow = 0;
       while (iRow < nRows)
 	{
 	  /* "bin" is the number of bins for this variable. */
@@ -124,15 +135,77 @@ double** fillTableWithPermutedValues(int numVars,
 		  table[r][iVar] = Vals[iVar][iBin];
 		  table[r][numVars] = -99.99; /* super inefficient, sorry! */
 		}
-
 	      iRow += blockSize;
 	    }
-
 	}
     }
 
   return table;
 }
+
+/**************************************************************/
+
+/* Takes table, a 2D array of doubles, applies TMVA's
+   classification application function, and returns the 
+   filled table. */
+
+Double_t** fillTableWithTMVAdiscriminant(Double_t **table,
+					 Int_t numVars,
+					 Int_t numBins[])
+{
+  
+  /* Default MVA methods to be applied: */
+  std::map<std::string, int> Use;
+  Use["BDT"] = 1;
+
+  /* Create the Reader objct. */
+  TMVA::Reader *reader = new TMVA::Reader("!Color:!Silent");
+
+  /* Create variables and declare them to the Reader. The
+     variable names must correspond in name and type to those
+     given in the weight file(s) used. */
+  Double_t l1Pt, l1Eta, tauL1StripPt, track1ChiSquared, l1DecayMode;
+
+  reader->AddVariable("l1Pt", &l1Pt_f);
+  reader->AddVariable("l1Eta", &l1Eta_f);
+  reader->AddVariable("tauL1StripPt", &tauL1StripPt_f);
+  reader->AddVariable("track1ChiSquared", &track1ChiSquared_f);
+  reader->AddVariable("l1DecayMode", &l1DecayMode_f);
+
+  /* Book the MVA methods. */
+  for (std::map<std::string,int>::iterator it = Use.begin(); it != Use.end(); it++) {
+    if (it->second)
+      {  TString methodName = it->first + " method";
+        /* Customize the directory */
+	TString weightfile = "../training/weights/TMVAClassification_" + TString(it->first)\
+	  + ".weights.xml";
+	reader->BookMVA(methodName, weightfile);
+      }
+  }
+  
+  /* Get the number of rows in table. */
+  Int_t nRows = getNumRows(numVars, numBins);
+
+  /* "Event" loop: Loop through the rows in table: */
+  for (Int_t r = 0; r < nRows; i++)
+    {
+      /* Put values into a std::vector. */
+
+      std::vector<Double_t> event;
+      
+
+      /* Call the EvaluateMVA function. */
+      TString methodName = it->first + " method";
+      Double_t discr = reader->EvaluateMVA(methodName);
+    }
+
+
+
+  delete reader;
+
+  return table;
+}
+
 
 /**************************************************************/
 
@@ -157,7 +230,7 @@ int makeTable(void)
   */
   // Fill the tree.
   
-  double **table = fillTableWithPermutedValues(NumVars, NumBins);
+  Double_t **table = fillTableWithPermutedValues(NumVars, NumBins);
 
 	     
   printTable(table, getNumRows(NumVars, NumBins), NumVars + 1);
