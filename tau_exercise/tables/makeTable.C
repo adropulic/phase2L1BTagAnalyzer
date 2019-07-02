@@ -22,16 +22,21 @@
 /**************************************************************/
 
 /* Number of variables */
-int NumVars = 2;
+int NumVars = 5;
 
 /* Number of bins for each variable */
-int NumBins[] = {4, 4};
+int NumBins[] = {4, 4, 4, 4, 3};
 
 /* Declare values for each variable (must be in the same order
    as iNumBins). */ 
 double ValsL1Pt[] = {10., 35., 75., 300.};
 double ValsL1Eta[] = {-2.25, -0.75, 0.75, 2.25};
-double *Vals[] = {ValsL1Pt, ValsL1Eta};
+double ValsTrack1ChiSquared[] = {12.5, 42.5, 80, 130};
+double ValsTauL1StripPt[] = {6.0, 31.0, 65.0, 90.0};
+double ValsL1DecayMode[] = {0, 1, 10};
+double *Vals[] = {ValsL1Pt, ValsL1Eta, ValsTrack1ChiSquared,
+		  ValsTauL1StripPt,
+                  ValsL1DecayMode};
 
 
 /**************************************************************/
@@ -90,7 +95,7 @@ double** fillTableWithPermutedValues(int numVars,
   /* For each variable: */
   for (Int_t iVar = 0; iVar < numVars; iVar++)
     {
-      printf("iVar = %d\n", iVar);
+      // printf("iVar = %d\n", iVar);
 
       /* Start at the top of a column: */
       Int_t iRow = 0;
@@ -102,27 +107,29 @@ double** fillTableWithPermutedValues(int numVars,
       for (Int_t i = (iVar + 1); i < numVars; i++)
 	blockSize *= numBins[i];
       
-      printf("Blocksize: %d\n", blockSize);
+      // printf("Blocksize: %d\n", blockSize);
       
       while (iRow < nRows)
 	{
 	  /* "bin" is the number of bins for this variable. */
 	  for (Int_t iBin = 0; iBin < numBins[iVar]; iBin++)
 	    {
-	      printf("numBins[iBin] is %d\n", numBins[iBin]);
-	      printf("iBin is %d\n", iBin);
+	      // printf("numBins[iBin] is %d\n", numBins[iBin]);
+	      // printf("iBin is %d\n", iBin);
 	      /* Index r counts which row we are on. */
 	      for (Int_t r = iRow; r < (iRow + blockSize); r++)
 		{
 		  /* Fill the entry. */
-		  printf("Row number: %d\n", r);
+		  // printf("Row number: %d\n", r);
 		  table[r][iVar] = Vals[iVar][iBin];
+		  table[r][numVars] = -99.99; /* super inefficient, sorry! */
 		}
+
 	      iRow += blockSize;
 	    }
+
 	}
     }
-
 
   return table;
 }
