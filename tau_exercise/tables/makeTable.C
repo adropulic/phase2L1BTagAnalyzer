@@ -29,7 +29,7 @@
 /**************************************************************/
 
 /* Number of variables */
-Int_t NumVars = 5;
+Int_t NumVars = 2;
 
 /* Number of bins for each variable */
 Int_t NumBins[] = {4, 4, 4, 4, 3};
@@ -46,6 +46,18 @@ Float_t *Vals[] = {ValsL1Pt,
 		   ValsTauL1StripPt,
 		   ValsTrack1ChiSquared,
 		   ValsL1DecayMode};
+
+/**************************************************************/
+
+/* Print a std::vector vec of Float_t's to stdout. */
+void printVec(std::vector<Float_t> vec)
+{
+  for (Int_t i = 0; i < vec.size(); i++)
+    {
+      printf("%f ", vec.at(i));
+    }
+  printf("\n");
+}
 
 /**************************************************************/
 
@@ -175,7 +187,7 @@ Float_t **fillTableWithTMVAdiscriminant(Float_t **table,
 
   /* Get the number of rows in table. */
   Int_t nRows = getNumRows(numVars, numBins);
-
+  
   /* Book the MVA methods. */
   for (std::map<std::string,int>::iterator it = Use.begin();
        it != Use.end(); it++)
@@ -199,14 +211,17 @@ Float_t **fillTableWithTMVAdiscriminant(Float_t **table,
 
       for (Int_t r = 0; r < nRows; r++)
 	{
-	  /* Put values into a std::vector. */
-	  std::vector<Float_t> event (numBins[r],
-				      numBins[r] + sizeof(numBins[r]) / sizeof(Float_t));
-	  
-	  
+	  /* Put the BDT input variables in a vector. */
+	  std::vector<Float_t> event;
+
+	  for (Int_t iVar = 0; iVar < numVars; iVar++)
+	    {
+	      event.push_back(table[r][iVar]);
+	    }
 	  
 	  /* Call the EvaluateMVA function. */
-	  Float_t discr = reader->EvaluateMVA(methodName);
+	  Float_t discr = -99.99;   /* placeholder value */
+	  discr = reader->EvaluateMVA(event, methodName);
 	  table[r][numVars] = discr;
 	}
     }
