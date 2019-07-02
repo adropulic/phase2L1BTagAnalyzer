@@ -76,9 +76,6 @@ double** create2DArray(int numVars, int piBins[])
     {
       /* Start at the top of a column: */
       iRow = 0;
-      
-      
-
     }
 
 
