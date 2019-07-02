@@ -39,8 +39,8 @@ double *Vals[] = {ValsL1Pt, ValsL1Eta};
 /* Print the contents of pdArray, which is a list of iNumVars
    pointers, which point to lists of doubles. These lists can
    have variable lengths, which are specified in piBins. */
-/*
-void printTable(double *pdArray[], int iNumVars, int piBins[])
+
+void printTable(double **pdArray, int iNumVars, int piBins[])
 {
   for (int i = 0; i < iNumVars; i++)
     {
@@ -51,7 +51,23 @@ void printTable(double *pdArray[], int iNumVars, int piBins[])
       std::cout << std::endl;
     }
 }
-*/
+
+/**************************************************************/
+
+/* Returns the number of rows, where numVars is the number of
+   variables and piBins[] is an array of the number of bins. */
+Int_t getNumRows(int numVars, int piBins[])
+{
+  assert(numVars > 0);
+  assert(piBins != NULL);
+
+  Int_t nRows = 1;
+  for (Int_t i = 0; i < numVars; i++)
+    nRows *= piBins[i];
+
+  return nRows;
+}
+
 /**************************************************************/
 
 /* Prepare 2D array of doubles, with an extra column for the
@@ -62,13 +78,8 @@ void printTable(double *pdArray[], int iNumVars, int piBins[])
 double** fillTableWithPermutedValues(int numVars,
 				     int piBins[])
 {
-  assert(numVars > 0);
-  assert(piBins != NULL);
-
-  /* Total number of rows. Initialize to 1 and calculate it. */
-  Int_t nRows = 1;
-  for (Int_t i = 0; i < numVars; i++)
-      nRows *= piBins[i];
+  /* Number of rows. */
+  Int_t nRows = getNumRows(numVars, piBins);
 
   /* Allocate memory for the new table, adding an extra 
      column for the discriminant value. */
@@ -82,6 +93,8 @@ double** fillTableWithPermutedValues(int numVars,
   /* For each variable: */
   for (Int_t iVar = 0; iVar < numVars; iVar++)
     {
+      printf("iVar = %d\n", iVar);
+
       /* Start at the top of a column: */
       Int_t iRow = 0;
       
@@ -89,8 +102,10 @@ double** fillTableWithPermutedValues(int numVars,
 	 of bins. This is the "block size" that we need to fill
          in one step. */
       Int_t blockSize = 1;
-      for (Int_t i = iVar; i < numVars; i++)
+      for (Int_t i = (iVar + 1); i < numVars; i++)
 	blockSize *= piBins[i];
+      
+      printf("Blocksize: %d\n", blockSize);
       
       while (iRow < nRows)
 	{
@@ -102,7 +117,7 @@ double** fillTableWithPermutedValues(int numVars,
 		{
 		  /* Fill the entry. */
 		  printf("%d\n", r);
-		  //	  table[r][iVar] = Vals[iVar][iBin];
+		  table[r][iVar] = Vals[iVar][iBin];
 		}
 	      iRow += blockSize;
 	    }
@@ -141,6 +156,9 @@ int makeTable(void)
   // Fill the tree.
   
   double **table = fillTableWithPermutedValues(NumVars, NumBins);
+
+  
+  printTable(table, NumVars, NumBins);
 
   delete(table);
   
