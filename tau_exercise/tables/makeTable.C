@@ -4,7 +4,16 @@
 /**************************************************************/
 
 /* Usage: 
-   root .x makeTable.C */
+   root .x makeTable.C 
+
+   Specify the number of variables, the number of values for each
+   variable, and the values themselves in the global variables
+   after the #include statements. 
+
+   You also need to change the variables declared to the Reader,
+   in the function fillTableWithTMVAdiscriminant.
+
+*/
 
 #include <vector>
 #include <iostream>
@@ -35,7 +44,8 @@ Int_t NumVars = 5;
 Int_t NumBins[] = {4, 4, 4, 4, 3};
 
 /* Declare values for each variable (must be in the same order
-   as iNumBins). */ 
+   as NumBins, and the same order as the ones in the TMVA
+   weight file). */ 
 Float_t ValsL1Pt[] = {10., 35., 75., 300.};
 Float_t ValsL1Eta[] = {-2.25, -0.75, 0.75, 2.25};
 Float_t ValsTauL1StripPt[] = {6.0, 31.0, 65.0, 90.0};
@@ -79,6 +89,7 @@ void printTable(Float_t **pdArray, Int_t numRows, Int_t numCols)
 
 /* Returns the number of rows, where numVars is the number of
    variables and numBins[] is an array of the number of bins. */
+
 Int_t getNumRows(Int_t numVars, Int_t numBins[])
 {
   assert(numVars > 0);
@@ -234,29 +245,18 @@ Float_t **fillTableWithTMVAdiscriminant(Float_t **table,
 
 /**************************************************************/
 
-/* Main function. */
+/* Main function. Prints a table with all possible permutations
+   of input variables, along with a column containing the TMVA
+   MVA output for each set of input variables.
+
+   Returns 0 if successful. */
+
 int makeTable(void)
 {
-
-  /* Create the file, the tree, and the branches. */
-  /*  TFile f("table.root", "RECREATE");
-  TTree t1("t1", "a Tree with five variables");
-
-  Float_t l1Pt, l1Eta;
-  Float_T track1ChiSquared, tauL1StripPt, l1DecayMode;
-  Float_t discr;
-
-  t1.Branch("l1Pt", &l1Pt, "l1Pt/F");
-  t1.Branch("l1Eta", &l1Eta, "l1Eta/F");
-  t1.Branch("track1ChiSquared", &track1ChiSquared,
-	    "track1ChiSquared/F");
-  t1.Branch("tauL1StripPt", &tauL1StripPt, "tauL1StripPt/F");
-  t1.Branch("discr", &discr, "discr/D");
-  */
-  // Fill the tree.
-  
+  /* Create the table with permutations of variable values. */
   Float_t **table = fillTableWithPermutedValues(NumVars, NumBins);
   
+  /* Calculate the discriminant. */
   table = fillTableWithTMVAdiscriminant(table, NumVars, NumBins);
 	     
   printTable(table, getNumRows(NumVars, NumBins), NumVars + 1);
