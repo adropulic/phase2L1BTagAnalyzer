@@ -3,7 +3,7 @@
 /* Author: Stephanie Kwan                                     */
 /**************************************************************/
 
-/* Usage: specify the variables in the makeTable function.
+/* Usage: 
    root .x makeTable.C */
 
 #include <vector>
@@ -40,30 +40,28 @@ double *Vals[] = {ValsL1Pt, ValsL1Eta};
    pointers, which point to lists of doubles. These lists can
    have variable lengths, which are specified in piBins. */
 
-void printTable(double **pdArray, int iNumVars, int piBins[])
+void printTable(double **pdArray, Int_t numRows, Int_t numCols)
 {
-  for (int i = 0; i < iNumVars; i++)
+  for (int i = 0; i < numRows; i++)
     {
-      for (int j = 0; j < piBins[i]; j++)
-	{
-	  std::cout << pdArray[i][j] << ' ';
-	}
-      std::cout << std::endl;
+      for (int j = 0; j < numCols; j++)
+	  printf("%f ", pdArray[i][j]);
+      printf("\n");
     }
 }
 
 /**************************************************************/
 
 /* Returns the number of rows, where numVars is the number of
-   variables and piBins[] is an array of the number of bins. */
-Int_t getNumRows(int numVars, int piBins[])
+   variables and numBins[] is an array of the number of bins. */
+Int_t getNumRows(int numVars, int numBins[])
 {
   assert(numVars > 0);
   assert(piBins != NULL);
 
   Int_t nRows = 1;
   for (Int_t i = 0; i < numVars; i++)
-    nRows *= piBins[i];
+    nRows *= numBins[i];
 
   return nRows;
 }
@@ -72,14 +70,13 @@ Int_t getNumRows(int numVars, int piBins[])
 
 /* Prepare 2D array of doubles, with an extra column for the
    discriminant value. iNumVars is the number of variables, 
-   piBins is a list of ints that are the (variable ok) number 
-   of bins. */
+   piBins lists the number of bins. */
 
 double** fillTableWithPermutedValues(int numVars,
-				     int piBins[])
+				     int numBins[])
 {
   /* Number of rows. */
-  Int_t nRows = getNumRows(numVars, piBins);
+  Int_t nRows = getNumRows(numVars, numBins);
 
   /* Allocate memory for the new table, adding an extra 
      column for the discriminant value. */
@@ -103,20 +100,22 @@ double** fillTableWithPermutedValues(int numVars,
          in one step. */
       Int_t blockSize = 1;
       for (Int_t i = (iVar + 1); i < numVars; i++)
-	blockSize *= piBins[i];
+	blockSize *= numBins[i];
       
       printf("Blocksize: %d\n", blockSize);
       
       while (iRow < nRows)
 	{
-	  /* Index iBin counts which bin we are on. */
-	  for (Int_t iBin = 0; iBin < piBins[iBin]; iBin++)
+	  /* "bin" is the number of bins for this variable. */
+	  for (Int_t iBin = 0; iBin < numBins[iVar]; iBin++)
 	    {
+	      printf("numBins[iBin] is %d\n", numBins[iBin]);
+	      printf("iBin is %d\n", iBin);
 	      /* Index r counts which row we are on. */
 	      for (Int_t r = iRow; r < (iRow + blockSize); r++)
 		{
 		  /* Fill the entry. */
-		  printf("%d\n", r);
+		  printf("Row number: %d\n", r);
 		  table[r][iVar] = Vals[iVar][iBin];
 		}
 	      iRow += blockSize;
@@ -130,14 +129,10 @@ double** fillTableWithPermutedValues(int numVars,
 
 /**************************************************************/
 
-
-
-
-/**************************************************************/
-
 /* Main function. */
 int makeTable(void)
 {
+
   /* Create the file, the tree, and the branches. */
   /*  TFile f("table.root", "RECREATE");
   TTree t1("t1", "a Tree with five variables");
@@ -157,8 +152,8 @@ int makeTable(void)
   
   double **table = fillTableWithPermutedValues(NumVars, NumBins);
 
-  
-  printTable(table, NumVars, NumBins);
+	     
+  printTable(table, getNumRows(NumVars, NumBins), NumVars + 1);
 
   delete(table);
   
