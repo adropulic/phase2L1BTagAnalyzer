@@ -29,7 +29,7 @@
 /**************************************************************/
 
 /* Number of variables */
-Int_t NumVars = 2;
+Int_t NumVars = 5;
 
 /* Number of bins for each variable */
 Int_t NumBins[] = {4, 4, 4, 4, 3};
