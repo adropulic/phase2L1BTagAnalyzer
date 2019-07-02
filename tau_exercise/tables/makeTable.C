@@ -36,16 +36,16 @@ Int_t NumBins[] = {4, 4, 4, 4, 3};
 
 /* Declare values for each variable (must be in the same order
    as iNumBins). */ 
-Double_t ValsL1Pt[] = {10., 35., 75., 300.};
-Double_t ValsL1Eta[] = {-2.25, -0.75, 0.75, 2.25};
-Double_t ValsTauL1StripPt[] = {6.0, 31.0, 65.0, 90.0};
-Double_t ValsTrack1ChiSquared[] = {12.5, 42.5, 80, 130};
-Double_t ValsL1DecayMode[] = {0, 1, 10};
-Double_t *Vals[] = {ValsL1Pt,
-		    ValsL1Eta,
-		    ValsTauL1StripPt,
-		    ValsTrack1ChiSquared,
-		    ValsL1DecayMode};
+Float_t ValsL1Pt[] = {10., 35., 75., 300.};
+Float_t ValsL1Eta[] = {-2.25, -0.75, 0.75, 2.25};
+Float_t ValsTauL1StripPt[] = {6.0, 31.0, 65.0, 90.0};
+Float_t ValsTrack1ChiSquared[] = {12.5, 42.5, 80, 130};
+Float_t ValsL1DecayMode[] = {0, 1, 10};
+Float_t *Vals[] = {ValsL1Pt,
+		   ValsL1Eta,
+		   ValsTauL1StripPt,
+		   ValsTrack1ChiSquared,
+		   ValsL1DecayMode};
 
 /**************************************************************/
 
@@ -53,7 +53,7 @@ Double_t *Vals[] = {ValsL1Pt,
    pointers, which point to lists of doubles. These lists can
    have variable lengths, which are specified in piBins. */
 
-void printTable(Double_t **pdArray, Int_t numRows, Int_t numCols)
+void printTable(Float_t **pdArray, Int_t numRows, Int_t numCols)
 {
   for (int i = 0; i < numRows; i++)
     {
@@ -89,7 +89,7 @@ Int_t getNumRows(Int_t numVars, Int_t numBins[])
    Takes two arguments: numVars, the number of variables, and
    numBins[], a list of ints which is the number of bins. */
 
-Double_t** fillTableWithPermutedValues(Int_t numVars,
+Float_t** fillTableWithPermutedValues(Int_t numVars,
 				       Int_t numBins[])
 {
   /* Number of rows. */
@@ -97,9 +97,9 @@ Double_t** fillTableWithPermutedValues(Int_t numVars,
 
   /* Allocate memory for the new table, adding an extra 
      column for the discriminant value. */
-  Double_t** table = new Double_t*[nRows];
+  Float_t** table = new Float_t*[nRows];
   for (Int_t r = 0; r < nRows; r++)
-    table[r] = new Double_t[numVars + 1];
+    table[r] = new Float_t[numVars + 1];
 
   /* Fill the table with permutations of the variables' possible
      values. */
@@ -149,9 +149,9 @@ Double_t** fillTableWithPermutedValues(Int_t numVars,
    classification application function, and returns the 
    filled table. */
 
-Double_t** fillTableWithTMVAdiscriminant(Double_t **table,
-					 Int_t numVars,
-					 Int_t numBins[])
+Float_t **fillTableWithTMVAdiscriminant(Float_t **table,
+					Int_t numVars,
+					Int_t numBins[])
 {
   
   /* Default MVA methods to be applied: */
@@ -164,42 +164,52 @@ Double_t** fillTableWithTMVAdiscriminant(Double_t **table,
   /* Create variables and declare them to the Reader. The
      variable names must correspond in name and type to those
      given in the weight file(s) used. */
-  Double_t l1Pt, l1Eta, tauL1StripPt, track1ChiSquared, l1DecayMode;
+  Float_t l1Pt, l1Eta, tauL1StripPt, track1ChiSquared, l1DecayMode;
 
-  reader->AddVariable("l1Pt", &l1Pt_f);
-  reader->AddVariable("l1Eta", &l1Eta_f);
-  reader->AddVariable("tauL1StripPt", &tauL1StripPt_f);
-  reader->AddVariable("track1ChiSquared", &track1ChiSquared_f);
-  reader->AddVariable("l1DecayMode", &l1DecayMode_f);
+  reader->AddVariable("l1Pt", &l1Pt);
+  reader->AddVariable("l1Eta", &l1Eta);
+  reader->AddVariable("tauL1StripPt", &tauL1StripPt);
+  reader->AddVariable("track1ChiSquared", &track1ChiSquared);
+  reader->AddVariable("l1DecayMode", &l1DecayMode);
 
-  /* Book the MVA methods. */
-  for (std::map<std::string,int>::iterator it = Use.begin(); it != Use.end(); it++) {
-    if (it->second)
-      {  TString methodName = it->first + " method";
-        /* Customize the directory */
-	TString weightfile = "../training/weights/TMVAClassification_" + TString(it->first)\
-	  + ".weights.xml";
-	reader->BookMVA(methodName, weightfile);
-      }
-  }
-  
+
   /* Get the number of rows in table. */
   Int_t nRows = getNumRows(numVars, numBins);
 
-  /* "Event" loop: Loop through the rows in table: */
-  for (Int_t r = 0; r < nRows; i++)
+  /* Book the MVA methods. */
+  for (std::map<std::string,int>::iterator it = Use.begin();
+       it != Use.end(); it++)
     {
-      /* Put values into a std::vector. */
-
-      std::vector<Double_t> event;
-      
-
-      /* Call the EvaluateMVA function. */
-      TString methodName = it->first + " method";
-      Double_t discr = reader->EvaluateMVA(methodName);
+      if (it->second)
+	{  TString methodName = it->first + " method";
+	  /* Customize the directory */
+	  TString weightfile = "../training/dataset/weights/TMVAClassification_"
+	    + TString(it->first) + ".weights.xml";
+	  reader->BookMVA(methodName, weightfile);
+	}
     }
+  
+  for (std::map<std::string,int>::iterator it = Use.begin();
+       it != Use.end(); it++)
+    {
+      if (!it->second) continue;
+      TString methodName = it->first + " method";
 
+      /* "Event" loop: Loop through the rows in table: */
 
+      for (Int_t r = 0; r < nRows; r++)
+	{
+	  /* Put values into a std::vector. */
+	  std::vector<Float_t> event (numBins[r],
+				      numBins[r] + sizeof(numBins[r]) / sizeof(Float_t));
+	  
+	  
+	  
+	  /* Call the EvaluateMVA function. */
+	  Float_t discr = reader->EvaluateMVA(methodName);
+	  table[r][numVars] = discr;
+	}
+    }
 
   delete reader;
 
@@ -219,7 +229,7 @@ int makeTable(void)
 
   Float_t l1Pt, l1Eta;
   Float_T track1ChiSquared, tauL1StripPt, l1DecayMode;
-  Double_t discr;
+  Float_t discr;
 
   t1.Branch("l1Pt", &l1Pt, "l1Pt/F");
   t1.Branch("l1Eta", &l1Eta, "l1Eta/F");
@@ -230,8 +240,9 @@ int makeTable(void)
   */
   // Fill the tree.
   
-  Double_t **table = fillTableWithPermutedValues(NumVars, NumBins);
-
+  Float_t **table = fillTableWithPermutedValues(NumVars, NumBins);
+  
+  table = fillTableWithTMVAdiscriminant(table, NumVars, NumBins);
 	     
   printTable(table, getNumRows(NumVars, NumBins), NumVars + 1);
 
