@@ -20,6 +20,7 @@
 #include <array>
 #include <stdio.h>
 #include <string>
+#include <algorithm>
 
 #include "TROOT.h"
 #include "TFile.h"
@@ -60,6 +61,7 @@ Float_t *Vals[] = {ValsL1Pt,
 /**************************************************************/
 
 /* Print a std::vector vec of Float_t's to stdout. */
+
 void printVec(std::vector<Float_t> vec)
 {
   for (Int_t i = 0; i < vec.size(); i++)
@@ -67,6 +69,22 @@ void printVec(std::vector<Float_t> vec)
       printf("%f ", vec.at(i));
     }
   printf("\n");
+}
+
+/**************************************************************/
+
+/* Search: Returns the index of array-of-floats target in the
+   array-of-arrays-of-floats list, which has length size. If 
+   target is not found, return -1. */
+
+Int_t getIndexOf(Float_t* target, Float_t** list, Int_t size)
+{
+  for (Int_t i = 0; i < size; i++)
+    {
+      if (list[i] == target)
+	return i; 
+    } 
+  return -1;
 }
 
 /**************************************************************/
@@ -105,12 +123,18 @@ Int_t getNumRows(Int_t numVars, Int_t numBins[])
 /**************************************************************/
 
 /* Creates and fills in 2D array containing all possible
-   permutations of numVars variables with values as listed in the
-   global variables, plus one extra column for the TMVA
-   discriminant (initialized to a dummy value).
+   permutations(* see note below) of numVars variables with
+   values as listed in the global variables, plus one extra
+   column for the TMVA discriminant (initialized to a dummy
+   value).
 
    Takes two arguments: numVars, the number of variables, and
-   numBins[], a list of ints which is the number of bins. */
+   numBins[], a list of ints which is the number of bins. 
+
+   *Note: There is an additional loop which sets L1StripPt to 0
+          for events with DM 0 (1 prong) and DM 10 (3-prong), 
+          because non-zero L1StripPt's are only measured for 
+          DM 1 (1 prong + Pi0). */
 
 Float_t** fillTableWithPermutedValues(Int_t numVars,
 				       Int_t numBins[])
@@ -160,6 +184,21 @@ Float_t** fillTableWithPermutedValues(Int_t numVars,
 		}
 	      iRow += blockSize;
 	    }
+	}
+
+    }  /* end of loop over variables */
+
+  /* Set L1StripPt = 0 for Decay Modes 0 or 10. */
+  Int_t locStripPt = getIndexOf(ValsTauL1StripPt, Vals, numVars);
+  Int_t locDM = getIndexOf(ValsL1DecayMode, Vals, numVars + 1);
+  //  printf("TauL1StripPt's index is %d\n", locStripPt);
+  //  printf("L1DecayMode's index is %d\n", locDM);
+  if ((locStripPt != -1) && (locDM != -1))
+    {
+      for (Int_t r = 0; r < nRows; r++)
+	{
+	  if (table[r][locDM] != 1.0)
+	    table[r][locStripPt] = 0;
 	}
     }
 
