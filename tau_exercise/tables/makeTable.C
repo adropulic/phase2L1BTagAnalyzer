@@ -41,15 +41,15 @@
 Int_t NumVars = 5;
 
 /* Number of bins for each variable */
-Int_t NumBins[] = {4, 4, 4, 4, 3};
+Int_t NumBins[] = {4, 3, 4, 4, 3};
 
 /* Declare values for each variable (must be in the same order
    as NumBins, and the same order as the ones in the TMVA
    weight file). */ 
 Float_t ValsL1Pt[] = {10., 35., 75., 300.};
-Float_t ValsL1Eta[] = {-2.25, -0.75, 0.75, 2.25};
-Float_t ValsTauL1StripPt[] = {6.0, 31.0, 65.0, 90.0};
-Float_t ValsTrack1ChiSquared[] = {12.5, 42.5, 80, 130};
+Float_t ValsL1Eta[] = {-1.99, 0, 1.99};
+Float_t ValsTauL1StripPt[] = {0.0, 10.5, 40.0, 80.0};
+Float_t ValsTrack1ChiSquared[] = {5.0, 15.0, 30.0, 100.0};
 Float_t ValsL1DecayMode[] = {0, 1, 10};
 Float_t *Vals[] = {ValsL1Pt,
 		   ValsL1Eta,
