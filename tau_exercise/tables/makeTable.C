@@ -6,7 +6,7 @@
 /* Usage: 
    root .x makeTable.C 
 
-   Specify the number of variables, the number of values for each
+   Specify the number of values for each
    variable, and the values themselves in the global variables
    after the #include statements. 
 
@@ -20,7 +20,7 @@
 #include <array>
 #include <stdio.h>
 #include <string>
-#include <algorithm>
+#include <fstream>
 
 #include "TROOT.h"
 #include "TFile.h"
@@ -37,9 +37,6 @@
 #endif
 
 /**************************************************************/
-
-/* Number of variables */
-Int_t NumVars = 5;
 
 /* Number of bins for each variable */
 Int_t NumBins[] = {4, 3, 4, 4, 3};
@@ -89,17 +86,34 @@ Int_t getIndexOf(Float_t* target, Float_t** list, Int_t size)
 
 /**************************************************************/
 
-/* Print the contents of pdArray, which is a list of iNumVars
-   pointers, which point to lists of doubles. These lists can
-   have variable lengths, which are specified in piBins. */
+/* Print the contents of table t (dimensions nRows x nCols)
+   to stdout. */
 
-void printTable(Float_t **pdArray, Int_t numRows, Int_t numCols)
+void printTable(Float_t **t, Int_t nRows, Int_t nCols)
 {
-  for (int i = 0; i < numRows; i++)
+  for (int i = 0; i < nRows; i++)
     {
-      for (int j = 0; j < numCols; j++)
-	  printf("%f ", pdArray[i][j]);
+      for (int j = 0; j < nCols; j++)
+	  printf("%f ", t[i][j]);
       printf("\n");
+    }
+}
+
+/**************************************************************/
+
+/* Write the contents of table t (dimensions nRows x nCols)
+   to a file fName. */
+
+void writeTable(Float_t **t, Int_t nRows, Int_t nCols, 
+		const char* fName)
+{
+  ofstream myFile;
+  myFile.open(fName);
+  for (int i = 0; i < nRows; i++)
+    {
+      for (int j = 0; j < nCols; j++)
+	myFile << t[i][j] << " ";
+      myFile << "\n";
     }
 }
 
@@ -221,7 +235,7 @@ Float_t **fillTableWithTMVAdiscriminant(Float_t **table,
   Use["BDT"] = 1;
 
   /* Create the Reader objct. */
-  TMVA::Reader *reader = new TMVA::Reader("!Color:!Silent");
+  TMVA::Reader *reader = new TMVA::Reader("!Color:Silent");
 
   /* Create variables and declare them to the Reader. The
      variable names must correspond in name and type to those
@@ -292,13 +306,19 @@ Float_t **fillTableWithTMVAdiscriminant(Float_t **table,
 
 int makeTable(void)
 {
+  /* Calculate number of variables. */
+  Int_t nVars = sizeof(Vals)/sizeof(Vals[0]);
+
   /* Create the table with permutations of variable values. */
-  Float_t **table = fillTableWithPermutedValues(NumVars, NumBins);
+  Float_t **table = fillTableWithPermutedValues(nVars, NumBins);
   
   /* Calculate the discriminant. */
-  table = fillTableWithTMVAdiscriminant(table, NumVars, NumBins);
+  table = fillTableWithTMVAdiscriminant(table, nVars, NumBins);
 	     
-  printTable(table, getNumRows(NumVars, NumBins), NumVars + 1);
+  //  printTable(table, getNumRows(nVars, NumBins), nVars + 1);
+
+  writeTable(table, getNumRows(nVars, NumBins), nVars + 1,
+	     "log");
 
   delete(table);
   
