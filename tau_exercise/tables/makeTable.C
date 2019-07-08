@@ -6,12 +6,14 @@
 /* Usage: 
    root .x makeTable.C 
 
-   Specify the number of values for each
-   variable, and the values themselves in the global variables
-   after the #include statements. 
+   Specify the number of values for each variable, and the values
+   themselves in the global variables after the #include statements. 
 
    You also need to change the variables declared to the Reader,
    in the function fillTableWithTMVAdiscriminant.
+
+   N.B.: L1StripPt is set to 0 for tau candidates with 1-prong
+         or 3-prong (DM 1 or 10) decay modes.
 
 */
 
