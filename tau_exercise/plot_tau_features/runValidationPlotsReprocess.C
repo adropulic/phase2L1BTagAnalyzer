@@ -5,13 +5,14 @@ void runValidationPlotsReprocess()
   gROOT->ProcessLine(".L comparisonPlots.C");
  
   TString treePath = "L1TauAnalyzer/efficiencyTree";
-  TString inputDirectory  = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/jul2019_2/CMSSW_10_6_0_pre4/src/L1Trigger/phase2L1TauAnalyzer/test/analyzer.root";
-  TString outputDirectory = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/apr2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/tau_exercise/plot_tau_features/validationPlots/dyll_root_movedL1VarsOutsideOfIf/dyll_movedL1VarsOutsideOfIf_";
+  TString inputDirectory  = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/jul2019_2/CMSSW_10_6_0_pre4/src/L1Trigger/phase2L1TauAnalyzer/test/analyzer-dyll.root";
+  TString outputDirectory = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/apr2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/tau_exercise/plot_tau_features/validationPlots/dyll/dyll_";
 
-  comparisonPlots("l1Pt", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "l1Pt", 200, 0, 100);
-  comparisonPlots("l1Eta", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "l1Eta", 220, -110, 10);
-  comparisonPlots("l1Phi", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "l1Phi", 220, -110, 6);
-  comparisonPlots("l1TauZ", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "l1TauZ", 250, -120, 100);
+  comparisonPlots("l1Pt", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "l1Pt", 180, 0, 100);
+  comparisonPlots("l1Eta", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "l1Eta", 100, -15, 4);
+  comparisonPlots("l1Phi", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "l1Phi", 100, -15, 4);
+  comparisonPlots("l1TauZ", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "l1TauZ", 200, -250, 310);
+  comparisonPlots("l1PVDZ", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "l1PVDZ", 200, -250, 310);
   // comparisonPlots("l1Time", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "l1Time", 200, 2, 20);
   // l1Iso has the tau included in the sum so it must be removed
   // comparisonPlots("l1Iso-l1Pt", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "l1Iso", 200, -10, 10);
@@ -37,7 +38,7 @@ void runValidationPlotsReprocess()
   comparisonPlots("track3Time", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "track3Time", 200, 0, 22);
   */
   // Decay mode
-  comparisonPlots("l1DM", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "l1DM", 250, -110, 15);
+  comparisonPlots("l1DM", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "l1DM", 50, -11, 12);
   // Chi Squared
   /*
   comparisonPlots("track1ChiSquared", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "track1ChiSquared", 300, 0, 200);
@@ -45,7 +46,7 @@ void runValidationPlotsReprocess()
   comparisonPlots("track3ChiSquared", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "track3ChiSquared", 300, 0, 180);
   */
   // zVTX
-  comparisonPlots("zVTX","genPt>20","genPt<5",treePath, inputDirectory, outputDirectory, "zVTX", 100, -20, 20);
+  comparisonPlots("zVTX","genPt>20","genPt<5",treePath, inputDirectory, outputDirectory, "zVTX", 100, -17, 17);
   // Track Zs
   /*
   comparisonPlots("track1Z", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "track1Z", 200, -30, 30);
@@ -53,9 +54,9 @@ void runValidationPlotsReprocess()
   comparisonPlots("track3Z", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "track3Z", 200, -30, 30);
   */
   // Tau L1 Strip values
-  comparisonPlots("l1StripPt", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "tauL1StripPt", 300, 0, 200);
+  comparisonPlots("l1StripPt", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "tauL1StripPt", 200, 0, 100);
   comparisonPlots("l1StripEta", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "tauL1StripEta", 100, -2, 2);
-  comparisonPlots("l1StripPhi", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "tauL1StripPhi", 100, -1.5, 1.5);
+  comparisonPlots("l1StripPhi", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "tauL1StripPhi", 100, -2, 2);
   comparisonPlots("l1StripDR", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "tauL1StripDeltaR", 100, 0, 5);
   // pfCand
   /*
