@@ -14,9 +14,6 @@
 //               updated by creating them afresh in the interactive TMVA GUI, which
 //               can be laggy. Check the Last Edited timestamp to avoid mistaking old
 //               plots for new ones.
-//
-// Note: During Step 2, a lot of "Failed filling branch:efficiencyTree.[..]" errors
-//       will pop up: these seem to be innocuous.
 // 
 // Based on ROOT tutorials/tmva/TMVAClassification.C and TMVAMinimalClassification.C
 // by Andreas Hoecker and Kim Albertsson respectively, as well as
