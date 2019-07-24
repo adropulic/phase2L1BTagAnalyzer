@@ -37,6 +37,8 @@
 #include "TMVA/Tools.h"
 #include "TMVA/TMVAGui.h"
 
+#include <math.h>
+
 void TMVAAnalysis_tau()
 {
     //--------------------------------------------
@@ -56,28 +58,26 @@ void TMVAAnalysis_tau()
     // Load data
     //--------------------------------------------
     TString dir = "inputs/";
-    TString file = "dyll";
+    TString file = "analyzer-dyll-4FEVT";
     TString inputFilename = dir + file + ".root";
 
 	// Get input file and declare output file where TMVA will store ntuples, hists, etc.
 	TFile *inputFile = new TFile(inputFilename.Data());
-	TString outputFilename = "TMVA_training_taus_out_top5vars" + file + ".root";
+	TString outputFilename = "TMVA_training_taus_out_4FEVT" + file + ".root";
 	TFile *outFile = new TFile(outputFilename, "RECREATE");
 	
 	// Get input tree
-	TTree *inputTree = (TTree*) inputFile->Get("L1MTDAnalyzer/L1TauTree");
+	TTree *inputTree = (TTree*) inputFile->Get("L1TauAnalyzer/efficiencyTree");
 
 	// Split the signal and background into two trees
 	TTree *sigTree = inputTree->CloneTree(0);    // Create a clone of oldtree and copy 0 entries
 	TTree *bkgTree = inputTree->CloneTree(0);
 
 	// Declare variables to read from TTree
-	Double_t l1Pt, l1Eta, l1Phi, l1Time, l1Iso, l1Iso_time;
-        Double_t track12DZ, track13DZ, track1PVDZ, track2PVDZ, track3PVDZ, track1nStubs, track2nStubs;
-	Double_t track1Time, track2Time, track3Time, l1DecayMode;
-        Double_t track1ChiSquared, track2ChiSquared, track3ChiSquared;
-	Double_t zVTX, track1Z, track2Z, track3Z, tauL1StripPt, tauL1StripEta, tauL1StripPhi, tauL1StripDR;
-	Double_t pfCand1HoE, pfCand2HoE, pfCand3HoE, tauL1nEG, tauL1EGPt, l1TauEGTime;
+	Double_t l1Pt, l1Eta, l1Phi;
+	Double_t l1DM;
+	Double_t zVTX, l1TauZ, l1PVDZ;
+	Double_t l1StripPt, l1StripEta, l1StripPhi, l1StripDR;
 	Double_t genPt;
 
 	// Set branch addresses
@@ -86,37 +86,17 @@ void TMVAAnalysis_tau()
 	inputTree->SetBranchAddress("l1Pt", &l1Pt);
 	inputTree->SetBranchAddress("l1Eta", &l1Eta);
 	inputTree->SetBranchAddress("l1Phi", &l1Phi);
-	inputTree->SetBranchAddress("l1Time", &l1Time);
-	inputTree->SetBranchAddress("l1Iso", &l1Iso);
-	inputTree->SetBranchAddress("l1Iso_time", &l1Iso_time);
-	inputTree->SetBranchAddress("track12DZ", &track12DZ);
-	inputTree->SetBranchAddress("track13DZ", &track13DZ);
-	inputTree->SetBranchAddress("track1PVDZ", &track1PVDZ);
-	inputTree->SetBranchAddress("track2PVDZ", &track2PVDZ);
-	inputTree->SetBranchAddress("track3PVDZ", &track3PVDZ);
-	inputTree->SetBranchAddress("track1nStubs", &track1nStubs);
-	inputTree->SetBranchAddress("track2nStubs", &track2nStubs);
-	inputTree->SetBranchAddress("track1Time", &track1Time);
-	inputTree->SetBranchAddress("track2Time", &track2Time);
-	inputTree->SetBranchAddress("track3Time", &track3Time);
-	inputTree->SetBranchAddress("l1DecayMode", &l1DecayMode);
-	inputTree->SetBranchAddress("track1ChiSquared", &track1ChiSquared);
-	inputTree->SetBranchAddress("track2ChiSquared", &track2ChiSquared);
-	inputTree->SetBranchAddress("track3ChiSquared", &track3ChiSquared);
+	inputTree->SetBranchAddress("l1DM", &l1DM);
 	inputTree->SetBranchAddress("zVTX", &zVTX);
-	inputTree->SetBranchAddress("track1Z", &track1Z);
-	inputTree->SetBranchAddress("track2Z", &track2Z);
-	inputTree->SetBranchAddress("track3Z", &track3Z);
-	inputTree->SetBranchAddress("tauL1StripPt", &tauL1StripPt);
-	inputTree->SetBranchAddress("tauL1StripEta", &tauL1StripEta);
-	inputTree->SetBranchAddress("tauL1StripPhi", &tauL1StripPhi);
-	inputTree->SetBranchAddress("tauL1StripDR", &tauL1StripDR);
-	inputTree->SetBranchAddress("pfCand1HoE", &pfCand1HoE);
-	inputTree->SetBranchAddress("pfCand2HoE", &pfCand2HoE);
-	inputTree->SetBranchAddress("pfCand3HoE", &pfCand3HoE);
-	inputTree->SetBranchAddress("tauL1nEG", &tauL1nEG);
-	inputTree->SetBranchAddress("tauL1EGPt", &tauL1EGPt);
-	inputTree->SetBranchAddress("l1TauEGTime", &l1TauEGTime);
+	inputTree->SetBranchAddress("l1TauZ", &l1TauZ);
+	inputTree->SetBranchAddress("l1PVDZ", &l1PVDZ);
+
+	inputTree->SetBranchAddress("l1StripPt", &l1StripPt);
+	inputTree->SetBranchAddress("l1StripEta", &l1StripEta);
+	inputTree->SetBranchAddress("l1StripPhi", &l1StripPhi);
+	inputTree->SetBranchAddress("l1StripDR", &l1StripDR);
+
+	inputTree->SetBranchAddress("genPt", &genPt);
 
 	// Loop through taus and fill sigTree and bkgTree
 	Int_t i;
@@ -158,49 +138,10 @@ void TMVAAnalysis_tau()
 
 	// Top five variables are:
 	dataloader->AddVariable("l1Pt", 'D');
-	// dataloader->AddVariable("zVTX", 'D');
 	dataloader->AddVariable("l1Eta", 'D');
-	dataloader->AddVariable("tauL1StripPt", 'D');
-	dataloader->AddVariable("track1ChiSquared", 'D');
-	dataloader->AddVariable("l1DecayMode", 'D');
-
-	// If you want to train on all available variables, uncomment below:
-	/*
-	dataloader->AddVariable("l1Pt", 'D');
-	dataloader->AddVariable("l1Eta", 'D');
-	dataloader->AddVariable("l1Phi", 'D');
-	dataloader->AddVariable("l1Time", 'D');
-	dataloader->AddVariable("l1Iso", 'D');
-	dataloader->AddVariable("l1Iso_time", 'D');
-	dataloader->AddVariable("track12DZ", 'D');
-	dataloader->AddVariable("track13DZ", 'D');
-	dataloader->AddVariable("track1PVDZ", 'D');
-	dataloader->AddVariable("track2PVDZ", 'D');
-	dataloader->AddVariable("track3PVDZ", 'D');
-	dataloader->AddVariable("track1nStubs", 'D');
-	dataloader->AddVariable("track2nStubs", 'D');
-	dataloader->AddVariable("track1Time", 'D');
-	dataloader->AddVariable("track2Time", 'D');
-	dataloader->AddVariable("track3Time", 'D');
-	dataloader->AddVariable("l1DecayMode", 'D');
-	dataloader->AddVariable("track1ChiSquared", 'D');
-	dataloader->AddVariable("track2ChiSquared", 'D');
-	dataloader->AddVariable("track3ChiSquared", 'D');
- 	dataloader->AddVariable("zVTX", 'D');
-	dataloader->AddVariable("track1Z", 'D');
-	dataloader->AddVariable("track2Z", 'D');
-	dataloader->AddVariable("track3Z", 'D');
-	dataloader->AddVariable("tauL1StripPt", 'D');
-	dataloader->AddVariable("tauL1StripEta", 'D');
-	dataloader->AddVariable("tauL1StripPhi", 'D');
-	dataloader->AddVariable("tauL1StripDR", 'D');
-	dataloader->AddVariable("pfCand1HoE", 'D');
-	dataloader->AddVariable("pfCand2HoE", 'D');
-	dataloader->AddVariable("pfCand3HoE", 'D');
-	dataloader->AddVariable("tauL1nEG", 'D');
-	dataloader->AddVariable("tauL1EGPt", 'D');
-	dataloader->AddVariable("l1TauEGTime", 'D');
-	*/
+	dataloader->AddVariable("l1StripPt", 'D');
+	dataloader->AddVariable("l1DM", 'D');
+	dataloader->AddVariable("l1PVDZ", 'D');
 
 	// You can add an arbitrary number of signal or background trees
 	// Here we set the global event weights per tree to 1.0
@@ -213,13 +154,11 @@ void TMVAAnalysis_tau()
 	// Apply additional cuts on the signal and background samples
 	// e.g. TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
 	// Commenting out the below, which were cuts used for b jets. 
-	/*
-	TCut signalCut     = "recoTk1IP > -99 && recoTk2IP > -99 && recoTk3IP > -99  && recoTk4IP > -99";   
-	TCut backgroundCut = "recoTk1IP > -99 && recoTk2IP > -99 && recoTk3IP > -99  && recoTk4IP > -99"; 
-	*/
-        
-	TCut signalCut     = "pfCand2HoE < 20 && pfCand3HoE < 20 && l1TauEGTime < 30 ";
-	TCut backgroundCut = "pfCand2HoE < 20 && pfCand3HoE < 20 && l1TauEGTime < 30";
+
+	TCut signalCut     = "(l1Pt > 0) && \
+                              !isinf(l1Pt) && !isinf(l1Eta) && !isinf(l1StripPt) && !isinf(l1DM) && !isinf(l1PVDZ) &&\
+                              !isnan(l1Pt) && !isnan(l1Eta) && !isnan(l1StripPt) && !isnan(l1DM) && !isnan(l1PVDZ)";
+	TCut backgroundCut = signalCut;
 
 	TString datasetOptions = "SplitMode=Random";
 	dataloader->PrepareTrainingAndTestTree(signalCut, backgroundCut, datasetOptions);
@@ -230,9 +169,16 @@ void TMVAAnalysis_tau()
 	if (Use["BDT"])
 	  factory->BookMethod(dataloader, TMVA::Types::kBDT, "BDT", methodOptions);
 	//  TMVA ANN: MLP (recommended ANN) -- all ANNs in TMVA are Multilayer Perceptrons
-	/*
 	if (Use["MLP"])
-	factory->BookMethod(dataloader, TMVA::Types::kMLP, "MLP", methodOptions); */
+	  factory->BookMethod(dataloader, TMVA::Types::kMLP, "MLP", methodOptions); 
+
+	// Cross-validation
+	TMVA::CrossValidation cv(dataloader);
+	cv.BookMethod(TMVA::Types::kBDT, "BDT", "!H:!V:");
+	cv.Evaluate();
+	auto results = cv.GetResults();
+	for (auto r : results)
+	  r.Print();
 
 	// Training and Evaluation
 	factory->TrainAllMethods();
@@ -241,7 +187,6 @@ void TMVAAnalysis_tau()
 
 	// Clean up
 	outFile->Close();
-
 	delete outFile;
 }
 
