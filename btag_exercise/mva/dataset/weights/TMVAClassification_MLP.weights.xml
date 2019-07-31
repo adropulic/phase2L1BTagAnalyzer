@@ -2,13 +2,13 @@
 <MethodSetup Method="MLP::MLP">
   <GeneralInfo>
     <Info name="TMVA Release" value="4.2.1 [262657]"/>
-    <Info name="ROOT Release" value="6.10/09 [395785]"/>
+    <Info name="ROOT Release" value="6.12/07 [396295]"/>
     <Info name="Creator" value="skkwan"/>
-    <Info name="Date" value="Fri Sep  7 16:13:18 2018"/>
-    <Info name="Host" value="Linux cmsbuild09.cern.ch 2.6.32-696.18.7.el6.x86_64 #1 SMP Thu Jan 4 13:27:39 CET 2018 x86_64 x86_64 x86_64 GNU/Linux"/>
-    <Info name="Dir" value="/afs/cern.ch/work/s/skkwan/public/triggerDevel/CMSSW_10_1_5/src/L1Trigger/phase2L1BTagAnalyzer/btag_exercise/mva"/>
-    <Info name="Training events" value="13352"/>
-    <Info name="TrainingTime" value="2.15463028e+01"/>
+    <Info name="Date" value="Fri Mar 22 01:36:53 2019"/>
+    <Info name="Host" value="Linux cmsbuild87.cern.ch 2.6.32-696.30.1.el6.x86_64 #1 SMP Tue May 22 06:09:36 CEST 2018 x86_64 x86_64 x86_64 GNU/Linux"/>
+    <Info name="Dir" value="/afs/cern.ch/work/s/skkwan/public/triggerDevel/feb2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/btag_exercise/mva"/>
+    <Info name="Training events" value="179"/>
+    <Info name="TrainingTime" value="4.84879017e-01"/>
     <Info name="AnalysisType" value="Classification"/>
   </GeneralInfo>
   <Options>
@@ -45,11 +45,14 @@
     <Option name="CalculateErrors" modified="No">False</Option>
     <Option name="WeightRange" modified="No">1.000000e+00</Option>
   </Options>
-  <Variables NVar="4">
-    <Variable VarIndex="0" Expression="recoTk1IP_uint" Label="recoTk1IP_uint" Title="recoTk1IP_uint" Unit="" Internal="recoTk1IP_uint" Type="t" Min="1.00000000e+00" Max="2.55000000e+02"/>
-    <Variable VarIndex="1" Expression="recoTk2IP_uint" Label="recoTk2IP_uint" Title="recoTk2IP_uint" Unit="" Internal="recoTk2IP_uint" Type="t" Min="1.00000000e+00" Max="2.55000000e+02"/>
-    <Variable VarIndex="2" Expression="recoTk3IP_uint" Label="recoTk3IP_uint" Title="recoTk3IP_uint" Unit="" Internal="recoTk3IP_uint" Type="t" Min="1.00000000e+00" Max="2.55000000e+02"/>
-    <Variable VarIndex="3" Expression="recoTk4IP_uint" Label="recoTk4IP_uint" Title="recoTk4IP_uint" Unit="" Internal="recoTk4IP_uint" Type="t" Min="1.00000000e+00" Max="2.55000000e+02"/>
+  <Variables NVar="7">
+    <Variable VarIndex="0" Expression="recoTk1IP_uint" Label="recoTk1IP_uint" Title="recoTk1IP_uint" Unit="" Internal="recoTk1IP_uint" Type="s" Min="1.00000000e+00" Max="2.55000000e+02"/>
+    <Variable VarIndex="1" Expression="recoTk2IP_uint" Label="recoTk2IP_uint" Title="recoTk2IP_uint" Unit="" Internal="recoTk2IP_uint" Type="s" Min="1.00000000e+00" Max="2.55000000e+02"/>
+    <Variable VarIndex="2" Expression="recoTk3IP_uint" Label="recoTk3IP_uint" Title="recoTk3IP_uint" Unit="" Internal="recoTk3IP_uint" Type="s" Min="1.00000000e+00" Max="2.32000000e+02"/>
+    <Variable VarIndex="3" Expression="recoTk4IP_uint" Label="recoTk4IP_uint" Title="recoTk4IP_uint" Unit="" Internal="recoTk4IP_uint" Type="s" Min="1.00000000e+00" Max="1.73000000e+02"/>
+    <Variable VarIndex="4" Expression="muPt_uint" Label="muPt_uint" Title="muPt_uint" Unit="" Internal="muPt_uint" Type="s" Min="1.00000000e+00" Max="3.20000000e+01"/>
+    <Variable VarIndex="5" Expression="muEta_uint" Label="muEta_uint" Title="muEta_uint" Unit="" Internal="muEta_uint" Type="s" Min="3.00000000e+00" Max="8.80000000e+01"/>
+    <Variable VarIndex="6" Expression="muSIP2D_uint" Label="muSIP2D_uint" Title="muSIP2D_uint" Unit="" Internal="muSIP2D_uint" Type="s" Min="1.00000000e+00" Max="9.06000000e+02"/>
   </Variables>
   <Spectators NSpec="0"/>
   <Classes NClass="2">
@@ -60,52 +63,79 @@
   <MVAPdfs/>
   <Weights>
     <Layout NLayers="4">
-      <Layer Index="0" NNeurons="5">
-        <Neuron NSynapses="4">
-          -nan nan nan nan 
+      <Layer Index="0" NNeurons="8">
+        <Neuron NSynapses="7">
+          -nan -nan -nan nan -nan -nan -nan 
         </Neuron>
-        <Neuron NSynapses="4">
-          -nan nan nan nan 
+        <Neuron NSynapses="7">
+          -nan -nan -nan nan -nan -nan -nan 
         </Neuron>
-        <Neuron NSynapses="4">
-          -nan nan nan nan 
+        <Neuron NSynapses="7">
+          -nan -nan -nan nan -nan -nan -nan 
         </Neuron>
-        <Neuron NSynapses="4">
-          -nan nan nan nan 
+        <Neuron NSynapses="7">
+          -nan -nan -nan nan -nan -nan -nan 
         </Neuron>
-        <Neuron NSynapses="4">
-          -nan nan nan nan 
+        <Neuron NSynapses="7">
+          -nan -nan -nan nan -nan -nan -nan 
         </Neuron>
-      </Layer>
-      <Layer Index="1" NNeurons="5">
-        <Neuron NSynapses="3">
-          -nan -nan -nan 
+        <Neuron NSynapses="7">
+          -nan -nan -nan nan -nan -nan -nan 
         </Neuron>
-        <Neuron NSynapses="3">
-          nan nan nan 
+        <Neuron NSynapses="7">
+          -nan -nan -nan nan -nan -nan -nan 
         </Neuron>
-        <Neuron NSynapses="3">
-          nan nan nan 
-        </Neuron>
-        <Neuron NSynapses="3">
-          nan nan nan 
-        </Neuron>
-        <Neuron NSynapses="3">
-          nan nan nan 
+        <Neuron NSynapses="7">
+          -nan -nan -nan nan -nan -nan -nan 
         </Neuron>
       </Layer>
-      <Layer Index="2" NNeurons="4">
-        <Neuron NSynapses="1">
-          nan 
+      <Layer Index="1" NNeurons="8">
+        <Neuron NSynapses="6">
+          -nan -nan -nan -nan -nan -nan 
         </Neuron>
-        <Neuron NSynapses="1">
-          nan 
+        <Neuron NSynapses="6">
+          -nan -nan -nan -nan -nan -nan 
         </Neuron>
+        <Neuron NSynapses="6">
+          -nan -nan -nan -nan -nan -nan 
+        </Neuron>
+        <Neuron NSynapses="6">
+          nan nan nan nan nan nan 
+        </Neuron>
+        <Neuron NSynapses="6">
+          -nan -nan -nan -nan -nan -nan 
+        </Neuron>
+        <Neuron NSynapses="6">
+          -nan -nan -nan -nan -nan -nan 
+        </Neuron>
+        <Neuron NSynapses="6">
+          -nan -nan -nan -nan -nan -nan 
+        </Neuron>
+        <Neuron NSynapses="6">
+          -nan -nan -nan -nan -nan -nan 
+        </Neuron>
+      </Layer>
+      <Layer Index="2" NNeurons="7">
         <Neuron NSynapses="1">
-          nan 
+          -nan 
         </Neuron>
         <Neuron NSynapses="1">
           -nan 
+        </Neuron>
+        <Neuron NSynapses="1">
+          -nan 
+        </Neuron>
+        <Neuron NSynapses="1">
+          -nan 
+        </Neuron>
+        <Neuron NSynapses="1">
+          -nan 
+        </Neuron>
+        <Neuron NSynapses="1">
+          -nan 
+        </Neuron>
+        <Neuron NSynapses="1">
+          nan 
         </Neuron>
       </Layer>
       <Layer Index="3" NNeurons="1">

@@ -10,6 +10,7 @@ from Configuration.StandardSequences.Eras import eras
 
 #process = cms.Process('REPR',eras.Phase2C4_trigger)
 #process = cms.Process('REPR',eras.Phase2C4_timing_layer_bar)
+process = cms.Process('REPR')
 
 process = cms.Process('REPR')
 
@@ -40,7 +41,10 @@ process.source = cms.Source("PoolSource",
                                                                        '/store/mc/PhaseIIMTDTDRAutumn18DR/DYToLL_M-50_14TeV_TuneCP5_pythia8/FEVT/PU200_103X_upgrade2023_realistic_v2-v2/910000/9D485410-BBF7-D841-9048-E273729D9E24',
                                                                        '/store/mc/PhaseIIMTDTDRAutumn18DR/DYToLL_M-50_14TeV_TuneCP5_pythia8/FEVT/PU200_103X_upgrade2023_realistic_v2-v2/910000/E4590EF0-336D-CB48-B5D8-2349E8573FCF.root',
                                                                        '/store/mc/PhaseIIMTDTDRAutumn18DR/DYToLL_M-50_14TeV_TuneCP5_pythia8/FEVT/PU200_103X_upgrade2023_realistic_v2-v2/910000/F37B1F94-AD89-DF40-8D40-3EE87E8339A1.root'
-)
+),
+                            eventsToProcess = cms.untracked.VEventRange('1:1-1:84181'),
+                            eventsToSkip = cms.untracked.VEventRange('1:84182'),
+
 )
 
 process.source.lumisToProcess = cms.untracked.VLuminosityBlockRange("1:337")
@@ -202,7 +206,7 @@ process.btaggingPath = cms.Path(
 
 # Schedule definition
 process.schedule = cms.Schedule(process.L1simulation_step,
-                                process.FEVTDEBUGHLToutput_step,
+                                #process.FEVTDEBUGHLToutput_step, # Uncomment to save step2_2ev_reprocess_slim.root
                                 process.EcalEBtp_step,
                                 process.L1TrackTrigger_step,
                                 process.btaggingPath,
