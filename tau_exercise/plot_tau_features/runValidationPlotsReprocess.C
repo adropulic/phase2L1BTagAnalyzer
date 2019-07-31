@@ -5,16 +5,28 @@ void runValidationPlotsReprocess()
   gROOT->ProcessLine(".L comparisonPlots.C");
  
   TString treePath = "L1TauAnalyzer/efficiencyTree";
-  TString inputDirectory  = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/jul2019_2/CMSSW_10_6_0_pre4/src/L1Trigger/phase2L1TauAnalyzer/test/analyzer-dyll.root";
-  TString outputDirectory = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/apr2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/tau_exercise/plot_tau_features/validationPlots/dyll/dyll_";
+
+  /**** Method 1 for booking input/output directory ****/
+  // TString inputDirectory  = "inputs/2019_Jul30-GluGluHiggsToTauTau-200PU-baby.root";
+  // TString outputDirectory = "validationPlots/baby_2019_Jul30_GluGluHTauTau/baby_2019_Jul30_GluGluHTauTau_";
+  /**** End of Method 1 ***/
+
+  /**** Method 2 for booking input/output directory (see below for the assumed file/naming convention ****/
+  TString description = "2019_Jul30-GluGluHiggsToTauTau-200PU-baby";
+  TString inputDirectory = ("inputs/" + description + ".root");
+  /* Make the output directory */ 
+  gSystem->Exec("mkdir validationPlots/" + description);
+  TString outputDirectory = ("validationPlots/" + description + "/" + description + "_");
+  /**** End of Method 2 ***/
 
   TString sigCut="(genPt>20)&&(l1Pt>0)";
   TString bkgCut="(genPt<5)&&(l1Pt>0)";
-  comparisonPlots("l1Pt", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1Pt", 150, 0, 100);
-  comparisonPlots("l1Eta", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1Eta", 100, -3, 3);
-  comparisonPlots("l1Phi", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1Phi", 100, -4, 4);
-  comparisonPlots("l1TauZ", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1TauZ", 180, -250, 310);
-  comparisonPlots("l1PVDZ", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1PVDZ", 180, -250, 310);
+  comparisonPlots("l1Pt", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1Pt", 80, 0, 100);
+  comparisonPlots("l1Eta", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1Eta", 50, -3, 3);
+  comparisonPlots("l1Phi", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1Phi", 50, -4, 4);
+  comparisonPlots("l1TauZ", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1TauZ", 80, -250, 310);
+  comparisonPlots("l1PVDZ", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1PVDZ", 80, -250, 310);
+
   // comparisonPlots("l1Time", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "l1Time", 200, 2, 20);
   // l1Iso has the tau included in the sum so it must be removed
   // comparisonPlots("l1Iso-l1Pt", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "l1Iso", 200, -10, 10);
@@ -40,7 +52,7 @@ void runValidationPlotsReprocess()
   comparisonPlots("track3Time", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "track3Time", 200, 0, 22);
   */
   // Decay mode
-  comparisonPlots("l1DM", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1DM", 20, -1, 12);
+  comparisonPlots("l1DM", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1DM", 15, -1, 12);
   // Chi Squared
   /*
   comparisonPlots("track1ChiSquared", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "track1ChiSquared", 300, 0, 200);
@@ -48,7 +60,7 @@ void runValidationPlotsReprocess()
   comparisonPlots("track3ChiSquared", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "track3ChiSquared", 300, 0, 180);
   */
   // zVTX
-  comparisonPlots("zVTX", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "zVTX", 100, -17, 17);
+  comparisonPlots("zVTX", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "zVTX", 50, -17, 17);
   // Track Zs
   /*
   comparisonPlots("track1Z", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "track1Z", 200, -30, 30);
@@ -56,10 +68,12 @@ void runValidationPlotsReprocess()
   comparisonPlots("track3Z", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "track3Z", 200, -30, 30);
   */
   // Tau L1 Strip values
-  comparisonPlots("l1StripPt", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "tauL1StripPt", 150, 0, 100);
-  comparisonPlots("l1StripEta", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "tauL1StripEta", 100, -2, 2);
-  comparisonPlots("l1StripPhi", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "tauL1StripPhi", 100, -2, 2);
-  comparisonPlots("l1StripDR", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "tauL1StripDeltaR", 100, 0, 5);
+  
+  comparisonPlots("l1StripPt", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "tauL1StripPt", 80, 0, 100);
+  comparisonPlots("l1StripEta", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "tauL1StripEta", 60, -2, 2);
+  comparisonPlots("l1StripPhi", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "tauL1StripPhi", 60, -2, 2);
+  comparisonPlots("l1StripDR", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "tauL1StripDeltaR", 60, 0, 5);
+  
   // pfCand
   /*
   comparisonPlots("pfCand1HoE", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "pfCand1HoE", 400, -11, 20);
@@ -72,4 +86,6 @@ void runValidationPlotsReprocess()
   comparisonPlots("tauL1EGPt", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "tauL1EGPt", 200, -20, 120);
   comparisonPlots("l1TauEGTime", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "l1TauEGTime", 200, 0, 20);
   */
+  // Reco
+  comparisonPlots("recoPt", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "recoPt", 80, 0, 100);
 }
