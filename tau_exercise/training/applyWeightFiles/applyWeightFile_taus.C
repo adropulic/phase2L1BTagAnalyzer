@@ -76,8 +76,14 @@ void applyWeightFile_taus()
    Float_t pfCand1HoE_f, pfCand2HoE_f, pfCand3HoE_f, tauL1nEG_f, tauL1EGPt_f, l1TauEGTime_f;
    Float_t genPt_f;
 
-   reader->AddVariable("l1Pt", &l1Pt_f);
+   reader->AddVariable("l1Pt", &l1Pt_f);   
+   reader->AddVariable("l1Eta", &l1Eta_f);
+   reader->AddVariable("tauL1StripPt", &tauL1StripPt_f);
+   reader->AddVariable("track1ChiSquared", &track1ChiSquared_f);
+   reader->AddVariable("l1DecayMode", &l1DecayMode_f);
    
+   /*
+   reader->AddVariable("l1Pt", &l1Pt_f);
    reader->AddVariable("l1Eta", &l1Eta_f);
    reader->AddVariable("l1Phi", &l1Phi_f);
    reader->AddVariable("l1Time", &l1Time_f);
@@ -111,6 +117,7 @@ void applyWeightFile_taus()
    reader->AddVariable("tauL1nEG", &tauL1nEG_f);
    reader->AddVariable("tauL1EGPt", &tauL1EGPt_f);
    reader->AddVariable("l1TauEGTime", &l1TauEGTime_f);
+   */
 
    /* Book the MVA methods. */
    for (std::map<std::string,int>::iterator it = Use.begin(); it != Use.end(); it++) {
@@ -130,7 +137,7 @@ void applyWeightFile_taus()
    // hist["MLP"] = new TH1F("MVA_MLP", "MVA_MLP", nbin, -1.25, 1.25);
 
    /* Prepare input tree. */
-   TString fname = TString("/afs/cern.ch/work/s/skkwan/public/triggerDevel/feb2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/tau_exercise/files/dyll-pilot.root");
+   TString fname = TString("../inputs/dyll-pilot.root");
    std::cout << "--- TMVAClassificationApp    : Accessing " << fname << "!" << std::endl;
    TFile *input = TFile::Open(fname);
    if (!input)
@@ -241,7 +248,7 @@ void applyWeightFile_taus()
    std::cout << "--- End of event loop: "; sw.Print();
 
    /* Write histograms */
-   TFile *target  = new TFile( "appliedWeightFile_dyll-pilot.root", "RECREATE" );
+   TFile *target  = new TFile( "outputs/appliedWeightFile_dyll-pilot.root", "RECREATE" );
    for (std::map<std::string,int>::iterator it = Use.begin(); it != Use.end(); it++)
       if (it->second) hist[it->first]->Write();
 

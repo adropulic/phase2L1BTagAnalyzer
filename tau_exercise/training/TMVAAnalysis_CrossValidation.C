@@ -152,7 +152,8 @@ void TMVAAnalysis_CrossValidation()
   // Apply additional cuts on the signal and background samples
   // e.g. TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
         
-  TCut signalCut     = "!isinf(l1Pt) && !isinf(l1Eta) && !isinf(l1StripPt) && !isinf(l1DM) && !isinf(l1PVDZ) &&\
+  TCut signalCut     = "(l1Pt > 0) && \
+                        !isinf(l1Pt) && !isinf(l1Eta) && !isinf(l1StripPt) && !isinf(l1DM) && !isinf(l1PVDZ) &&	\
                         !isnan(l1Pt) && !isnan(l1Eta) && !isnan(l1StripPt) && !isnan(l1DM) && !isnan(l1PVDZ)";
   TCut backgroundCut = signalCut;
   

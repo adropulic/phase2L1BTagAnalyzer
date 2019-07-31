@@ -5,12 +5,12 @@ void runValidationPlots()
   gROOT->ProcessLine(".L comparisonPlots.C");
  
   TString treePath = "L1MTDAnalyzer/L1TauTree";
-  TString inputDirectory  = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/apr2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/tau_exercise/files/inputs/dyll.root";
-  TString outputDirectory = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/apr2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/tau_exercise/plot_tau_features/validationPlots/dyll_";
+  TString inputDirectory  = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/apr2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/tau_exercise/files/inputs/analyzer-dyll-4FEVT.root";
+  TString outputDirectory = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/apr2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/tau_exercise/plot_tau_features/validationPlots/dyll-4FEVT/dyll-4FEVT_";
   //  TString outputDirectory = "~/Dropbox/Taus/validationPlots/";
 
-  comparisonPlots("l1Pt", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "l1Pt", 200, 0, 100);
-  comparisonPlots("l1Eta", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "l1Eta", 200, -4, 4);
+  comparisonPlots("l1Pt", "(genPt>20)&&(l1Pt>0)", "genPt<5", treePath, inputDirectory, outputDirectory, "l1Pt", 200, 0, 100);
+  comparisonPlots("l1Eta", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "l1Eta", 200, -3, 3);
   comparisonPlots("l1Phi", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "l1Phi", 200, -4, 4);
   comparisonPlots("l1Time", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "l1Time", 200, 2, 20);
   // l1Iso has the tau included in the sum so it must be removed

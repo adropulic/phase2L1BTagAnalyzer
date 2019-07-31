@@ -42,7 +42,7 @@
 void TMVAAnalysis_tau()
 {
     //--------------------------------------------
-    // Choose TMVA methods to use
+    // Choose TMVA methods to use & user options
     //--------------------------------------------
 
     // Use key-value pairs to indicate which TMVA methods we want to use
@@ -58,12 +58,12 @@ void TMVAAnalysis_tau()
     // Load data
     //--------------------------------------------
     TString dir = "inputs/";
-    TString file = "analyzer-dyll-4FEVT";
+    TString file = "dyll";
     TString inputFilename = dir + file + ".root";
 
 	// Get input file and declare output file where TMVA will store ntuples, hists, etc.
 	TFile *inputFile = new TFile(inputFilename.Data());
-	TString outputFilename = "TMVA_training_taus_out_4FEVT" + file + ".root";
+	TString outputFilename = "TMVA_training_taus_out_dyll" + file + ".root";
 	TFile *outFile = new TFile(outputFilename, "RECREATE");
 	
 	// Get input tree
