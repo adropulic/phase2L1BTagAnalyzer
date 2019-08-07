@@ -21,6 +21,7 @@
 #include <iostream>
 #include <array>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string>
 #include <fstream>
 
@@ -41,21 +42,21 @@
 /**************************************************************/
 
 /* Number of bins for each variable */
-Int_t NumBins[] = {4, 3, 4, 4, 3};
+Int_t NumBins[] = {4, 3, 4, 4, 5};
 
 /* Declare values for each variable (must be in the same order
    as NumBins, and the same order as the ones in the TMVA
    weight file). */ 
-Float_t ValsL1Pt[] = {10., 35., 75., 300.};
-Float_t ValsL1Eta[] = {-1.99, 0, 1.99};
-Float_t ValsTauL1StripPt[] = {0.0, 10.5, 40.0, 80.0};
-Float_t ValsTrack1ChiSquared[] = {5.0, 15.0, 30.0, 100.0};
-Float_t ValsL1DecayMode[] = {0, 1, 10};
+Float_t ValsL1Pt[]      = {10.0, 35.0, 75.0, 300.0};
+Float_t ValsL1Eta[]     = {-1.99, 0.0, 1.99};
+Float_t ValsL1StripPt[] = {0.0, 10.5, 40.0, 80.0};
+Float_t ValsL1DM[]      = {0.0, 1.0, 10.0}; 
+Float_t ValsL1PVDZ[]    = {-200.0, -75.0, 0.0, 75.0, 200.0};
 Float_t *Vals[] = {ValsL1Pt,
 		   ValsL1Eta,
-		   ValsTauL1StripPt,
-		   ValsTrack1ChiSquared,
-		   ValsL1DecayMode};
+		   ValsL1StripPt,
+		   ValsL1DM,
+		   ValsL1PVDZ};
 
 /**************************************************************/
 
@@ -109,14 +110,25 @@ void printTable(Float_t **t, Int_t nRows, Int_t nCols)
 void writeTable(Float_t **t, Int_t nRows, Int_t nCols, 
 		const char* fName)
 {
-  ofstream myFile;
-  myFile.open(fName);
+  FILE *fp;
+  
+  fp = fopen(fName, "w");
+  
   for (int i = 0; i < nRows; i++)
     {
       for (int j = 0; j < nCols; j++)
-	myFile << t[i][j] << " ";
-      myFile << "\n";
+	{
+	  fprintf(fp, "%8f", t[i][j]);
+	
+	  /* Put a space between each column except after the
+	     last column. */
+	  if (j < (nCols - 1))
+	    fprintf(fp, " ");
+	}
+      fprintf(fp, "\n");
     }
+
+  fclose(fp);
 }
 
 /**************************************************************/
@@ -205,9 +217,9 @@ Float_t** fillTableWithPermutedValues(Int_t numVars,
     }  /* end of loop over variables */
 
   /* Set L1StripPt = 0 for Decay Modes 0 or 10. */
-  Int_t locStripPt = getIndexOf(ValsTauL1StripPt, Vals, numVars);
-  Int_t locDM = getIndexOf(ValsL1DecayMode, Vals, numVars + 1);
-  //  printf("TauL1StripPt's index is %d\n", locStripPt);
+  Int_t locStripPt = getIndexOf(ValsL1StripPt, Vals, numVars);
+  Int_t locDM = getIndexOf(ValsL1DM, Vals, numVars + 1);
+  //  printf("L1StripPt's index is %d\n", locStripPt);
   //  printf("L1DecayMode's index is %d\n", locDM);
   if ((locStripPt != -1) && (locDM != -1))
     {
@@ -242,13 +254,13 @@ Float_t **fillTableWithTMVAdiscriminant(Float_t **table,
   /* Create variables and declare them to the Reader. The
      variable names must correspond in name and type to those
      given in the weight file(s) used. */
-  Float_t l1Pt, l1Eta, tauL1StripPt, track1ChiSquared, l1DecayMode;
+  Float_t l1Pt, l1Eta, l1StripPt, l1DM, l1PVDZ;
 
   reader->AddVariable("l1Pt", &l1Pt);
   reader->AddVariable("l1Eta", &l1Eta);
-  reader->AddVariable("tauL1StripPt", &tauL1StripPt);
-  reader->AddVariable("track1ChiSquared", &track1ChiSquared);
-  reader->AddVariable("l1DecayMode", &l1DecayMode);
+  reader->AddVariable("l1StripPt", &l1StripPt);
+  reader->AddVariable("l1DM", &l1DM);
+  reader->AddVariable("l1PVDZ", &l1PVDZ);
 
 
   /* Get the number of rows in table. */
@@ -320,7 +332,7 @@ int makeTable(void)
   //  printTable(table, getNumRows(nVars, NumBins), nVars + 1);
 
   writeTable(table, getNumRows(nVars, NumBins), nVars + 1,
-	     "log");
+	     "table.txt");
 
   delete(table);
   
