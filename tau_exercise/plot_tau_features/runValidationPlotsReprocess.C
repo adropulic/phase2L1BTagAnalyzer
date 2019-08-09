@@ -12,8 +12,8 @@ void runValidationPlotsReprocess()
   /**** End of Method 1 ***/
 
   /**** Method 2 for booking input/output directory (see below for the assumed file/naming convention ****/
-  TString description = "2019_Jul30-GluGluHiggsToTauTau-200PU-baby";
-  TString inputDirectory = ("inputs/" + description + ".root");
+  TString description = "GluGluHiggsToTauTau";
+  TString inputDirectory = ("../ntuples/" + description + ".root");
   /* Make the output directory */ 
   gSystem->Exec("mkdir validationPlots/" + description);
   TString outputDirectory = ("validationPlots/" + description + "/" + description + "_");
@@ -69,10 +69,10 @@ void runValidationPlotsReprocess()
   */
   // Tau L1 Strip values
   
-  comparisonPlots("l1StripPt", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "tauL1StripPt", 80, 0, 100);
-  comparisonPlots("l1StripEta", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "tauL1StripEta", 60, -2, 2);
-  comparisonPlots("l1StripPhi", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "tauL1StripPhi", 60, -2, 2);
-  comparisonPlots("l1StripDR", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "tauL1StripDeltaR", 60, 0, 5);
+  comparisonPlots("l1StripPt", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1StripPt", 80, 0, 100);
+  comparisonPlots("l1StripEta", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1StripEta", 60, -2, 2);
+  comparisonPlots("l1StripPhi", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1StripPhi", 60, -2, 2);
+  comparisonPlots("l1StripDR", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1StripDeltaR", 60, 0, 5);
   
   // pfCand
   /*
