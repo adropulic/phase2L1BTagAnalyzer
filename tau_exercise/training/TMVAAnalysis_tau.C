@@ -38,6 +38,7 @@
 #include "TMVA/TMVAGui.h"
 
 #include <math.h>
+#include <vector>
 
 void TMVAAnalysis_tau()
 {
@@ -57,28 +58,65 @@ void TMVAAnalysis_tau()
     //--------------------------------------------
     // Load data
     //--------------------------------------------
-    TString dir = "inputs/";
-    TString file = "dyll";
-    TString inputFilename = dir + file + ".root";
+    std::vector<TString> fileNames{"DYtoLL-noPU.root", "GluGluHiggsToTauTau.root"};
 
-	// Get input file and declare output file where TMVA will store ntuples, hists, etc.
-	TFile *inputFile = new TFile(inputFilename.Data());
-	TString outputFilename = "TMVA_training_taus_out_dyll" + file + ".root";
-	TFile *outFile = new TFile(outputFilename, "RECREATE");
-	
-	// Get input tree
+    // Set up output file where TMVA will write histograms etc.                                                                                          
+    TString outFilePath = "trainingOutputs/2019_Aug12_DYToLL_GluGluHiggsToTauTau.root";
+    TFile *outFile = new TFile(outFilePath, "RECREATE");
+
+    // Declare variables to read from TTree                                                                               
+    Double_t l1Pt, l1Eta, l1Phi;
+    Double_t l1DM;
+    Double_t zVTX, l1TauZ, l1PVDZ;
+    Double_t l1StripPt, l1StripEta, l1StripPhi, l1StripDR;
+    Double_t genPt;
+
+    //--------------------------------------------                                                                                                       
+    // Set up TMVA                                                                                                                                       
+    //--------------------------------------------                                                                                                       
+
+    // Create the factory object. Later we can choose the methods whose                                                                                  
+    // performance we'd like to investigate. The factory is the only                                                                                     
+    // TMVA object we have to interact with.                                                                                                             
+    //                                                                                                                                                   
+    // The first argument is the base of the name of all the weightfiles                                                                                 
+    // in the directory weight/                                                                                                                          
+    //                                                                                                                                                   
+    // The second argument is the output file for the training results.                                                                                  
+    TString factoryOptions = "AnalysisType=Classification";
+
+    TMVA::Factory *factory = new TMVA::Factory("TMVAClassification",
+					       outFile,
+					       factoryOptions);
+
+    TMVA::DataLoader *dataloader = new TMVA::DataLoader("dataset");
+
+    // Define the input variables that will be used for the MVA training                                                                                 
+    // Note that you may also use variable expressions, such as:                                                                                         
+    // "3*var1/var2*abs(var3)". [All types of expressions that can also be                                                                               
+    // parsed by TTree::Draw( "expression" )]                                                                                                            
+
+    // Top five variables are:                                                                                                                           
+    dataloader->AddVariable("l1Pt", 'D');
+    dataloader->AddVariable("l1Eta", 'D');
+    dataloader->AddVariable("l1StripPt", 'D');
+    dataloader->AddVariable("l1DM", 'D');
+    dataloader->AddVariable("l1PVDZ", 'D');
+
+    //-------------------------------------------- 
+    // Load data (cont.d)
+    //--------------------------------------------   
+    
+    for (std::vector<TString>::iterator it = fileNames.begin(); it != fileNames.end(); ++it)
+      {
+	TString dir = "../ntuples/" + *it;
+	TFile *inputFile = new TFile(dir.Data());
+
+        // Get input tree
 	TTree *inputTree = (TTree*) inputFile->Get("L1TauAnalyzer/efficiencyTree");
 
-	// Split the signal and background into two trees
-	TTree *sigTree = inputTree->CloneTree(0);    // Create a clone of oldtree and copy 0 entries
-	TTree *bkgTree = inputTree->CloneTree(0);
-
-	// Declare variables to read from TTree
-	Double_t l1Pt, l1Eta, l1Phi;
-	Double_t l1DM;
-	Double_t zVTX, l1TauZ, l1PVDZ;
-	Double_t l1StripPt, l1StripEta, l1StripPhi, l1StripDR;
-	Double_t genPt;
+	//	TTree *sigTree = inputTree->CopyAddresses(inputTree);
+	//	TTree *bkgTree = inputTree->CopyAddresses(inputTree);
 
 	// Set branch addresses
 	inputTree->SetBranchAddress("genPt", &genPt);
@@ -96,58 +134,32 @@ void TMVAAnalysis_tau()
 	inputTree->SetBranchAddress("l1StripPhi", &l1StripPhi);
 	inputTree->SetBranchAddress("l1StripDR", &l1StripDR);
 
-	inputTree->SetBranchAddress("genPt", &genPt);
+	// Split the signal and background into two trees
+	TTree *sigTree = inputTree->CloneTree(0);    // Create a clone of oldtree and copy 0 entries
+	TTree *bkgTree = inputTree->CloneTree(0);
+	
 
 	// Loop through taus and fill sigTree and bkgTree
 	Int_t i;
 	for ( i = 0; i < inputTree->GetEntries(); i++ ) {
-	        inputTree->GetEntry(i);
-		
-		if ( genPt > 20 ) {
-			sigTree->Fill();
-		}
-		else {
-			bkgTree->Fill();
-		}
+	  inputTree->GetEntry(i);
+	  
+	  if ( genPt > 20 ) {
+	    sigTree->Fill();
+	  }
+	  else {
+	    bkgTree->Fill();
+	  }
 	} 
-
-	//--------------------------------------------
-	// Set up TMVA
-	//--------------------------------------------	
-
-	// Create the factory object. Later we can choose the methods whose
-	// performance we'd like to investigate. The factory is the only 
-	// TMVA object we have to interact with.
-	//
-	// The first argument is the base of the name of all the weightfiles
-	// in the directory weight/
-	// 
-	// The second argument is the output file for the training results.
-	TString factoryOptions = "AnalysisType=Classification";
-
-	TMVA::Factory *factory = new TMVA::Factory("TMVAClassification",
-						   outFile,
-						   factoryOptions);
-
-	TMVA::DataLoader *dataloader = new TMVA::DataLoader("dataset");
-
-	// Define the input variables that will be used for the MVA training
-	// Note that you may also use variable expressions, such as: 
-	// "3*var1/var2*abs(var3)". [All types of expressions that can also be
-	// parsed by TTree::Draw( "expression" )]
-
-	// Top five variables are:
-	dataloader->AddVariable("l1Pt", 'D');
-	dataloader->AddVariable("l1Eta", 'D');
-	dataloader->AddVariable("l1StripPt", 'D');
-	dataloader->AddVariable("l1DM", 'D');
-	dataloader->AddVariable("l1PVDZ", 'D');
 
 	// You can add an arbitrary number of signal or background trees
 	// Here we set the global event weights per tree to 1.0
 	// It is possible to set event-wise weights (see tutorial)
 	dataloader->AddSignalTree(sigTree, 1.0);
 	dataloader->AddBackgroundTree(bkgTree, 1.0);
+	
+
+      } // end of loop over files   
 
 	// End of tree registration
 
@@ -164,13 +176,13 @@ void TMVAAnalysis_tau()
 	dataloader->PrepareTrainingAndTestTree(signalCut, backgroundCut, datasetOptions);
 
 	// Method specification
-	TString methodOptions = "";
+	TString methodOptions = "NTrees=400";  // default is NTrees = 800
 	//  Adaptive Boost
 	if (Use["BDT"])
 	  factory->BookMethod(dataloader, TMVA::Types::kBDT, "BDT", methodOptions);
 	//  TMVA ANN: MLP (recommended ANN) -- all ANNs in TMVA are Multilayer Perceptrons
-	if (Use["MLP"])
-	  factory->BookMethod(dataloader, TMVA::Types::kMLP, "MLP", methodOptions); 
+	//	if (Use["MLP"])
+	//        factory->BookMethod(dataloader, TMVA::Types::kMLP, "MLP", methodOptions); 
 
 	// Cross-validation
 	TMVA::CrossValidation cv(dataloader);
