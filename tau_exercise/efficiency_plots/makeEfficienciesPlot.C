@@ -21,6 +21,7 @@ void makeEfficienciesPlot(void)
 
   int nBins;
   float xMin, xMax, binWidth;
+  float wpLoose, wpMedium, wpTight; 
 
   /*******************************************************/
   /* efficiency as a function of BDT cutoff              */
@@ -31,6 +32,7 @@ void makeEfficienciesPlot(void)
 
   TH1F *effVsBDTCutoff = new TH1F("effVsBDTCutoff", "Efficiency vs. BDT cutoff", nBins, xMin, xMax);
   binWidth = ((xMax - xMin) / nBins);
+
   for (int i = 0; i < (nBins + 1); i++)
     {
       float x = (xMin + i * binWidth);
@@ -47,13 +49,25 @@ void makeEfficienciesPlot(void)
 
   nBins = 100;
   xMin = 0, xMax = 100;
-  TH1F *effVsRecoPt = new TH1F("effVsRecoPt", "Efficiency vs. recoPt", nBins, xMin, xMax);
+  wpLoose = -0.1;
+  wpMedium = -0.185;
+  wpTight = -0.3;  
+
+  TH1F *effVsRecoPtLoose  = new TH1F("effVsRecoPtLoose", "Efficiency vs. recoPt (loose)", nBins, xMin, xMax);
+  TH1F *effVsRecoPtMedium = new TH1F("effVsRecoPtMedium", "Efficiency vs. recoPt (medium)", nBins, xMin, xMax);
+  TH1F *effVsRecoPtTight = new TH1F("effVsRecoPtTight", "Efficiency vs. recoPt (tight)", nBins, xMin, xMax);
+
   binWidth = ((xMax - xMin) / nBins);
+
   for (int i = 0; i < (nBins + 1); i++)
     {
       float x = (xMin + i * binWidth);
-      float y = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, x, 20, 0, 2.5, -0.1);
-      effVsRecoPt->Fill(x + (binWidth / 2), y);
+      float yLoose = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, x, 20, 0, 2.5, wpLoose);
+      float yMedium = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, x, 20, 0, 2.5, wpMedium);
+      float yTight = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, x, 20, 0, 2.5, wpTight);
+      effVsRecoPtLoose->Fill(x + (binWidth / 2), yLoose);
+      effVsRecoPtMedium->Fill(x + (binWidth / 2), yMedium);
+      effVsRecoPtTight->Fill(x + (binWidth / 2), yTight);
     }
 
 
@@ -94,18 +108,34 @@ void makeEfficienciesPlot(void)
   leg = new TLegend(0.60,0.75,0.85,0.9);
   applyLegStyle(leg);
 
-  effVsRecoPt->SetMarkerColor(0);
-  effVsRecoPt->SetFillStyle(1001);
-  effVsRecoPt->SetFillColorAlpha(kBlue+2, 0.1);
-  effVsRecoPt->SetLineWidth(1);
-  effVsRecoPt->SetLineColor(kBlue+2);
+  effVsRecoPtLoose->SetMarkerColor(0);
+  effVsRecoPtLoose->SetFillStyle(1001);
+  effVsRecoPtLoose->SetFillColorAlpha(kBlue+2, 0.1);
+  effVsRecoPtLoose->SetLineWidth(1);
+  effVsRecoPtLoose->SetLineColor(kBlue+2);
 
-  effVsRecoPt->Draw("HIST");
-  effVsRecoPt->GetXaxis()->SetTitle("recoPt");
-  effVsRecoPt->GetYaxis()->SetTitle("Efficiency");
+  effVsRecoPtMedium->SetMarkerColor(0);
+  effVsRecoPtMedium->SetFillStyle(1001);
+  effVsRecoPtMedium->SetFillColorAlpha(kGreen+2, 0.1);
+  effVsRecoPtMedium->SetLineWidth(1);
+  effVsRecoPtMedium->SetLineColor(kGreen+2);
+
+  effVsRecoPtTight->SetMarkerColor(0);
+  effVsRecoPtTight->SetFillStyle(1001);
+  effVsRecoPtTight->SetFillColorAlpha(kRed+2, 0.1);
+  effVsRecoPtTight->SetLineWidth(1);
+  effVsRecoPtTight->SetLineColor(kRed+2);
+
+  effVsRecoPtLoose->Draw("HIST");
+  effVsRecoPtMedium->Draw("HIST SAME");
+  effVsRecoPtTight->Draw("HIST SAME");
+  effVsRecoPtLoose->GetXaxis()->SetTitle("recoPt");
+  effVsRecoPtLoose->GetYaxis()->SetTitle("Efficiency");
   
   leg->SetHeader("Phase 2 L1 PF Taus");
-  leg->AddEntry(effVsBDTCutoff, "efficiency", "l");
+  leg->AddEntry(effVsRecoPtLoose, "Loose", "l");
+  leg->AddEntry(effVsRecoPtMedium, "Medium", "l");
+  leg->AddEntry(effVsRecoPtTight, "Tight", "l");
   leg->Draw();
 
   Tcan->cd();
