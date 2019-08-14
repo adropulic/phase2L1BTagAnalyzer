@@ -18,6 +18,8 @@
 #include <TFormula.h>
 #include <iostream>
 #include <string>
+#include <vector>
+
 
 #include <iostream>
 #include <cmath>
@@ -76,7 +78,23 @@ void applyLegStyle(TLegend *leg){
 
 /*******************************************************************/
 
-/* Calculates and returns the efficiency of a BDT discriminant cut at
+/* Returns the uncertainty of the fraction x/y, given
+   x and y and their respectively uncertainties deltaX and deltaY. */
+
+float uncertaintyDivXY(float x, float deltaX, 
+		       float y, float deltaY)
+{
+  float z, deltaZ;
+
+  z = x/y;
+  deltaZ = abs(z) * sqrt(pow(deltaX/x, 2) + pow(deltaY/y, 2));
+  return deltaZ;
+}
+
+/*******************************************************************/
+
+/* Calculates and returns the efficiency and statistical uncertainty
+   of a BDT discriminant cut at
    the value bdtCut for Level 1 taus, using an TTree (ntuple) of L1
    taus pointed to by treePath and rootFileDirectory. 
    The BDT weight file is read from weightFileDirectory.
@@ -86,27 +104,29 @@ void applyLegStyle(TLegend *leg){
    reco).
 */
    
-float calculateEfficiency(TString treePath, TString rootFileDirectory,
-			  TString weightFileDirectory,
-			  double pTCut,
-			  double l1PtCut,
-			  double absEtaLowerBound,
-			  double absEtaUpperBound,
-			  double bdtCut)
+std::vector<float> calculateEfficiency(TString treePath, TString rootFileDirectory,
+			   TString weightFileDirectory,
+			   double pTCut,
+			   double l1PtCut,
+			   double absEtaLowerBound,
+			   double absEtaUpperBound,
+			   double bdtCut)
 {
+  std::vector<float> effVec;
+  
   /* Load file */
   TFile *file = new TFile(rootFileDirectory);
   if (!file->IsOpen() || file==0 )
     {
       std::cout<<"ERROR FILE "<< rootFileDirectory <<" NOT FOUND; EXITING"<<std::endl;
-      return 0;
+      return effVec;
     }
   
   TTree* tree = (TTree*)file->Get(treePath);
   if (tree == 0)
     {
       std::cout<<"ERROR Tau Tree is "<< tree<<" NOT FOUND; EXITING"<<std::endl;
-      return 0;
+      return effVec;
     }
 
   int numerator = 0;
@@ -193,11 +213,21 @@ float calculateEfficiency(TString treePath, TString rootFileDirectory,
 
     } /* end of loop over TTree */
 
+  /* float uncertaintyDivXY(float x, float deltaX,
+                            float y, float deltaY) */
   if ((numerator > 0) && (denominator > 0))
-    return (float) numerator/denominator;
+    {
+      effVec.push_back((float) numerator/denominator);
+      effVec.push_back(uncertaintyDivXY(numerator, sqrt(numerator),
+					denominator, sqrt(denominator)));
+    }
   else
-    return 0;
-
+    {
+      effVec.push_back(0);
+      effVec.push_back(0);
+    }
+    
+  return effVec;
 }
 
 #endif
