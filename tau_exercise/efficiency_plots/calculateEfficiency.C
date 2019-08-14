@@ -78,21 +78,6 @@ void applyLegStyle(TLegend *leg){
 
 /*******************************************************************/
 
-/* Returns the uncertainty of the fraction x/y, given
-   x and y and their respectively uncertainties deltaX and deltaY. */
-
-float uncertaintyDivXY(float x, float deltaX, 
-		       float y, float deltaY)
-{
-  float z, deltaZ;
-
-  z = x/y;
-  deltaZ = abs(z) * sqrt(pow(deltaX/x, 2) + pow(deltaY/y, 2));
-  return deltaZ;
-}
-
-/*******************************************************************/
-
 /* Calculates and returns the efficiency and statistical uncertainty
    of a BDT discriminant cut at
    the value bdtCut for Level 1 taus, using an TTree (ntuple) of L1
@@ -104,34 +89,41 @@ float uncertaintyDivXY(float x, float deltaX,
    reco).
 */
    
-std::vector<float> calculateEfficiency(TString treePath, TString rootFileDirectory,
-			   TString weightFileDirectory,
-			   double pTCut,
-			   double l1PtCut,
-			   double absEtaLowerBound,
-			   double absEtaUpperBound,
-			   double bdtCut)
+int calculateEfficiency(TString treePath, TString rootFileDirectory,
+			TString weightFileDirectory,
+			TH1F* hist,
+			  int nBins,
+			  double recoPtMin,
+			  double recoPtMax,
+			  double genPtCut,
+			  double l1PtCut,
+			  double absEtaLowerBound,
+			  double absEtaUpperBound,
+			  double bdtCut)
 {
-  std::vector<float> effVec;
+  /* Numerator and denominator histograms. */
   
+  TH1F* numerator = new TH1F("numerator", "numerator", nBins, recoPtMin, recoPtMax);
+  TH1F* denominator = new TH1F("denominator", "denominator", nBins, recoPtMin, recoPtMax);
+  
+  numerator->Sumw2();
+  denominator->Sumw2();
+
   /* Load file */
   TFile *file = new TFile(rootFileDirectory);
   if (!file->IsOpen() || file==0 )
     {
       std::cout<<"ERROR FILE "<< rootFileDirectory <<" NOT FOUND; EXITING"<<std::endl;
-      return effVec;
+      return 0;
     }
   
   TTree* tree = (TTree*)file->Get(treePath);
   if (tree == 0)
     {
       std::cout<<"ERROR Tau Tree is "<< tree<<" NOT FOUND; EXITING"<<std::endl;
-      return effVec;
+      return 0;
     }
 
-  int numerator = 0;
-  int denominator = 0;
-  
   /* Declare variables to read in */
   double recoPt, recoEta, recoPhi;
   double genPt, genEta, genPhi;
@@ -177,7 +169,6 @@ std::vector<float> calculateEfficiency(TString treePath, TString rootFileDirecto
   TString methodName = "BDT method";
   reader->TMVA::Reader::BookMVA(methodName, weightFileDirectory);
 
-
   /* Loop through TTree. */
   for (int i = 0; i < tree->GetEntries(); i++)
     {
@@ -186,48 +177,44 @@ std::vector<float> calculateEfficiency(TString treePath, TString rootFileDirecto
       bool isGenMatched  = (abs(reco::deltaR(l1Eta, l1Phi, genEta, genPhi)) < 0.5);
       bool isRecoMatched = (abs(reco::deltaR(l1Eta, l1Phi, recoEta, recoPhi)) < 0.5);
 
-      if ( (isGenMatched && (genPt > pTCut)   && (abs(genEta) > absEtaLowerBound)  && (abs(genEta) < absEtaUpperBound))
+      if ( (isGenMatched && (genPt > genPtCut) && (abs(genEta) > absEtaLowerBound)  && (abs(genEta) < absEtaUpperBound))
 	   ||
-	   (isRecoMatched && (recoPt > pTCut) && (abs(recoEta) > absEtaLowerBound) && (abs(recoEta) < absEtaUpperBound )) )
+	   (isRecoMatched && (abs(recoEta) > absEtaLowerBound) && (abs(recoEta) < absEtaUpperBound )) )
 	{
-	  denominator++;
-
-	  
+	  // Increment bin contents by 1.
+	  //	  printf("Adding denom bin content now:\n");
+	  denominator->Fill(recoPt);
+	  //	  printf("Denom content incremented\n");
 	  float bdtDiscriminant = 0.0;
 	  
-	  /* Evaluate the BDT. */
+
+	  // Evaluate the BDT.
 	  std::vector<float> event;
 	  event.push_back(l1Pt); 
 	  event.push_back(l1Eta);
 	  event.push_back(l1StripPt);
 	  event.push_back(l1DM);
 	  event.push_back(l1PVDZ);
+	  //	  printf("Before calling MVA\n");
 	  bdtDiscriminant = reader->EvaluateMVA(event, "BDT method");
+	  //	  printf("BDT successfully evaluated!\n");
 
 	  if ((l1Pt > l1PtCut) && (bdtDiscriminant > bdtCut))
 	    {
-	      numerator++;
+	      //	      printf("Numerator about to be incremented\n");
+	      numerator->Fill(recoPt);
+	      //	      printf("Numerator exclusively incremented\n");
 	    }
 	}
 	  
 
     } /* end of loop over TTree */
 
-  /* float uncertaintyDivXY(float x, float deltaX,
-                            float y, float deltaY) */
-  if ((numerator > 0) && (denominator > 0))
-    {
-      effVec.push_back((float) numerator/denominator);
-      effVec.push_back(uncertaintyDivXY(numerator, sqrt(numerator),
-					denominator, sqrt(denominator)));
-    }
-  else
-    {
-      effVec.push_back(0);
-      effVec.push_back(0);
-    }
-    
-  return effVec;
+
+  //  printf("Before dividing histograms");
+  hist->Divide(numerator, denominator);
+  //  printf("After dividing histograms");
+  return 1;
 }
 
 #endif

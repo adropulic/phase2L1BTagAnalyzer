@@ -21,6 +21,7 @@ void makeEfficienciesPlot(void)
 
   int nBins;
   float xMin, xMax, binWidth;
+  float recoPtMin, recoPtMax, genPtCut, l1PtCut, absEtaLowerBound, absEtaUpperBound;
   float wpLoose, wpMedium, wpTight; 
 
   /*******************************************************/
@@ -53,35 +54,32 @@ void makeEfficienciesPlot(void)
   xMin = 0, xMax = 100;
   binWidth = ((xMax - xMin) / nBins);
 
+  recoPtMin = 0;
+  recoPtMax = 100;
+  genPtCut = 15;
+  l1PtCut = 15;
+  absEtaLowerBound = 0;
+  absEtaUpperBound = 2.5;
+
+  /* Working points: 75%, 80%, and 90% efficiency (approximately) */
   wpLoose = -0.1;
   wpMedium = -0.185;
   wpTight = -0.3;  
-
-  float x, yLoose, yMedium, yTight;
-  float dyLoose;
-  std::vector<float> effVecLoose;
 
   TH1F *effVsRecoPtLoose  = new TH1F("effVsRecoPtLoose", "Efficiency vs. recoPt (loose)", nBins, xMin, xMax);
   TH1F *effVsRecoPtMedium = new TH1F("effVsRecoPtMedium", "Efficiency vs. recoPt (medium)", nBins, xMin, xMax);
   TH1F *effVsRecoPtTight = new TH1F("effVsRecoPtTight", "Efficiency vs. recoPt (tight)", nBins, xMin, xMax);
 
-  for (int i = 0; i < (nBins + 1); i++)
-    {
-      x = (xMin + i * binWidth);
 
-      
-      effVecLoose = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, x, 20, 0, 2.5, wpLoose);
-      //      yMedium = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, x, 20, 0, 2.5, wpMedium);
-      //      yTight = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, x, 20, 0, 2.5, wpTight);
-      
-      //      effVsRecoPtLoose->SetBinError(x, effVecLoose.at(0), effVecLoose.at(1));
-      effVsRecoPtLoose->Fill(x + (binWidth / 2), effVecLoose.at(0));
-      //      effVsRecoPtMedium->Fill(x + (binWidth / 2), yMedium);
-      //      effVsRecoPtTight->Fill(x + (binWidth / 2), yTight);
-
-      effVsRecoPtLoose->SetBinError(i, effVecLoose.at(1));
-      printf("bin %f: y = %f, error = %f\n", x, effVecLoose.at(0), effVecLoose.at(1));
-    }
+  calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, effVsRecoPtLoose,
+		      nBins, recoPtMin, recoPtMax, genPtCut, l1PtCut, absEtaLowerBound, absEtaUpperBound,
+		      wpLoose);
+  calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, effVsRecoPtMedium,
+		      nBins, recoPtMin, recoPtMax, genPtCut, l1PtCut, absEtaLowerBound, absEtaUpperBound,
+		      wpMedium);
+  calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,effVsRecoPtTight,
+		      nBins, recoPtMin, recoPtMax, genPtCut, l1PtCut, absEtaLowerBound, absEtaUpperBound,
+		      wpTight);
 
   /*******************************************************/
   /* plotting                                            */
@@ -89,6 +87,7 @@ void makeEfficienciesPlot(void)
   setTDRStyle();
   TCanvas* Tcan = new TCanvas("Tcan","", 100, 20, 800, 600);
   TLegend* leg = new TLegend(0.60,0.75,0.85,0.9); 
+  Tcan->SetGrid();
  
   /********************************/
   /* plotting eff vs. BDT cutoff  */
@@ -124,56 +123,48 @@ void makeEfficienciesPlot(void)
   /* plotting eff vs. recoPt      */
   /********************************/
   /* Reset canvas */
-
-  
   Tcan->cd();     /* Set current canvas */
   Tcan->SetFillColor(0);
-  leg = new TLegend(0.60,0.75,0.85,0.9);
+  leg = new TLegend(0.55, 0.2, 0.90, 0.5);
   applyLegStyle(leg);
 
   /* Loose */
-  effVsRecoPtLoose->SetMarkerColor(38);
+  effVsRecoPtLoose->SetMarkerColor(9);
   effVsRecoPtLoose->SetMarkerStyle(kFullCircle); 
-  //  effVsRecoPtLoose->SetFillStyle(1001);
-  //  effVsRecoPtLoose->SetFillColorAlpha(kBlue+2, 0.1);
   effVsRecoPtLoose->SetLineWidth(2);
-  effVsRecoPtLoose->SetLineColor(38+2); // kBlue+2
+  effVsRecoPtLoose->SetLineColor(9); // kBlue+2
 
   /* Medium */
-  //effVsRecoPtMedium->SetMarkerColor(46);
-  //effVsRecoPtMedium->SetMarkerStyle(kFullCircle);
-  //  effVsRecoPtMedium->SetFillStyle(1001);
-  //  effVsRecoPtMedium->SetFillColorAlpha(kGreen+2, 0.1);
-  //  effVsRecoPtMedium->SetLineWidth(1);
-  //  effVsRecoPtMedium->SetLineColor(kGreen+2);
+  effVsRecoPtMedium->SetMarkerColor(8);
+  effVsRecoPtMedium->SetMarkerStyle(kFullSquare);
+  effVsRecoPtMedium->SetLineWidth(2);
+  effVsRecoPtMedium->SetLineColor(8);
 
   /* Tight */
-  //  effVsRecoPtTight->SetMarkerColor(30);
-  //effVsRecoPtTight->SetMarkerStyle(kFullCircle);
-  //  effVsRecoPtTight->SetFillStyle(1001);
-  //  effVsRecoPtTight->SetFillColorAlpha(kRed+2, 0.1);
-  //  effVsRecoPtTight->SetLineWidth(1);
-  //  effVsRecoPtTight->SetLineColor(kRed+2);
+  effVsRecoPtTight->SetMarkerColor(46);
+  effVsRecoPtTight->SetMarkerStyle(kFullTriangleUp);
+  effVsRecoPtTight->SetLineWidth(2);
+  effVsRecoPtTight->SetLineColor(46);
 
-  /* Drawing, set titles */
-  //  effVsRecoPtLoose->Draw("e");
-  //  effVsRecoPtMedium->Draw("EP SAME");
-  //  effVsRecoPtTight->Draw("EP SAME");
-  effVsRecoPtLoose->GetXaxis()->SetTitle("Tau recoPt [GeV]");
+  effVsRecoPtLoose->Draw("E1 P");
+  effVsRecoPtMedium->Draw("E1 P SAME");
+  effVsRecoPtTight->Draw("E1 P SAME");
+
+  effVsRecoPtLoose->GetXaxis()->SetTitle("#tau reco p_{T} [GeV]");
   effVsRecoPtLoose->GetYaxis()->SetTitle("Efficiency");
+  effVsRecoPtLoose->GetXaxis()->SetTitleSize(0.06); // default is 0.03
+  effVsRecoPtLoose->GetYaxis()->SetTitleSize(0.06); // default is 0.03
 
   /* Set y-axis limits */
-  effVsRecoPtLoose->SetAxisRange(0.0, 1.0, "Y");
+  effVsRecoPtLoose->SetAxisRange(0.0, 1.2, "Y");
   
   /* Customize legend */
   leg->SetHeader("Phase 2 L1 Taus");
   leg->AddEntry(effVsRecoPtLoose, "Loose", "l");
-  //  leg->AddEntry(effVsRecoPtMedium, "Medium", "l");
-  //  leg->AddEntry(effVsRecoPtTight, "Tight", "l");
+  leg->AddEntry(effVsRecoPtMedium, "Medium", "l");
+  leg->AddEntry(effVsRecoPtTight, "Tight", "l");
   leg->Draw();
 
-  effVsRecoPtLoose->Draw("ep");
-  Tcan->cd();
   Tcan->Show();
 
   Tcan->SaveAs(outputDirectory+"efficiency_vs_recoPt_l1Pt-20GeV-testStyle.png");
