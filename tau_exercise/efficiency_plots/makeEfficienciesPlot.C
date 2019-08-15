@@ -10,9 +10,10 @@
 /* Plots loose/medium/tight efficiency histograms and saves to a .png.
  */
 
-void plotThreeHists(TH1F *histLoose, TH1F *histMedium, TH1F *histTight,
-		    TString variable, TString region,
-		    TString outputDir)
+void plotHists(TH1F *histLoose, TH1F *histMedium, TH1F *histTight,
+	       TH1F *histNoBDT,
+	       TString variable, TString region,
+	       TString outputDir)
 {
   /*******************************************************/
   /* plotting                                            */
@@ -45,14 +46,20 @@ void plotThreeHists(TH1F *histLoose, TH1F *histMedium, TH1F *histTight,
   histTight->SetLineWidth(2);
   histTight->SetLineColor(46);
 
+  /* No BDT cut */
+  histNoBDT->SetMarkerColor(kBlack);
+  histNoBDT->SetMarkerStyle(kFullTriangleDown);
+  histNoBDT->SetLineWidth(2);
+  histNoBDT->SetLineColor(kBlack);
+
   histLoose->Draw("E1 P");
   histMedium->Draw("E1 P SAME");
   histTight->Draw("E1 P SAME");
+  histNoBDT->Draw("E1 P SAME");
 
   histLoose->GetXaxis()->SetTitle("#tau "+variable+" p_{T} [GeV]");
   histLoose->GetYaxis()->SetTitle("Efficiency");
-  histLoose->GetXaxis()->SetTitleSize(0.06); // default is 0.03                                                                                      
-  histLoose->GetYaxis()->SetTitleSize(0.06); // default is 0.03                                                                                      
+  histLoose->GetXaxis()->SetTitleSize(0.06); // default is 0.03
 
   /* Set y-axis limits */
   histLoose->SetAxisRange(0.0, 1.1, "Y");
@@ -62,10 +69,11 @@ void plotThreeHists(TH1F *histLoose, TH1F *histMedium, TH1F *histTight,
   leg->AddEntry(histLoose, "Loose", "l");
   leg->AddEntry(histMedium, "Medium", "l");
   leg->AddEntry(histTight, "Tight", "l");
+  leg->AddEntry(histNoBDT, "No BDT discriminant cut", "l");
   leg->Draw();
 
   Tcan->cd();
-  Tcan->SaveAs(outputDir+"efficiency_vs_"+variable+"_pT_"+region+".png");
+  Tcan->SaveAs(outputDir+"efficiency_vs_"+variable+"pT_"+region+".png");
 
 }
 
@@ -122,7 +130,7 @@ void makeEfficienciesPlot(void)
   recoPtMax = 100;
   recoPtCut = 15;
   genPtCut = 15;
-  l1PtCut = 15;
+  l1PtCut = 20;
   absEtaLowerBound = 0;
   absEtaUpperBound = 2.5;
 
@@ -138,7 +146,7 @@ void makeEfficienciesPlot(void)
   TH1F *effVsRecoPtLoose  = new TH1F("effVsRecoPtLoose", "Efficiency vs. recoPt (loose)", nBins, xMin, xMax);
   TH1F *effVsRecoPtMedium = new TH1F("effVsRecoPtMedium", "Efficiency vs. recoPt (medium)", nBins, xMin, xMax);
   TH1F *effVsRecoPtTight = new TH1F("effVsRecoPtTight", "Efficiency vs. recoPt (tight)", nBins, xMin, xMax);
-
+  TH1F *effVsRecoPtNoBDT = new TH1F("effVsRecoPtNoBDT", "Efficiency vs. recoPt (no BDT)", nBins, xMin, xMax);
 
   calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, effVsRecoPtLoose,
 		      nBins, "recoPt", region, recoPtMin, recoPtMax, recoPtCut, genPtCut, l1PtCut, wpLoose);
@@ -146,11 +154,15 @@ void makeEfficienciesPlot(void)
 		      nBins, "recoPt", region, recoPtMin, recoPtMax, recoPtCut, genPtCut, l1PtCut, wpMedium);
   calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, effVsRecoPtTight,
 		      nBins, "recoPt", region, recoPtMin, recoPtMax, recoPtCut, genPtCut, l1PtCut, wpTight);
+  calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, effVsRecoPtNoBDT,
+		      nBins, "recoPt", region, recoPtMin, recoPtMax, recoPtCut, genPtCut, l1PtCut, -99.99);
+
 
   /* GEN */
   TH1F *effVsGenPtLoose  = new TH1F("effVsGenPtLoose", "Efficiency vs. genPt (loose)", nBins, xMin, xMax);
   TH1F *effVsGenPtMedium = new TH1F("effVsGenPtMedium", "Efficiency vs. genPt (medium)", nBins, xMin, xMax);
   TH1F *effVsGenPtTight = new TH1F("effVsGenPtTight", "Efficiency vs. genPt (tight)", nBins, xMin, xMax);
+  TH1F *effVsGenPtNoBDT = new TH1F("effVsGenPtNoBDT","Efficiency vs. genPt (no BDT)", nBins, xMin, xMax);
 
   calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, effVsGenPtLoose,
 		      nBins, "genPt", region, recoPtMin, recoPtMax, recoPtCut, genPtCut, l1PtCut, wpLoose);
@@ -158,7 +170,9 @@ void makeEfficienciesPlot(void)
                       nBins, "genPt", region, recoPtMin, recoPtMax, recoPtCut, genPtCut, l1PtCut, wpMedium);
   calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, effVsGenPtTight,
                       nBins, "genPt", region, recoPtMin, recoPtMax, recoPtCut, genPtCut, l1PtCut, wpTight);
-
+  calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, effVsGenPtNoBDT,
+		      nBins, "genPt", region, recoPtMin, recoPtMax, recoPtCut, genPtCut, l1PtCut, -99.99);
+  
  
   /********************************/
   /* plotting eff vs. BDT cutoff  */
@@ -197,8 +211,8 @@ void makeEfficienciesPlot(void)
   /* void plotThreeHists(TH1F *histLoose, TH1F *histMedium, TH1F *histTight,
                     TString variable, TString region,
                     TString outputDir)*/
-  plotThreeHists(effVsRecoPtLoose, effVsRecoPtMedium, effVsRecoPtTight, "reco",
+  plotHists(effVsRecoPtLoose, effVsRecoPtMedium, effVsRecoPtTight, effVsRecoPtNoBDT, "reco",
 		 "barrel", outputDirectory);
-  plotThreeHists(effVsGenPtLoose, effVsGenPtMedium, effVsGenPtTight, "gen",
+  plotHists(effVsGenPtLoose, effVsGenPtMedium, effVsGenPtTight, effVsRecoPtNoBDT, "gen",
 		 "barrel", outputDirectory);
 }

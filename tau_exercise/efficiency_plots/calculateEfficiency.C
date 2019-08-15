@@ -221,7 +221,7 @@ int calculateEfficiency(TString treePath, TString rootFileDirectory,
 	  else if (variable == "recoPt")
 	    denominator->Fill(recoPt);
 
-	  float bdtDiscriminant = 0.0;
+	  float bdtDiscriminant = -9.9;
 	  // Evaluate the BDT.
 	  std::vector<float> event;
 	  event.push_back(l1Pt); 
