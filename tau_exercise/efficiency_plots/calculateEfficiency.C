@@ -91,20 +91,21 @@ void applyLegStyle(TLegend *leg){
    
 int calculateEfficiency(TString treePath, TString rootFileDirectory,
 			TString weightFileDirectory,
-			TH1F* hist,
-			  int nBins,
-			  double recoPtMin,
-			  double recoPtMax,
-			  double genPtCut,
-			  double l1PtCut,
-			  double absEtaLowerBound,
-			  double absEtaUpperBound,
-			  double bdtCut)
+			TH1F* effHist,
+			int nBins,
+			TString variable,
+			TString region,
+			double xMin,
+			double xMax,
+			double recoPtCut,
+			double genPtCut,
+			double l1PtCut,
+			double bdtDiscriminantMin)
 {
   /* Numerator and denominator histograms. */
   
-  TH1F* numerator = new TH1F("numerator", "numerator", nBins, recoPtMin, recoPtMax);
-  TH1F* denominator = new TH1F("denominator", "denominator", nBins, recoPtMin, recoPtMax);
+  TH1F* numerator = new TH1F("numerator", "numerator", nBins, xMin, xMax);
+  TH1F* denominator = new TH1F("denominator", "denominator", nBins, xMin, xMax);
   
   numerator->Sumw2();
   denominator->Sumw2();
@@ -124,6 +125,18 @@ int calculateEfficiency(TString treePath, TString rootFileDirectory,
       return 0;
     }
 
+  if (! ((variable == "recoPt") || (variable == "genPt")))
+    {
+      std::cout<<"ERROR: parameter 'variable' is not recognized; EXITING"<<std::endl;
+      return 0;
+    }
+
+  if (! ((region == "barrel") || (variable == "endcap")))
+    {
+      std::cout<<"ERROR: parameter 'region' must be 'barrel' or 'endcap'; EXITING"<<std::endl;
+      return 0;
+    }
+
   /* Declare variables to read in */
   double recoPt, recoEta, recoPhi;
   double genPt, genEta, genPhi;
@@ -136,9 +149,11 @@ int calculateEfficiency(TString treePath, TString rootFileDirectory,
   tree->SetBranchAddress("recoPt",  &recoPt);
   tree->SetBranchAddress("recoEta", &recoEta);
   tree->SetBranchAddress("recoPhi", &recoPhi);
+
   tree->SetBranchAddress("genPt",  &genPt);
   tree->SetBranchAddress("genEta", &genEta);
   tree->SetBranchAddress("genPhi", &genPhi);
+
   tree->SetBranchAddress("l1Pt",  &l1Pt);
   tree->SetBranchAddress("l1Eta", &l1Eta);
   tree->SetBranchAddress("l1Phi", &l1Phi);
@@ -174,20 +189,39 @@ int calculateEfficiency(TString treePath, TString rootFileDirectory,
     {
       tree->GetEntry(i);
 
-      bool isGenMatched  = (abs(reco::deltaR(l1Eta, l1Phi, genEta, genPhi)) < 0.5);
-      bool isRecoMatched = (abs(reco::deltaR(l1Eta, l1Phi, recoEta, recoPhi)) < 0.5);
+      /* deltaR matching between L1 and Reco, and L1 and Gen, is already performed in the analyzer: not needed here */
 
-      if ( (isGenMatched && (genPt > genPtCut) && (abs(genEta) > absEtaLowerBound)  && (abs(genEta) < absEtaUpperBound))
-	   ||
-	   (isRecoMatched && (abs(recoEta) > absEtaLowerBound) && (abs(recoEta) < absEtaUpperBound )) )
+      bool passesOverallCut;
+      bool passesEta;
+
+      if (region == "barrel")
+	passesEta =(genEta < 0.774);
+      else if (region == "endcap")
+	passesEta = (genEta > 0.774);
+
+      if (variable == "genPt")
 	{
-	  // Increment bin contents by 1.
-	  //	  printf("Adding denom bin content now:\n");
-	  denominator->Fill(recoPt);
-	  //	  printf("Denom content incremented\n");
-	  float bdtDiscriminant = 0.0;
-	  
+	  passesOverallCut = ((genPt > genPtCut) && 
+			      passesEta
+			      );
+	}
+      else if (variable == "recoPt")
+	{
+	  passesOverallCut = ((recoPt > recoPtCut) &&
+			      (genPt > genPtCut) &&
+			      passesEta
+			      );
+	}
 
+      /* Fill denominator */
+      if (passesOverallCut)
+	{
+	  if (variable == "genPt")
+	    denominator->Fill(genPt);
+	  else if (variable == "recoPt")
+	    denominator->Fill(recoPt);
+
+	  float bdtDiscriminant = 0.0;
 	  // Evaluate the BDT.
 	  std::vector<float> event;
 	  event.push_back(l1Pt); 
@@ -195,25 +229,25 @@ int calculateEfficiency(TString treePath, TString rootFileDirectory,
 	  event.push_back(l1StripPt);
 	  event.push_back(l1DM);
 	  event.push_back(l1PVDZ);
-	  //	  printf("Before calling MVA\n");
-	  bdtDiscriminant = reader->EvaluateMVA(event, "BDT method");
-	  //	  printf("BDT successfully evaluated!\n");
 
-	  if ((l1Pt > l1PtCut) && (bdtDiscriminant > bdtCut))
+	  bdtDiscriminant = reader->EvaluateMVA(event, "BDT method");
+
+	  /* Fill numerator */
+	  if ((l1Pt > l1PtCut) && (bdtDiscriminant > bdtDiscriminantMin))
 	    {
-	      //	      printf("Numerator about to be incremented\n");
-	      numerator->Fill(recoPt);
-	      //	      printf("Numerator exclusively incremented\n");
+	      if (variable == "genPt")
+		numerator->Fill(genPt);
+	      else if (variable == "recoPt")
+		numerator->Fill(recoPt);
+
 	    }
 	}
 	  
-
     } /* end of loop over TTree */
 
 
-  //  printf("Before dividing histograms");
-  hist->Divide(numerator, denominator);
-  //  printf("After dividing histograms");
+  effHist->Divide(numerator, denominator);
+
   return 1;
 }
 

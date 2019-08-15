@@ -5,6 +5,70 @@
 
 #include "calculateEfficiency.C"
 
+/*********************************************************************/
+
+/* Plots loose/medium/tight efficiency histograms and saves to a .png.
+ */
+
+void plotThreeHists(TH1F *histLoose, TH1F *histMedium, TH1F *histTight,
+		    TString variable, TString region,
+		    TString outputDir)
+{
+  /*******************************************************/
+  /* plotting                                            */
+  /*******************************************************/
+  setTDRStyle();
+  TCanvas* Tcan = new TCanvas("Tcan","", 100, 20, 800, 600);
+  TLegend* leg = new TLegend(0.60,0.75,0.85,0.9);
+  Tcan->SetGrid();
+
+  Tcan->cd();     /* Set current canvas */
+  Tcan->SetFillColor(0);
+  leg = new TLegend(0.55, 0.2, 0.90, 0.5);
+  applyLegStyle(leg);
+
+  /* Loose */
+  histLoose->SetMarkerColor(9);
+  histLoose->SetMarkerStyle(kFullCircle);
+  histLoose->SetLineWidth(2);
+  histLoose->SetLineColor(9); // kBlue+2                                                                                                             
+
+  /* Medium */
+  histMedium->SetMarkerColor(8);
+  histMedium->SetMarkerStyle(kFullSquare);
+  histMedium->SetLineWidth(2);
+  histMedium->SetLineColor(8);
+
+  /* Tight */
+  histTight->SetMarkerColor(46);
+  histTight->SetMarkerStyle(kFullTriangleUp);
+  histTight->SetLineWidth(2);
+  histTight->SetLineColor(46);
+
+  histLoose->Draw("E1 P");
+  histMedium->Draw("E1 P SAME");
+  histTight->Draw("E1 P SAME");
+
+  histLoose->GetXaxis()->SetTitle("#tau "+variable+" p_{T} [GeV]");
+  histLoose->GetYaxis()->SetTitle("Efficiency");
+  histLoose->GetXaxis()->SetTitleSize(0.06); // default is 0.03                                                                                      
+  histLoose->GetYaxis()->SetTitleSize(0.06); // default is 0.03                                                                                      
+
+  /* Set y-axis limits */
+  histLoose->SetAxisRange(0.0, 1.1, "Y");
+
+  /* Customize legend */
+  leg->SetHeader("Phase 2 L1 Taus");
+  leg->AddEntry(histLoose, "Loose", "l");
+  leg->AddEntry(histMedium, "Medium", "l");
+  leg->AddEntry(histTight, "Tight", "l");
+  leg->Draw();
+
+  Tcan->cd();
+  Tcan->SaveAs(outputDir+"efficiency_vs_"+variable+"_pT_"+region+".png");
+
+}
+
 /*******************************************************************/
 
 /* Plots L1 tau efficiency as a function of BDT discriminant cuts. */
@@ -15,13 +79,13 @@ void makeEfficienciesPlot(void)
 
   /* Load the TTree. */
   TString treePath = "L1TauAnalyzer/efficiencyTree";
-  TString rootFileDirectory = "../ntuples/GluGluHiggsToTauTau.root";
+  TString rootFileDirectory = "../ntuples/GluGluHiggsToTauTau_DYToLL_200PU.root";
   TString weightFileDirectory = "../training/dataset/weights/TMVAClassification_BDT.weights.xml";
-  TString outputDirectory = "";
+  TString outputDirectory = "plots/";
 
   int nBins;
   float xMin, xMax, binWidth;
-  float recoPtMin, recoPtMax, genPtCut, l1PtCut, absEtaLowerBound, absEtaUpperBound;
+  float recoPtMin, recoPtMax, recoPtCut, genPtCut, l1PtCut, absEtaLowerBound, absEtaUpperBound;
   float wpLoose, wpMedium, wpTight; 
 
   /*******************************************************/
@@ -50,12 +114,13 @@ void makeEfficienciesPlot(void)
   /* efficiency as a function of recoPt                  */
   /*******************************************************/
 
-  nBins = 20;
+  nBins = 30;
   xMin = 0, xMax = 100;
   binWidth = ((xMax - xMin) / nBins);
 
   recoPtMin = 0;
   recoPtMax = 100;
+  recoPtCut = 15;
   genPtCut = 15;
   l1PtCut = 15;
   absEtaLowerBound = 0;
@@ -66,28 +131,34 @@ void makeEfficienciesPlot(void)
   wpMedium = -0.185;
   wpTight = -0.3;  
 
+
+  TString region = "barrel";
+
+  /* RECO */
   TH1F *effVsRecoPtLoose  = new TH1F("effVsRecoPtLoose", "Efficiency vs. recoPt (loose)", nBins, xMin, xMax);
   TH1F *effVsRecoPtMedium = new TH1F("effVsRecoPtMedium", "Efficiency vs. recoPt (medium)", nBins, xMin, xMax);
   TH1F *effVsRecoPtTight = new TH1F("effVsRecoPtTight", "Efficiency vs. recoPt (tight)", nBins, xMin, xMax);
 
 
   calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, effVsRecoPtLoose,
-		      nBins, recoPtMin, recoPtMax, genPtCut, l1PtCut, absEtaLowerBound, absEtaUpperBound,
-		      wpLoose);
+		      nBins, "recoPt", region, recoPtMin, recoPtMax, recoPtCut, genPtCut, l1PtCut, wpLoose);
   calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, effVsRecoPtMedium,
-		      nBins, recoPtMin, recoPtMax, genPtCut, l1PtCut, absEtaLowerBound, absEtaUpperBound,
-		      wpMedium);
-  calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,effVsRecoPtTight,
-		      nBins, recoPtMin, recoPtMax, genPtCut, l1PtCut, absEtaLowerBound, absEtaUpperBound,
-		      wpTight);
+		      nBins, "recoPt", region, recoPtMin, recoPtMax, recoPtCut, genPtCut, l1PtCut, wpMedium);
+  calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, effVsRecoPtTight,
+		      nBins, "recoPt", region, recoPtMin, recoPtMax, recoPtCut, genPtCut, l1PtCut, wpTight);
 
-  /*******************************************************/
-  /* plotting                                            */
-  /*******************************************************/
-  setTDRStyle();
-  TCanvas* Tcan = new TCanvas("Tcan","", 100, 20, 800, 600);
-  TLegend* leg = new TLegend(0.60,0.75,0.85,0.9); 
-  Tcan->SetGrid();
+  /* GEN */
+  TH1F *effVsGenPtLoose  = new TH1F("effVsGenPtLoose", "Efficiency vs. genPt (loose)", nBins, xMin, xMax);
+  TH1F *effVsGenPtMedium = new TH1F("effVsGenPtMedium", "Efficiency vs. genPt (medium)", nBins, xMin, xMax);
+  TH1F *effVsGenPtTight = new TH1F("effVsGenPtTight", "Efficiency vs. genPt (tight)", nBins, xMin, xMax);
+
+  calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, effVsGenPtLoose,
+		      nBins, "genPt", region, recoPtMin, recoPtMax, recoPtCut, genPtCut, l1PtCut, wpLoose);
+  calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, effVsGenPtMedium,
+                      nBins, "genPt", region, recoPtMin, recoPtMax, recoPtCut, genPtCut, l1PtCut, wpMedium);
+  calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, effVsGenPtTight,
+                      nBins, "genPt", region, recoPtMin, recoPtMax, recoPtCut, genPtCut, l1PtCut, wpTight);
+
  
   /********************************/
   /* plotting eff vs. BDT cutoff  */
@@ -106,8 +177,10 @@ void makeEfficienciesPlot(void)
   effVsBDTCutoff->SetLineColor(kGreen+2);
 
   effVsBDTCutoff->Draw("HIST"); 
+
   effVsBDTCutoff->GetXaxis()->SetTitle("BDT discriminant cut");
   effVsBDTCutoff->GetYaxis()->SetTitle("Efficiency");
+
 
   leg->SetHeader("Phase 2 L1 PF Taus");
   leg->AddEntry(effVsBDTCutoff, "efficiency", "l");
@@ -119,55 +192,13 @@ void makeEfficienciesPlot(void)
   
   Tcan->Clear();
   */
-  /********************************/
-  /* plotting eff vs. recoPt      */
-  /********************************/
-  /* Reset canvas */
-  Tcan->cd();     /* Set current canvas */
-  Tcan->SetFillColor(0);
-  leg = new TLegend(0.55, 0.2, 0.90, 0.5);
-  applyLegStyle(leg);
 
-  /* Loose */
-  effVsRecoPtLoose->SetMarkerColor(9);
-  effVsRecoPtLoose->SetMarkerStyle(kFullCircle); 
-  effVsRecoPtLoose->SetLineWidth(2);
-  effVsRecoPtLoose->SetLineColor(9); // kBlue+2
 
-  /* Medium */
-  effVsRecoPtMedium->SetMarkerColor(8);
-  effVsRecoPtMedium->SetMarkerStyle(kFullSquare);
-  effVsRecoPtMedium->SetLineWidth(2);
-  effVsRecoPtMedium->SetLineColor(8);
-
-  /* Tight */
-  effVsRecoPtTight->SetMarkerColor(46);
-  effVsRecoPtTight->SetMarkerStyle(kFullTriangleUp);
-  effVsRecoPtTight->SetLineWidth(2);
-  effVsRecoPtTight->SetLineColor(46);
-
-  effVsRecoPtLoose->Draw("E1 P");
-  effVsRecoPtMedium->Draw("E1 P SAME");
-  effVsRecoPtTight->Draw("E1 P SAME");
-
-  effVsRecoPtLoose->GetXaxis()->SetTitle("#tau reco p_{T} [GeV]");
-  effVsRecoPtLoose->GetYaxis()->SetTitle("Efficiency");
-  effVsRecoPtLoose->GetXaxis()->SetTitleSize(0.06); // default is 0.03
-  effVsRecoPtLoose->GetYaxis()->SetTitleSize(0.06); // default is 0.03
-
-  /* Set y-axis limits */
-  effVsRecoPtLoose->SetAxisRange(0.0, 1.2, "Y");
-  
-  /* Customize legend */
-  leg->SetHeader("Phase 2 L1 Taus");
-  leg->AddEntry(effVsRecoPtLoose, "Loose", "l");
-  leg->AddEntry(effVsRecoPtMedium, "Medium", "l");
-  leg->AddEntry(effVsRecoPtTight, "Tight", "l");
-  leg->Draw();
-
-  Tcan->Show();
-
-  Tcan->SaveAs(outputDirectory+"efficiency_vs_recoPt_l1Pt-20GeV-testStyle.png");
-
-  //  delete Tcan;
+  /* void plotThreeHists(TH1F *histLoose, TH1F *histMedium, TH1F *histTight,
+                    TString variable, TString region,
+                    TString outputDir)*/
+  plotThreeHists(effVsRecoPtLoose, effVsRecoPtMedium, effVsRecoPtTight, "reco",
+		 "barrel", outputDirectory);
+  plotThreeHists(effVsGenPtLoose, effVsGenPtMedium, effVsGenPtTight, "gen",
+		 "barrel", outputDirectory);
 }
