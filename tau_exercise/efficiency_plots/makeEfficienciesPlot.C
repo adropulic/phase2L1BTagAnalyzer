@@ -22,7 +22,7 @@ void plotHists(TGraphAsymmErrors* histLoose,
   /* plotting                                            */
   /*******************************************************/
   setTDRStyle();
-  TCanvas* Tcan = new TCanvas("Tcan","", 100, 20, 800, 600);
+  TCanvas* Tcan = new TCanvas("Tcan","", 100, 20, 1000, 800);
   TLegend* leg = new TLegend(0.60,0.75,0.85,0.9);
   Tcan->SetGrid();
 
@@ -55,7 +55,7 @@ void plotHists(TGraphAsymmErrors* histLoose,
   histNoBDT->SetMarkerStyle(kFullTriangleDown);
   histNoBDT->SetLineWidth(2);
   histNoBDT->SetLineColor(kBlack);
-
+  histNoBDT->SetLineColorAlpha(kBlack, 0.2);
 
   histLoose->Draw("");
   histMedium->Draw("SAME");

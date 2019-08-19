@@ -253,8 +253,17 @@ int calculateEfficiency(TString treePath, TString rootFileDirectory,
 
 
   efficiency->Divide(numerator, denominator);
+  int nPoints = efficiency->GetN();
 
+  for (int i = 0; i < (nPoints-1); i++)
+    {
+      efficiency->SetPointError(i, 0, 0, 
+				efficiency->GetErrorYlow(i),
+				efficiency->GetErrorYhigh(i));
+      
 
+    }
+  
   return 1;
 }
 
