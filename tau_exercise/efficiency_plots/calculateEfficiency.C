@@ -29,6 +29,7 @@
 #include "TH1F.h"
 #include "TH2.h"
 #include "TF1.h"
+#include "TGraphAsymmErrors.h"
 #include "THStack.h"
 #include "TStyle.h"
 #include "TAxis.h"
@@ -91,7 +92,7 @@ void applyLegStyle(TLegend *leg){
    
 int calculateEfficiency(TString treePath, TString rootFileDirectory,
 			TString weightFileDirectory,
-			TH1F* effHist,
+			TGraphAsymmErrors* efficiency,
 			int nBins,
 			TString variable,
 			TString region,
@@ -139,6 +140,7 @@ int calculateEfficiency(TString treePath, TString rootFileDirectory,
 
   /* Declare variables to read in */
   double recoPt, recoEta, recoPhi;
+  int recoDM;
   double genPt, genEta, genPhi;
   double l1Pt, l1Eta, l1Phi;
   double l1DM;
@@ -149,6 +151,8 @@ int calculateEfficiency(TString treePath, TString rootFileDirectory,
   tree->SetBranchAddress("recoPt",  &recoPt);
   tree->SetBranchAddress("recoEta", &recoEta);
   tree->SetBranchAddress("recoPhi", &recoPhi);
+
+  tree->SetBranchAddress("recoDM", &recoDM);
 
   tree->SetBranchAddress("genPt",  &genPt);
   tree->SetBranchAddress("genEta", &genEta);
@@ -203,6 +207,7 @@ int calculateEfficiency(TString treePath, TString rootFileDirectory,
 	{
 	  passesOverallCut = ((genPt > genPtCut) && 
 			      passesEta
+			      // && (recoDM == 10)
 			      );
 	}
       else if (variable == "recoPt")
@@ -210,6 +215,7 @@ int calculateEfficiency(TString treePath, TString rootFileDirectory,
 	  passesOverallCut = ((recoPt > recoPtCut) &&
 			      (genPt > genPtCut) &&
 			      passesEta
+			      // && (recoDM == 10)
 			      );
 	}
 
@@ -246,7 +252,8 @@ int calculateEfficiency(TString treePath, TString rootFileDirectory,
     } /* end of loop over TTree */
 
 
-  effHist->Divide(numerator, denominator);
+  efficiency->Divide(numerator, denominator);
+
 
   return 1;
 }

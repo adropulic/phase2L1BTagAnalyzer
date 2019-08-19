@@ -1,6 +1,7 @@
 /*******************************************************************/
 /* makeEfficienciesPlot.C                                          */
 /* ROOT macro                                                      */
+/* Usage: root -l -b -q makeEfficienciesPlot.C                     */
 /*******************************************************************/
 
 #include "calculateEfficiency.C"
@@ -10,8 +11,10 @@
 /* Plots loose/medium/tight efficiency histograms and saves to a .png.
  */
 
-void plotHists(TH1F *histLoose, TH1F *histMedium, TH1F *histTight,
-	       TH1F *histNoBDT,
+void plotHists(TGraphAsymmErrors* histLoose,
+	       TGraphAsymmErrors* histMedium,
+	       TGraphAsymmErrors* histTight,
+	       TGraphAsymmErrors* histNoBDT,
 	       TString variable, TString region,
 	       TString outputDir)
 {
@@ -47,33 +50,38 @@ void plotHists(TH1F *histLoose, TH1F *histMedium, TH1F *histTight,
   histTight->SetLineColor(46);
 
   /* No BDT cut */
+
   histNoBDT->SetMarkerColor(kBlack);
   histNoBDT->SetMarkerStyle(kFullTriangleDown);
   histNoBDT->SetLineWidth(2);
   histNoBDT->SetLineColor(kBlack);
 
-  histLoose->Draw("E1 P");
-  histMedium->Draw("E1 P SAME");
-  histTight->Draw("E1 P SAME");
-  histNoBDT->Draw("E1 P SAME");
+
+  histLoose->Draw("");
+  histMedium->Draw("SAME");
+  histTight->Draw("SAME");
+  histNoBDT->Draw("SAME");
 
   histLoose->GetXaxis()->SetTitle("#tau "+variable+" p_{T} [GeV]");
   histLoose->GetYaxis()->SetTitle("Efficiency");
   histLoose->GetXaxis()->SetTitleSize(0.06); // default is 0.03
 
   /* Set y-axis limits */
-  histLoose->SetAxisRange(0.0, 1.1, "Y");
+  //  histLoose->SetAxisRange(0.0, 1.1, "Y");
 
   /* Customize legend */
   leg->SetHeader("Phase 2 L1 Taus");
   leg->AddEntry(histLoose, "Loose", "l");
+  
   leg->AddEntry(histMedium, "Medium", "l");
   leg->AddEntry(histTight, "Tight", "l");
   leg->AddEntry(histNoBDT, "No BDT discriminant cut", "l");
+
+  gStyle->SetLegendFont(30);
   leg->Draw();
 
   Tcan->cd();
-  Tcan->SaveAs(outputDir+"efficiency_vs_"+variable+"pT_"+region+".png");
+  Tcan->SaveAs(outputDir+"efficiency_vs_"+variable+"Pt_"+region+"_allDM-TEST.png");
 
 }
 
@@ -122,7 +130,7 @@ void makeEfficienciesPlot(void)
   /* efficiency as a function of recoPt                  */
   /*******************************************************/
 
-  nBins = 30;
+  nBins = 50;
   xMin = 0, xMax = 100;
   binWidth = ((xMax - xMin) / nBins);
 
@@ -143,10 +151,10 @@ void makeEfficienciesPlot(void)
   TString region = "barrel";
 
   /* RECO */
-  TH1F *effVsRecoPtLoose  = new TH1F("effVsRecoPtLoose", "Efficiency vs. recoPt (loose)", nBins, xMin, xMax);
-  TH1F *effVsRecoPtMedium = new TH1F("effVsRecoPtMedium", "Efficiency vs. recoPt (medium)", nBins, xMin, xMax);
-  TH1F *effVsRecoPtTight = new TH1F("effVsRecoPtTight", "Efficiency vs. recoPt (tight)", nBins, xMin, xMax);
-  TH1F *effVsRecoPtNoBDT = new TH1F("effVsRecoPtNoBDT", "Efficiency vs. recoPt (no BDT)", nBins, xMin, xMax);
+  TGraphAsymmErrors* effVsRecoPtLoose = new TGraphAsymmErrors(nBins);
+  TGraphAsymmErrors* effVsRecoPtMedium = new TGraphAsymmErrors(nBins);
+  TGraphAsymmErrors* effVsRecoPtTight = new TGraphAsymmErrors(nBins);
+  TGraphAsymmErrors* effVsRecoPtNoBDT = new TGraphAsymmErrors(nBins);
 
   calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, effVsRecoPtLoose,
 		      nBins, "recoPt", region, recoPtMin, recoPtMax, recoPtCut, genPtCut, l1PtCut, wpLoose);
@@ -159,10 +167,11 @@ void makeEfficienciesPlot(void)
 
 
   /* GEN */
-  TH1F *effVsGenPtLoose  = new TH1F("effVsGenPtLoose", "Efficiency vs. genPt (loose)", nBins, xMin, xMax);
-  TH1F *effVsGenPtMedium = new TH1F("effVsGenPtMedium", "Efficiency vs. genPt (medium)", nBins, xMin, xMax);
-  TH1F *effVsGenPtTight = new TH1F("effVsGenPtTight", "Efficiency vs. genPt (tight)", nBins, xMin, xMax);
-  TH1F *effVsGenPtNoBDT = new TH1F("effVsGenPtNoBDT","Efficiency vs. genPt (no BDT)", nBins, xMin, xMax);
+  
+  TGraphAsymmErrors* effVsGenPtLoose = new TGraphAsymmErrors(nBins);
+  TGraphAsymmErrors* effVsGenPtMedium = new TGraphAsymmErrors(nBins);
+  TGraphAsymmErrors* effVsGenPtTight = new TGraphAsymmErrors(nBins);
+  TGraphAsymmErrors* effVsGenPtNoBDT = new TGraphAsymmErrors(nBins);
 
   calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, effVsGenPtLoose,
 		      nBins, "genPt", region, recoPtMin, recoPtMax, recoPtCut, genPtCut, l1PtCut, wpLoose);
@@ -213,6 +222,6 @@ void makeEfficienciesPlot(void)
                     TString outputDir)*/
   plotHists(effVsRecoPtLoose, effVsRecoPtMedium, effVsRecoPtTight, effVsRecoPtNoBDT, "reco",
 		 "barrel", outputDirectory);
-  plotHists(effVsGenPtLoose, effVsGenPtMedium, effVsGenPtTight, effVsRecoPtNoBDT, "gen",
-		 "barrel", outputDirectory);
+  //  plotHists(effVsGenPtLoose, effVsGenPtMedium, effVsGenPtTight, effVsRecoPtNoBDT, "gen",
+  //		 "barrel", outputDirectory);
 }
