@@ -6,7 +6,7 @@ Currently using a Drell-Yan MC file located at `/afs/cern.ch/work/s/skkwan/publi
 ## (Aside) Plotting efficiencies for cut-based approach
 This has all been moved to [https://github.com/skkwan/phase2L1validation](the phase2L1validation GitHub), which should be run from a SL7 machine. My current setup is on UW Wisc servers.
 
-## Training a BDT in TMVA and recording it in a LUT
+## Training a BDT in TMVA and recording it in a .txt table
 1. Obtain an n-tuple (eventually need to set up my own analyzer).
 1. Plot variables using `tau_exercise/plot_tau_features/runValidationPlots.C`. 
    * Specifically, update the input/output directories in that script, and then run
@@ -20,3 +20,10 @@ This has all been moved to [https://github.com/skkwan/phase2L1validation](the ph
 1. Choose binning/ which values to use for the input variables.
 1. Declare the binning/values in `tau_exercise/tables/makeTable.C` and generate a text file of the LUT (sort of):
    * `root .x makeTable.C > log`.
+
+## Making efficiency plots
+1. In the folder `efficiency_plots`, the macro `calculateEfficiency.C` returns the efficiency as a function of the
+   tau reco- or gen-pT, and the macro `makeEfficienciesPlot.C` is where you can specify which turn-on curves to
+   plot.
+   * `root -l makeEfficienciesPlot.C` or `root -l -b -q makeEfficienciesPlot.C`
+

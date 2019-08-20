@@ -221,7 +221,7 @@ void makeEfficienciesPlot(void)
                     TString variable, TString region,
                     TString outputDir)*/
   plotHists(effVsRecoPtLoose, effVsRecoPtMedium, effVsRecoPtTight, effVsRecoPtNoBDT, "reco",
-		 "barrel", outputDirectory);
-  //  plotHists(effVsGenPtLoose, effVsGenPtMedium, effVsGenPtTight, effVsRecoPtNoBDT, "gen",
-  //		 "barrel", outputDirectory);
+	    "barrel", outputDirectory);
+  plotHists(effVsGenPtLoose, effVsGenPtMedium, effVsGenPtTight, effVsRecoPtNoBDT, "gen",
+	    "barrel", outputDirectory);
 }

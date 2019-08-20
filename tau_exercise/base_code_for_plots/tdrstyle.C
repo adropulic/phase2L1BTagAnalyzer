@@ -1,5 +1,35 @@
-#include "/usr/local/include/root/TStyle.h"
-#include "/usr/local/include/root/TROOT.h"
+#include "TStyle.h"
+#include "TROOT.h"
+
+#ifndef TDRSTYLE_C_INCL
+#define TDRSTYLE_C_INCL
+
+/*******************************************************************/
+
+/* Applies template style to a TPad* pad1. */
+void applyPadStyle(TPad* pad1)
+{
+  pad1->SetFillColor(0);
+  pad1->Draw();
+  pad1->cd();
+  pad1->SetLeftMargin(0.2);  pad1->SetBottomMargin(0.13); pad1->SetRightMargin(0.1);
+  //pad1->SetGrid(); 
+  pad1->SetGrid(10,10); 
+}
+
+/*******************************************************************/
+
+/* Apply legend style to a TLegend *leg. */
+
+void applyLegStyle(TLegend *leg){
+  leg->SetFillColor(0);
+  leg->SetFillStyle(0);
+  leg->SetBorderSize(0);
+  leg->SetHeader("");
+  leg->SetShadowColor(0);
+}
+
+/*******************************************************************/
 
 // tdrGrid: Turns the grid lines on (true) or off (false)
 void setTDRStyle();
@@ -159,3 +189,5 @@ void setTDRStyle() {
   tdrStyle->cd();
 
 }
+
+#endif

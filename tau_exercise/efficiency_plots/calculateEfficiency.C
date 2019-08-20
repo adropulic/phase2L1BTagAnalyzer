@@ -5,42 +5,32 @@
 /* Author: Stephanie Kwan                                          */
 /*******************************************************************/
 
-#include "TCanvas.h"
-#include "TROOT.h"
-#include "TFile.h"
-#include "TTree.h"
+#include "../base_code_for_plots/CMS_lumi.h"
+#include "../base_code_for_plots/tdrstyle.C"
+
+#include "TAxis.h"
 #include "TChain.h"
-#include "TH1.h"
 #include "TF1.h"
-#include <math.h>
-#include <TEfficiency.h>
-#include <TMath.h>
-#include <TFormula.h>
-#include <iostream>
-#include <string>
-#include <vector>
-
-
-#include <iostream>
-#include <cmath>
-#include "TLegend.h"
-#include "TPad.h"
+#include "TFile.h"
+#include "TGaxis.h"
+#include "TGraphAsymmErrors.h"
 #include "TH1.h"
 #include "TH1F.h"
-#include "TH2.h"
-#include "TF1.h"
-#include "TGraphAsymmErrors.h"
+
 #include "THStack.h"
-#include "TStyle.h"
-#include "TAxis.h"
-#include "TGaxis.h"
-#include "TTree.h"
+#include "TLegend.h"
+#include "TPad.h"
 #include "TPaveText.h"
-#include "tdrstyle.C"
+#include "TROOT.h"
 #include "TStyle.h"
-#include "TAxis.h"
-#include "TGaxis.h"
-#include "CMS_lumi.h"
+#include "TTree.h"
+
+#include <cmath>
+#include <iostream>
+#include <math.h>
+#include <string>
+#include <TMath.h>
+#include <vector>
 
 #include "DataFormats/Math/interface/deltaR.h"
 
@@ -51,31 +41,6 @@
 
 #ifndef CALCULATE_EFFICIENCY_INCL
 #define CALCULATE_EFFICIENCY_INCL
-
-/*******************************************************************/
-
-/* Applies template style to a TPad* pad1. */
-void applyPadStyle(TPad* pad1)
-{
-  pad1->SetFillColor(0);
-  pad1->Draw();
-  pad1->cd();
-  pad1->SetLeftMargin(0.2);  pad1->SetBottomMargin(0.13); pad1->SetRightMargin(0.1);
-  //pad1->SetGrid(); 
-  pad1->SetGrid(10,10); 
-}
-
-/*******************************************************************/
-
-/* Apply legend style to a TLegend *leg. */
-
-void applyLegStyle(TLegend *leg){
-  leg->SetFillColor(0);
-  leg->SetFillStyle(0);
-  leg->SetBorderSize(0);
-  leg->SetHeader("");
-  leg->SetShadowColor(0);
-}
 
 /*******************************************************************/
 

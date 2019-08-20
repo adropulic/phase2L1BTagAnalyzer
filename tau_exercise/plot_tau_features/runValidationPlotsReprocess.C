@@ -12,7 +12,7 @@ void runValidationPlotsReprocess()
   /**** End of Method 1 ***/
 
   /**** Method 2 for booking input/output directory (see below for the assumed file/naming convention ****/
-  TString description = "GluGluHiggsToTauTau";
+  TString description = "2019_Aug9-DYToLL_M-50_try1-5FEVT";
   TString inputDirectory = ("../ntuples/" + description + ".root");
   /* Make the output directory */ 
   gSystem->Exec("mkdir validationPlots/" + description);

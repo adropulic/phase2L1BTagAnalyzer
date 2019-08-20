@@ -4,6 +4,9 @@
 #include "TBox.h"
 #include "TASImage.h"
 
+#ifndef CMS_LUMI_H_INCL
+#define CMS_LUMI_H_INCL
+
 //
 // Global variables
 //
@@ -38,3 +41,4 @@ bool drawLogo      = false;
 
 void CMS_lumi( TPad* pad, int iPeriod=3, int iPosX=10 );
 
+#endif
