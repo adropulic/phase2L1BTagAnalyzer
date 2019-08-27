@@ -27,3 +27,8 @@ This has all been moved to [https://github.com/skkwan/phase2L1validation](the ph
    plot.
    * `root -l makeEfficienciesPlot.C` or `root -l -b -q makeEfficienciesPlot.C`
 
+## Making ROC curves
+1. We can use the ROOT file output by the TMVA training process to make ROC curves.
+   In the folder `roc_curves`, the macro `extractROC.C` makes a ROC curve (True Positive Rate vs. False Positive Rate)
+   and the macro `bkgRejVsSigEff.C` reproduces the TMVA background rejection vs. signal efficiency plot.
+   * `root -l bkgRejVsSigEff.C` or `root -l -b -q bkgRejVsSigEff.C`
