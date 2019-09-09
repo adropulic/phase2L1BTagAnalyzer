@@ -39,8 +39,17 @@
 #include "TMVA/Reader.h"
 #include "TMVA/MethodCuts.h"
 
+
+
 #ifndef CALCULATE_EFFICIENCY_INCL
 #define CALCULATE_EFFICIENCY_INCL
+
+/*******************************************************************/
+
+/* Helper function declarations */
+
+void effHistToTGraph(TH1F* effHist, TGraphAsymmErrors* effGraph);
+void setMaxErrorTo1(TGraphAsymmErrors *graph);
 
 /*******************************************************************/
 
@@ -57,7 +66,7 @@
    
 int calculateEfficiency(TString treePath, TString rootFileDirectory,
 			TString weightFileDirectory,
-			TGraphAsymmErrors* efficiency,
+			TGraphAsymmErrors* efficiencyGraph,
 			int nBins,
 			TString variable,
 			TString region,
@@ -72,7 +81,8 @@ int calculateEfficiency(TString treePath, TString rootFileDirectory,
   
   TH1F* numerator = new TH1F("numerator", "numerator", nBins, xMin, xMax);
   TH1F* denominator = new TH1F("denominator", "denominator", nBins, xMin, xMax);
-  
+  TH1F* efficiencyHist = new TH1F("efficiency", "efficiency", nBins, xMin, xMax);
+
   numerator->Sumw2();
   denominator->Sumw2();
 
@@ -217,19 +227,83 @@ int calculateEfficiency(TString treePath, TString rootFileDirectory,
     } /* end of loop over TTree */
 
 
-  efficiency->Divide(numerator, denominator);
-  int nPoints = efficiency->GetN();
+  efficiencyHist->Divide(numerator, denominator);
 
-  for (int i = 0; i < (nPoints-1); i++)
+  for (int i = 0; i < nBins; i++)
     {
-      efficiency->SetPointError(i, 0, 0, 
-				efficiency->GetErrorYlow(i),
-				efficiency->GetErrorYhigh(i));
+      printf("efficiencyHist bin %d content is %f, with error %f\n", i, efficiencyHist->GetBinContent(i),
+	     efficiencyHist->GetBinError(i));
       
-
     }
+
   
-  return 1;
+
+  effHistToTGraph(efficiencyHist, efficiencyGraph);
+  return 0;
 }
+
+/*******************************************************************/
+
+/* Convert an efficiency TH1F to a TGraphAsymmErrors. */
+
+void effHistToTGraph(TH1F* effHist, TGraphAsymmErrors* effGraph)
+{
+  /* Loop through effHist. */
+  int nBins = effHist->GetNbinsX();
+
+  /* Efficiency cannot be above 1.0 */
+  float maxEff = 1.000000;
+  float minEff = 0.000000;
+  
+
+  *effGraph = TGraphAsymmErrors(effHist);
+
+  float x, y;
+  float yErrOld, yErrNewLow, yErrNewHigh;
+
+  for (int i = 1; i < nBins; i++)
+    {
+      x = effHist->GetBinCenter(i);
+      y = effHist->GetBinContent(i);
+      yErrOld = effHist->GetBinError(i);
+
+      effGraph->SetPoint(i, x, y);
+      effGraph->SetPointEXhigh(i, 0.0);
+      effGraph->SetPointEXlow(i, 0.0);
+    }
+
+  setMaxErrorTo1(effGraph);
+  
+}
+
+
+/*******************************************************************/
+
+void setMaxErrorTo1(TGraphAsymmErrors *graph)
+{
+  for (int i = 1; i < graph->GetN(); i++)
+    {
+      Double_t errorY = graph->GetErrorY(i);
+      Double_t pointX, pointY;
+
+      if (graph->GetPoint(i, pointX, pointY) < 0)
+	printf("Error getting point\n");
+      
+      Double_t errorUp = pointY + errorY;
+      Double_t errorLow = pointY - errorY;
+      
+      if (errorUp > 1)
+	graph->SetPointEYhigh(i, 1 - pointY);
+      else if (errorLow < 0)
+	graph->SetPointEYlow(i, pointY);
+      
+    } 
+
+  graph->Print();  
+}
+
+
+
+/*******************************************************************/
 
 #endif
