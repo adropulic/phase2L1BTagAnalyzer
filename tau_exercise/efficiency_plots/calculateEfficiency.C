@@ -175,26 +175,37 @@ int calculateEfficiency(TString treePath, TString rootFileDirectory,
       bool passesOverallCut;
       bool passesEta;
 
-      if (region == "barrel")
-	passesEta =(genEta < 0.774);
-      else if (region == "endcap")
-	passesEta = (genEta > 0.774);
-
       if (variable == "genPt")
 	{
-	  passesOverallCut = ((genPt > genPtCut) && 
-			      passesEta
-			      // && (recoDM == 10)
+	  if (region == "barrel")
+	    passesEta = (abs(genEta) < 1.44);
+	  else if (region == "endcap")
+	    passesEta = (abs(genEta) > 1.44);
+
+	  passesOverallCut = ((genPt > genPtCut)
+			      && passesEta
+			      && (recoDM == 0)
 			      );
 	}
       else if (variable == "recoPt")
 	{
-	  passesOverallCut = ((recoPt > recoPtCut) &&
-			      (genPt > genPtCut) &&
-			      passesEta
-			      // && (recoDM == 10)
+	  if (region == "barrel")
+            passesEta = (abs(recoEta) < 1.44);
+          else if (region == "endcap")
+            passesEta = (abs(recoEta) > 1.44);
+
+	  passesOverallCut = ((recoPt > recoPtCut)
+			      && (genPt > genPtCut)
+			      && passesEta
+			      && (recoDM == 0)
 			      );
 	}
+      else
+	{
+	  printf("Error: must specify genPt or recoPt\n");
+	  return 1;
+	}
+      
 
       /* Fill denominator */
       if (passesOverallCut)
@@ -214,7 +225,7 @@ int calculateEfficiency(TString treePath, TString rootFileDirectory,
 	  event.push_back(l1PVDZ);
 
 	  bdtDiscriminant = reader->EvaluateMVA(event, "BDT method");
-
+	  //	  printf("bdtDiscriminant is %f\n", bdtDiscriminant);
 	  /* Fill numerator */
 	  if ((l1Pt > l1PtCut) && (bdtDiscriminant > bdtDiscriminantMin))
 	    {
@@ -231,13 +242,13 @@ int calculateEfficiency(TString treePath, TString rootFileDirectory,
 
   efficiencyHist->Divide(numerator, denominator);
 
-  for (int i = 0; i < nBins; i++)
+  /*  for (int i = 0; i < nBins; i++)
     {
       printf("efficiencyHist bin %d content is %f, with error %f\n", i, efficiencyHist->GetBinContent(i),
 	     efficiencyHist->GetBinError(i));
       
     }
-
+  */
   
 
   effHistToTGraph(efficiencyHist, efficiencyGraph);

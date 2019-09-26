@@ -5,11 +5,15 @@
 /*******************************************************************/
 
 #include "calculateEfficiency.C"
+#include "calculateL1TrackEfficiency.C"
+#include "calculatePFCandEfficiency.C"
 
 void plotHists(TGraphAsymmErrors* histLoose,
                TGraphAsymmErrors* histMedium,
                TGraphAsymmErrors* histTight,
                TGraphAsymmErrors* histNoBDT,
+	       TGraphAsymmErrors* histStudy,
+	       TGraphAsymmErrors* histStudy2,
                TString variable, TString region,
                TString outputDir);
 
@@ -23,9 +27,9 @@ void makeEfficienciesPlot(void)
 
   /* Load the TTree. */
   TString treePath = "L1TauAnalyzer/efficiencyTree";
-  //TString rootFileDirectory = "../ntuples/debug_missing_l1taus/analyzer-dyll-4FEVT-debuggingLowL1Taus.root";
-  //  TString rootFileDirectory = "../ntuples/GluGluHiggsToTauTau_DYToLL_200PU.root";
-  TString rootFileDirectory = "../ntuples/debug_missing_l1taus/2019_Aug22-DYToLL_M-50_PU200_withL1Tracks-combined.root";
+  //TString rootFileDirectory = "../ntuples/l1Tracks_only/2019_Sep10-DYToLL_NoPU_withL1Tracks.root";
+  //  TString rootFileDirectory = "../ntuples/l1Tracks_and_PFCands/2019_Sep17-DYToLL_NoPU_withL1Tracks_PFCand.root";
+  TString rootFileDirectory = "../ntuples/l1Tracks_PFCands_noChargedHadronMatching/2019_Sep25-DYToLL_NoPU_noChargHadrMatch.root";
   TString weightFileDirectory = "../training/dataset/weights/TMVAClassification_BDT.weights.xml";
   TString outputDirectory = "plots/";
 
@@ -57,7 +61,7 @@ void makeEfficienciesPlot(void)
   */
 
   /*******************************************************/
-  /* efficiency as a function of recoPt                  */
+  /* efficiency as a function of recoPt/genPt            */
   /*******************************************************/
 
   nBins = 50;
@@ -65,18 +69,19 @@ void makeEfficienciesPlot(void)
   binWidth = ((xMax - xMin) / nBins);
 
   recoPtMin = 0;
-  recoPtMax = 100;
+  recoPtMax = 80;
   recoPtCut = 15;
   genPtCut = 15;
   l1PtCut = 20;
-  absEtaLowerBound = 0;
-  absEtaUpperBound = 2.5;
+  
 
   /* Working points: 75%, 80%, and 90% efficiency (approximately) */
-  wpLoose = -0.1;
+  /*wpLoose = -0.1;
   wpMedium = -0.185;
-  wpTight = -0.3;  
-
+  wpTight = -0.3;  */
+  wpLoose = -0.1;
+  wpMedium = -0.05;
+  wpTight = 0.0;
 
   TString region = "barrel";
 
@@ -85,6 +90,8 @@ void makeEfficienciesPlot(void)
   TGraphAsymmErrors* effVsRecoPtMedium = new TGraphAsymmErrors();
   TGraphAsymmErrors* effVsRecoPtTight = new TGraphAsymmErrors();
   TGraphAsymmErrors* effVsRecoPtNoBDT = new TGraphAsymmErrors();
+  TGraphAsymmErrors* effL1Track = new TGraphAsymmErrors();
+  TGraphAsymmErrors* effPFCand = new TGraphAsymmErrors();
 
   calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, effVsRecoPtLoose,
 		      nBins, "recoPt", region, recoPtMin, recoPtMax, recoPtCut, genPtCut, l1PtCut, wpLoose);
@@ -95,9 +102,14 @@ void makeEfficienciesPlot(void)
   calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, effVsRecoPtNoBDT,
 		      nBins, "recoPt", region, recoPtMin, recoPtMax, recoPtCut, genPtCut, l1PtCut, -99.99);
 
+  calculateL1TrackEfficiency(treePath, rootFileDirectory, effL1Track,
+  			     nBins, "recoPt", region, recoPtMin, recoPtMax, recoPtCut, genPtCut, l1PtCut);
+  calculatePFCandEfficiency(treePath, rootFileDirectory, effPFCand,
+			    nBins, "recoPt", region, recoPtMin, recoPtMax, recoPtCut, genPtCut, l1PtCut);
+  
 
   /* GEN */
-  
+  /*
   TGraphAsymmErrors* effVsGenPtLoose = new TGraphAsymmErrors();
   TGraphAsymmErrors* effVsGenPtMedium = new TGraphAsymmErrors();
   TGraphAsymmErrors* effVsGenPtTight = new TGraphAsymmErrors();
@@ -111,7 +123,7 @@ void makeEfficienciesPlot(void)
                       nBins, "genPt", region, recoPtMin, recoPtMax, recoPtCut, genPtCut, l1PtCut, wpTight);
   calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory, effVsGenPtNoBDT,
 		      nBins, "genPt", region, recoPtMin, recoPtMax, recoPtCut, genPtCut, l1PtCut, -99.99);
-  
+  */
  
   /********************************/
   /* plotting eff vs. BDT cutoff  */
@@ -150,10 +162,12 @@ void makeEfficienciesPlot(void)
   /* void plotThreeHists(TH1F *histLoose, TH1F *histMedium, TH1F *histTight,
                     TString variable, TString region,
                     TString outputDir)*/
-  plotHists(effVsRecoPtLoose, effVsRecoPtMedium, effVsRecoPtTight, effVsRecoPtNoBDT, "reco",
+  plotHists(effVsRecoPtLoose, effVsRecoPtMedium, effVsRecoPtTight, effVsRecoPtNoBDT, effL1Track,
+	    effPFCand,
+	    "reco",
 	    "barrel", outputDirectory);
-  plotHists(effVsGenPtLoose, effVsGenPtMedium, effVsGenPtTight, effVsRecoPtNoBDT, "gen",
-	    "barrel", outputDirectory);
+  //  plotHists(effVsGenPtLoose, effVsGenPtMedium, effVsGenPtTight, effVsRecoPtNoBDT, "gen",
+  //	    "barrel", outputDirectory);
 }
 
 /*********************************************************************/
@@ -165,6 +179,8 @@ void plotHists(TGraphAsymmErrors* histLoose,
 	       TGraphAsymmErrors* histMedium,
 	       TGraphAsymmErrors* histTight,
 	       TGraphAsymmErrors* histNoBDT,
+	       TGraphAsymmErrors* histStudy,
+	       TGraphAsymmErrors* histStudy2,
 	       TString variable, TString region,
 	       TString outputDir)
 {
@@ -182,55 +198,70 @@ void plotHists(TGraphAsymmErrors* histLoose,
   applyLegStyle(leg);
 
   /* Loose */
-  histLoose->SetMarkerColor(9);
+  histLoose->SetMarkerColor(kBlue-4);
   histLoose->SetMarkerStyle(kFullCircle);
   histLoose->SetLineWidth(2);
-  histLoose->SetLineColor(9); // kBlue+2                                                                                                             
+  histLoose->SetLineColor(kBlue-4); // kBlue+2
 
   /* Medium */
-  histMedium->SetMarkerColor(8);
+  histMedium->SetMarkerColor(kSpring-1);
   histMedium->SetMarkerStyle(kFullSquare);
   histMedium->SetLineWidth(2);
-  histMedium->SetLineColor(8);
+  histMedium->SetLineColor(kSpring-1);
 
   /* Tight */
-  histTight->SetMarkerColor(46);
+  histTight->SetMarkerColor(kRed+1);
   histTight->SetMarkerStyle(kFullTriangleUp);
   histTight->SetLineWidth(2);
-  histTight->SetLineColor(46);
+  histTight->SetLineColor(kRed+1);
 
   /* No BDT cut */
-
-  histNoBDT->SetMarkerColor(kBlack);
+  histNoBDT->SetMarkerColor(kRed+4);
   histNoBDT->SetMarkerStyle(kFullTriangleDown);
   histNoBDT->SetLineWidth(2);
-  histNoBDT->SetLineColor(kBlack);
-  histNoBDT->SetLineColorAlpha(kBlack, 0.2);
+  histNoBDT->SetLineColor(kRed+4);
+
+  /* Study */
+  histStudy->SetMarkerColor(kOrange+7);
+  histStudy->SetMarkerStyle(kFullCircle);
+  histStudy->SetLineWidth(2);
+  histStudy->SetLineColor(kOrange+7);
+
+  /* Study 2*/
+  histStudy2->SetMarkerColor(kPink+8);
+  histStudy2->SetMarkerStyle(kFullCircle);
+  histStudy2->SetLineWidth(2);
+  histStudy2->SetLineColor(kPink+8);
+
+  /* Set y-axis limits */
+  histLoose->GetYaxis()->SetRangeUser(0.0, 1.1);
 
   histLoose->Draw("");
   histMedium->Draw("SAME");
   histTight->Draw("SAME");
   histNoBDT->Draw("SAME");
+  //  histStudy->Draw("SAME");
+  //histStudy2->Draw("SAME");
 
-  histLoose->GetXaxis()->SetTitle("#tau "+variable+" p_{T} [GeV]");
-  histLoose->GetYaxis()->SetTitle("Efficiency");
+  histLoose->GetXaxis()->SetTitle("Reco #tau_{H} p_{T} [GeV]");
+  histLoose->GetYaxis()->SetTitle("L1 Efficiency");
   histLoose->GetXaxis()->SetTitleSize(0.06); // default is 0.03
 
-  /* Set y-axis limits */
-  //  histLoose->SetAxisRange(0.0, 1.1, "Y");
-
   /* Customize legend */
-  leg->SetHeader("Phase 2 L1 Taus");
+  leg->SetHeader("Phase 2 L1 Taus (1prong) Barrel");
   leg->AddEntry(histLoose, "Loose", "l");
   leg->AddEntry(histMedium, "Medium", "l");
   leg->AddEntry(histTight, "Tight", "l");
   leg->AddEntry(histNoBDT, "No BDT discriminant cut", "l");
 
+  //  leg->AddEntry(histStudy, "L1 track matched with Reco Tau", "l");
+  //leg->AddEntry(histStudy2, "PF Cand matched with Reco Tau", "l");
+
   gStyle->SetLegendFont(30);
   leg->Draw();
 
   Tcan->cd();
-  Tcan->SaveAs(outputDir+"efficiency_vs_"+variable+"Pt_"+region+"_NewSamples_L1taus.png");
+  Tcan->SaveAs(outputDir+"efficiency_vs_"+variable+"Pt_"+region+"_DM0_testingWPs.png");
 
 }
 
