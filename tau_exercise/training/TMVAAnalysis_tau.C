@@ -57,13 +57,15 @@ void TMVAAnalysis_tau()
     //--------------------------------------------
     // Load data
     //--------------------------------------------
-    TString dir = "../ntuples/";
-    TString file = "GluGluHiggsToTauTau_DYToLL_200PU";
+    // Need trailing "/"
+    TString dir = "../ntuples/use_charghadr_newAlgo/";
+    // Don't put the extension:
+    TString file = "2019_Sep28-DYToLL_200PU_ext1-USE_CHARGED_HADRON_new_algo";
     TString inputFilename = dir + file + ".root";
 
     // Get input file and declare output file where TMVA will store ntuples, hists, etc.
     TFile *inputFile = new TFile(inputFilename.Data());
-    TString outputFilename = "TMVA_training_taus_out_" + file + ".root";
+    TString outputFilename = "TMVA_training_out_" + file + ".root";
     TFile *outFile = new TFile(outputFilename, "RECREATE");
 	
     // Get input tree
@@ -78,11 +80,15 @@ void TMVAAnalysis_tau()
     Double_t l1DM;
     Double_t zVTX, l1TauZ, l1PVDZ;
     Double_t l1StripPt, l1StripEta, l1StripPhi, l1StripDR;
-    Double_t genPt;
+    Double_t genPt, recoPt;
+    Int_t genDM;
+    Double_t l1HoE, l1EoH;
     
     // Set branch addresses
     inputTree->SetBranchAddress("genPt", &genPt);
-    
+    inputTree->SetBranchAddress("genDM", &genDM);
+
+    inputTree->SetBranchAddress("recoPt", &recoPt);
     inputTree->SetBranchAddress("l1Pt", &l1Pt);
     inputTree->SetBranchAddress("l1Eta", &l1Eta);
     inputTree->SetBranchAddress("l1Phi", &l1Phi);
@@ -92,15 +98,18 @@ void TMVAAnalysis_tau()
     inputTree->SetBranchAddress("l1PVDZ", &l1PVDZ);
     
     inputTree->SetBranchAddress("l1StripPt", &l1StripPt);
-    inputTree->SetBranchAddress("l1StripEta", &l1StripEta);
-    inputTree->SetBranchAddress("l1StripPhi", &l1StripPhi);
-    inputTree->SetBranchAddress("l1StripDR", &l1StripDR);
+    //    inputTree->SetBranchAddress("l1StripEta", &l1StripEta);
+    //    inputTree->SetBranchAddress("l1StripPhi", &l1StripPhi);
+    //    inputTree->SetBranchAddress("l1StripDR", &l1StripDR);
+
+    inputTree->SetBranchAddress("l1HoE", &l1HoE);
+    inputTree->SetBranchAddress("l1EoH", &l1EoH);
     
     // Loop through taus and fill sigTree and bkgTree
     for (Int_t i = 0; i < inputTree->GetEntries(); i++ ) {
       inputTree->GetEntry(i);
-		
-      if ( genPt > 20 ) {
+
+      if ( (genPt > 20) && (genDM > 9) ) {
 	sigTree->Fill();
       }
       else {
@@ -139,6 +148,8 @@ void TMVAAnalysis_tau()
     dataloader->AddVariable("l1StripPt", 'D');
     dataloader->AddVariable("l1DM", 'D');
     dataloader->AddVariable("l1PVDZ", 'D');
+    dataloader->AddVariable("l1HoE", 'D');
+    dataloader->AddVariable("l1EoH", 'D');
     
     // You can add an arbitrary number of signal or background trees
     // Here we set the global event weights per tree to 1.0
@@ -150,11 +161,13 @@ void TMVAAnalysis_tau()
     
     // Apply additional cuts on the signal and background samples
     // e.g. TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
-    // Commenting out the below, which were cuts used for b jets. 
+
+    // Removing l1Pt > 0 requirement for now.
     
-    TCut signalCut     = "(l1Pt > 0) && \
-                              !isinf(l1Pt) && !isinf(l1Eta) && !isinf(l1StripPt) && !isinf(l1DM) && !isinf(l1PVDZ) && \
-                              !isnan(l1Pt) && !isnan(l1Eta) && !isnan(l1StripPt) && !isnan(l1DM) && !isnan(l1PVDZ)";
+    TCut signalCut     = "(l1StripPt < 400) &&\
+                          !isinf(l1EoH) && !isinf(l1HoE) && !isnan(l1EoH) && !isnan(l1HoE) &&\
+                          !isinf(l1Pt) && !isinf(l1Eta) && !isinf(l1StripPt) && !isinf(l1DM) && !isinf(l1PVDZ) &&\
+                          !isnan(l1Pt) && !isnan(l1Eta) && !isnan(l1StripPt) && !isnan(l1DM) && !isnan(l1PVDZ)";
     TCut backgroundCut = signalCut;
     
     TString datasetOptions = "SplitMode=Random";

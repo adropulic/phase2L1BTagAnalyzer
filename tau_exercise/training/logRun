@@ -1,11 +1,10 @@
-[skkwan@lxplus738 training]$ root -l TMVAAnalysis_tau.C 
-root [0] 
+
 Processing TMVAAnalysis_tau.C...
 DataSetInfo              : [dataset] : Added class "Signal"
                          : Add Tree efficiencyTree of type Signal with 17946 events
 DataSetInfo              : [dataset] : Added class "Background"
                          : Add Tree efficiencyTree of type Background with 170171 events
-Factory                  : Booking method: BDT
+Factory                  : Booking method: [1mBDT[0m
                          : 
 <WARNING>                : Found events with NaN and/or +-inf values
 <WARNING>                : Dataset[dataset] : Input expression resolves to indeterminate value (NaN): l1StripPt
@@ -67,22 +66,22 @@ DataSetInfo              : Correlation matrix (Background):
 DataSetFactory           : [dataset] :  
                          : 
                          : Evaluate method: BDT
-                         : Evaluation done.] (93%, time left: 0 sec)  
+                         : Evaluation done.
 CrossValidation          :  ==== Results ====
-                         : Fold  0 ROC-Int : 0.8365
-                         : Fold  1 ROC-Int : 0.8387
-                         : Fold  2 ROC-Int : 0.8375
-                         : Fold  3 ROC-Int : 0.8317
-                         : Fold  4 ROC-Int : 0.8347
+                         : Fold  0 ROC-Int : 0.8429
+                         : Fold  1 ROC-Int : 0.8274
+                         : Fold  2 ROC-Int : 0.8350
+                         : Fold  3 ROC-Int : 0.8406
+                         : Fold  4 ROC-Int : 0.8296
                          : ------------------------
-                         : Average ROC-Int : 0.8358
-                         : Std-Dev ROC-Int : 0.0027
-                         : [>>>>>>>>>>>>>>>] (93%, time left: 0 sec)  
+                         : Average ROC-Int : 0.8351
+                         : Std-Dev ROC-Int : 0.0067
+                         : 
                          : Evaluation results ranked by best signal efficiency and purity (area)
                          : -------------------------------------------------------------------------------------------------------------------
                          : DataSet       MVA                       
                          : Name:         Method:          ROC-integ
-                         : dataset       BDT            : 0.835
+                         : dataset       BDT            : 0.830
                          : -------------------------------------------------------------------------------------------------------------------
                          : 
                          : Testing efficiency compared to training efficiency (overtraining check)
@@ -90,12 +89,13 @@ CrossValidation          :  ==== Results ====
                          : DataSet              MVA              Signal efficiency: from test sample (from training sample) 
                          : Name:                Method:          @B=0.01             @B=0.10            @B=0.30   
                          : -------------------------------------------------------------------------------------------------------------------
-                         : dataset              BDT            : 0.109 (0.113)       0.520 (0.518)      0.801 (0.797)
+                         : dataset              BDT            : 0.130 (0.114)       0.511 (0.507)      0.786 (0.786)
                          : -------------------------------------------------------------------------------------------------------------------
                          : 
 Dataset:dataset          : Created tree 'TestTree' with 18808 events
                          : 
 Dataset:dataset          : Created tree 'TrainTree' with 75232 events
                          : 
-Factory                  : Thank you for using TMVA!
-                         : For citation information, please visit: http://tmva.sf.net/citeTMVA.html
+Factory                  : [1mThank you for using TMVA![0m
+                         : [1mFor citation information, please visit: http://tmva.sf.net/citeTMVA.html[0m
+
