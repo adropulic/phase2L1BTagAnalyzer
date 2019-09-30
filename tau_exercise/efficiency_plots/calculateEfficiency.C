@@ -60,9 +60,9 @@ void setMaxErrorTo1(TGraphAsymmErrors *graph);
    the value bdtDiscriminantMin, using an TTree (ntuple) of L1
    taus pointed to by treePath and rootFileDirectory. 
    The BDT weight file is read from weightFileDirectory.
-   nBins is the number of bins, variable is either "genPt" or "recoPt"
-   (x-axis), recoPtCut and genPtCut specify global minima, and l1PtCut
-   and bdtDiscriminantMin are applied to the numerator.
+   nBins is the number of bins, variable is "genPt", "recoPt", or "recoEta"
+   (x-axis), recoPtCut and genPtCut specify lower-bound cuts on recoPt and genPt,
+   and l1PtCut and bdtDiscriminantMin are lower-bound cuts on the numerator.
 */
    
 TGraphAsymmErrors* calculateEfficiency(TString treePath, TString rootFileDirectory,
@@ -101,9 +101,9 @@ TGraphAsymmErrors* calculateEfficiency(TString treePath, TString rootFileDirecto
       return NULL;
     }
 
-  if (! ((variable == "recoPt") || (variable == "genPt")))
+  if (! ((variable == "recoPt") || (variable == "genPt") || (variable == "recoEta")))
     {
-      std::cout<<"ERROR: parameter 'variable' is not recognized; EXITING"<<std::endl;
+      std::cout<<"ERROR: parameter 'variable' must be 'recoPt', 'genPt', or 'recoEta'; EXITING"<<std::endl;
       return NULL;
     }
 
@@ -216,12 +216,16 @@ TGraphAsymmErrors* calculateEfficiency(TString treePath, TString rootFileDirecto
 			      // && (recoDM == 0)
 			      );
 	}
-      else
+      else if (variable == "recoEta")
 	{
-	  printf("Error: must specify genPt or recoPt\n");
-	  return NULL;
+	  passesOverallCut = ((recoPt > recoPtCut)
+                              && (genPt > genPtCut)
+                              && passesEta
+                              && (genDM > 9)
+                              && (l1Track_pt > 10)
+			      );
+
 	}
-      
 
       /* Fill denominator */
       if (passesOverallCut)
@@ -230,9 +234,12 @@ TGraphAsymmErrors* calculateEfficiency(TString treePath, TString rootFileDirecto
 	    denominator->Fill(genPt);
 	  else if (variable == "recoPt")
 	    denominator->Fill(recoPt);
+	  else if (variable == "recoEta")
+	    denominator->Fill(recoEta);
 
-	  float bdtDiscriminant = -9.9;
 	  // Evaluate the BDT.
+	  float bdtDiscriminant;
+
 	  std::vector<float> event;
 	  event.push_back(l1Pt); 
 	  event.push_back(l1Eta);
@@ -244,6 +251,7 @@ TGraphAsymmErrors* calculateEfficiency(TString treePath, TString rootFileDirecto
 
 	  bdtDiscriminant = reader->EvaluateMVA(event, "BDT method");
 	  //	  printf("bdtDiscriminant is %f\n", bdtDiscriminant);
+
 	  /* Fill numerator */
 	  if ((l1Pt > l1PtCut) && (bdtDiscriminant > bdtDiscriminantMin))
 	    {
@@ -251,6 +259,8 @@ TGraphAsymmErrors* calculateEfficiency(TString treePath, TString rootFileDirecto
 		numerator->Fill(genPt);
 	      else if (variable == "recoPt")
 		numerator->Fill(recoPt);
+	      else if (variable == "recoEta")
+		numerator->Fill(recoEta);
 
 	    }
 	}
