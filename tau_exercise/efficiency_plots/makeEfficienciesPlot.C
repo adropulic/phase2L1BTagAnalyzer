@@ -35,7 +35,7 @@ void makeEfficienciesPlot(void)
   TString outputDirectory = "plots/";
 
   /*******************************************************/
-  /* efficiency as a function of recoPt/genPt            */
+  /* efficiency as a function of recoPt                  */
   /*******************************************************/
 
   int nBins = 50;
@@ -60,22 +60,22 @@ void makeEfficienciesPlot(void)
 
   /* RECO PT */
   TGraphAsymmErrors* effVsRecoPt60 = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,
-							 nBins, "recoPt", region, recoPtMin, recoPtMax,
+							 nBins, "recoPt", region, xMin, xMax,
 							 recoPtCut, genPtCut, l1PtCut, wp60);
   TGraphAsymmErrors* effVsRecoPt70 = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,
-							 nBins, "recoPt", region, recoPtMin, recoPtMax,
+							 nBins, "recoPt", region, xMin, xMax,
 							 recoPtCut, genPtCut, l1PtCut, wp70);
   TGraphAsymmErrors* effVsRecoPt80 = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,
-                                                         nBins, "recoPt", region, recoPtMin, recoPtMax,
+                                                         nBins, "recoPt", region, xMin, xMax,
                                                          recoPtCut, genPtCut, l1PtCut, wp80);
   TGraphAsymmErrors* effVsRecoPt90 = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,
-                                                         nBins, "recoPt", region, recoPtMin, recoPtMax,
+                                                         nBins, "recoPt", region, xMin, xMax,
                                                          recoPtCut, genPtCut, l1PtCut, wp90);
   TGraphAsymmErrors* effVsRecoPt95 = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,
-                                                         nBins, "recoPt", region, recoPtMin, recoPtMax,
+                                                         nBins, "recoPt", region, xMin, xMax,
                                                          recoPtCut, genPtCut, l1PtCut, wp95);
   TGraphAsymmErrors* effVsRecoPtNoBDT = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,
-							    nBins, "recoPt", region, recoPtMin, recoPtMax,
+							    nBins, "recoPt", region, xMin, xMax,
 							    recoPtCut, genPtCut, l1PtCut, wpNone);
 
   plotHists(effVsRecoPt60,
@@ -88,6 +88,40 @@ void makeEfficienciesPlot(void)
 	    "Phase 2 L1 Taus (All DM) Barrel",
 	    "effVsRecoPt_"+region+"_allDM_l1TracksPt10_TESTINGscriptRewrite.png",
 	    outputDirectory);
+
+  /* RECO ETA */
+  xMin = -1.44;
+  xMax = 1.44;
+  TGraphAsymmErrors* effVsRecoEta60 = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,
+							  nBins, "recoEta", region, xMin, xMax,
+							  recoPtCut, genPtCut, l1PtCut, wp60);
+  TGraphAsymmErrors* effVsRecoEta70 = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,
+                                                          nBins, "recoEta", region, xMin, xMax,
+                                                          recoPtCut, genPtCut, l1PtCut, wp70);
+  TGraphAsymmErrors* effVsRecoEta80 = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,
+							  nBins, "recoEta", region, xMin, xMax,
+							  recoPtCut, genPtCut, l1PtCut, wp80);
+  TGraphAsymmErrors* effVsRecoEta90 = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,
+                                                          nBins, "recoEta", region, xMin, xMax,
+                                                          recoPtCut, genPtCut, l1PtCut, wp90);
+  TGraphAsymmErrors* effVsRecoEta95 = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,
+                                                          nBins, "recoEta", region, xMin, xMax,
+                                                          recoPtCut, genPtCut, l1PtCut, wp95);
+  TGraphAsymmErrors* effVsRecoEtaNoBDT = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,
+							     nBins, "recoEta", region, xMin, xMax,
+							     recoPtCut, genPtCut, l1PtCut, wpNone);
+
+  plotHists(effVsRecoEta60,
+	    effVsRecoEta70,
+	    effVsRecoEta80,
+	    effVsRecoEta90,
+	    effVsRecoEta95,
+	    effVsRecoEtaNoBDT,
+	    "Reco #tau_{H} eta",
+	    "Phase 2 L1 Taus (All DM) Barrel",
+	    "effVsRecoEta_"+region+"_allDM_l1TracksPt10_TESTINGscriptRewrite.png",
+	    outputDirectory);
+  
 }
 
 
