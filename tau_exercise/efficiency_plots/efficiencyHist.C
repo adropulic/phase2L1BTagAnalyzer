@@ -12,47 +12,8 @@
 
 /*******************************************************************/
 
-/* Function declarations */
-void setMaxErrorTo1(TGraphAsymmErrors *graph);
-
-/*******************************************************************/
-
-/* Convert an efficiency TH1F to a TGraphAsymmErrors. */
-/*
-void effHistToTGraph(TH1F* effHist, TGraphAsymmErrors* effGraph)
-{
-  // Loop through effHist. 
-  int nBins = effHist->GetNbinsX();
-
-  // Efficiency cannot be above 1.0 
-  float maxEff = 1.000000;
-  float minEff = 0.000000;
-  
-
-  *effGraph = TGraphAsymmErrors(effHist);
-
-  float x, y;
-  float yErrOld, yErrNewLow, yErrNewHigh;
-
-  for (int i = 1; i < nBins; i++)
-    {
-      x = effHist->GetBinCenter(i);
-      y = effHist->GetBinContent(i);
-      yErrOld = effHist->GetBinError(i);
-
-      effGraph->SetPoint(i, x, y);
-      effGraph->SetPointEXhigh(i, 0.0);
-      effGraph->SetPointEXlow(i, 0.0);
-    }
-
-  setMaxErrorTo1(effGraph);
-  
-}
-*/
-/*******************************************************************/
-
-/* Set the maximum error of a TGraphAsymmErrors so that the max
-   value is 1.0. */
+/* Sets the maximum and minimum error of an efficiency
+   TGraphAsymmErrors to be 1.0 and 0.0 respectively. */
 
 void setMaxErrorTo1(TGraphAsymmErrors *graph)
 {

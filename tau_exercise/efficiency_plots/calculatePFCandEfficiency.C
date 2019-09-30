@@ -38,17 +38,20 @@
 
 /*******************************************************************/
 
+/* Returns efficiency of PF Candidates as a TGraphAsymmErrors*. 
+   (Denominator is all true taus, numerator is PF Cands with pT 
+    greater than pfPtCut.) Use to troubleshoot low efficiencies from
+   poor PF Candidates during reconstruction. */
 
-int calculatePFCandEfficiency(TString treePath, TString rootFileDirectory,
-			      TGraphAsymmErrors* efficiencyGraph,
-			      int nBins,
-			      TString variable,
-			      TString region,
-			      double xMin,
-			      double xMax,
-			      double recoPtCut,
-			      double genPtCut,
-			      double pfPtCut)
+TGraphAsymmErrors* calculatePFCandEfficiency(TString treePath, TString rootFileDirectory,
+					     int nBins,
+					     TString variable,
+					     TString region,
+					     double xMin,
+					     double xMax,
+					     double recoPtCut,
+					     double genPtCut,
+					     double pfPtCut)
 {
   /* Numerator and denominator histograms. */
   TH1F* numerator = new TH1F("numerator", "numerator", nBins, xMin, xMax);
@@ -171,9 +174,14 @@ int calculatePFCandEfficiency(TString treePath, TString rootFileDirectory,
       
     }
   */
-  effHistToTGraph(efficiencyHist, efficiencyGraph);
+
+  TGraphAsymmErrors* effGraph = new TGraphAsymmErrors();
+  *effGraph = TGraphAsymmErrors(numerator, denominator);
   
-  return 0;
+  setMaxErrorTo1(effGraph);
+
+  return effGraph;
+
 }
 
 /*******************************************************************/

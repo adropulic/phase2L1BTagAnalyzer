@@ -38,17 +38,22 @@
 
 /*******************************************************************/
 
+/* Returns a TGraphAsymmErrors containing the L1 Track efficiency:
+   denominator is true taus, numerator requires that the L1 Track
+   with leading pT has pT greater than l1PtCut. 
+   The x-axis is "variable" (either recoPt or genPt), and has 
+   nBins bins ranging from xMin to xMax.
+   Used to debug low L1 Track efficiencies. */
 
-int calculateL1TrackEfficiency(TString treePath, TString rootFileDirectory,
-			       TGraphAsymmErrors* efficiencyGraph,
-			       int nBins,
-			       TString variable,
-			       TString region,
-			       double xMin,
-			       double xMax,
-			       double recoPtCut,
-			       double genPtCut,
-			       double l1PtCut)
+TGraphAsymmErrors* calculateL1TrackEfficiency(TString treePath, TString rootFileDirectory,
+					      int nBins,
+					      TString variable,
+					      TString region,
+					      double xMin,
+					      double xMax,
+					      double recoPtCut,
+					      double genPtCut,
+					      double l1PtCut)
 {
   /* Numerator and denominator histograms. */
   TH1F* numerator = new TH1F("numerator", "numerator", nBins, xMin, xMax);
@@ -178,10 +183,14 @@ int calculateL1TrackEfficiency(TString treePath, TString rootFileDirectory,
 	     efficiencyHist->GetBinError(i));
       
 	     }*/
+ 
+  TGraphAsymmErrors* effGraph = new TGraphAsymmErrors();
+  *effGraph = TGraphAsymmErrors(numerator, denominator);
   
-  effHistToTGraph(efficiencyHist, efficiencyGraph);
-  
-  return 0;
+  setMaxErrorTo1(effGraph);
+
+  return effGraph; 
+
 }
 
 /*******************************************************************/
