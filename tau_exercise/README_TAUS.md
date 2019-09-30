@@ -1,7 +1,7 @@
 # Tau README
 
 ## Inputs
-Currently using a Drell-Yan MC file located at `/afs/cern.ch/work/s/skkwan/public/triggerDevel/apr2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/tau_exercise/training/inputs/dyll.root` for training. Still working on setting up Isobel's analyzer for generating tau n-tuples.
+Generate n-tuples using [https://github.com/skkwan/phase2L1TauAnalyzer](the phase2L1TauAnalyzer).
 
 ## (Aside) Plotting efficiencies for cut-based approach
 This has all been moved to [https://github.com/skkwan/phase2L1validation](the phase2L1validation GitHub), which should be run from a SL7 machine. My current setup is on UW Wisc servers.
@@ -18,13 +18,12 @@ This has all been moved to [https://github.com/skkwan/phase2L1validation](the ph
    * `root -l -b -q TMVAAnalysis_tau.C`.
 1. (Optional) to plot a histogram of the resultant discriminant values, use `/tau_exercise/training/applyWeightFiles/applyWeightFile_taus.C`.
 1. Choose binning/ which values to use for the input variables.
-1. Declare the binning/values in `tau_exercise/tables/makeTable.C` and generate a text file of the LUT (sort of):
+1. Declare the binning/values in `tau_exercise/tables/makeTable.C` and generate a text file with the table:
    * `root .x makeTable.C > log`.
 
 ## Making efficiency plots
-1. In the folder `efficiency_plots`, the macro `calculateEfficiency.C` returns the efficiency as a function of the
-   tau reco- or gen-pT, and the macro `makeEfficienciesPlot.C` is where you can specify which turn-on curves to
-   plot.
+1. In the folder `efficiency_plots`, `makeEfficienciesPlot.C` calls a few macros (`calculateEfficiency.C` to calculate eff. histograms and
+   `efficienciesHist.C` for plotting) to generate plots. 
    * `root -l makeEfficienciesPlot.C` or `root -l -b -q makeEfficienciesPlot.C`
 
 ## Making ROC curves
@@ -32,3 +31,5 @@ This has all been moved to [https://github.com/skkwan/phase2L1validation](the ph
    In the folder `roc_curves`, the macro `extractROC.C` makes a ROC curve (True Positive Rate vs. False Positive Rate)
    and the macro `bkgRejVsSigEff.C` reproduces the TMVA background rejection vs. signal efficiency plot.
    * `root -l bkgRejVsSigEff.C` or `root -l -b -q bkgRejVsSigEff.C`
+
+## Making rates plots
