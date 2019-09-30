@@ -18,13 +18,13 @@ void setMaxErrorTo1(TGraphAsymmErrors *graph);
 /*******************************************************************/
 
 /* Convert an efficiency TH1F to a TGraphAsymmErrors. */
-
+/*
 void effHistToTGraph(TH1F* effHist, TGraphAsymmErrors* effGraph)
 {
-  /* Loop through effHist. */
+  // Loop through effHist. 
   int nBins = effHist->GetNbinsX();
 
-  /* Efficiency cannot be above 1.0 */
+  // Efficiency cannot be above 1.0 
   float maxEff = 1.000000;
   float minEff = 0.000000;
   
@@ -48,7 +48,7 @@ void effHistToTGraph(TH1F* effHist, TGraphAsymmErrors* effGraph)
   setMaxErrorTo1(effGraph);
   
 }
-
+*/
 /*******************************************************************/
 
 /* Set the maximum error of a TGraphAsymmErrors so that the max
