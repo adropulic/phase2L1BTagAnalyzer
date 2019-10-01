@@ -59,8 +59,8 @@ void setMaxErrorTo1(TGraphAsymmErrors *graph);
    
 TGraphAsymmErrors* calculateEfficiency(TString variable,
 				       TString treePath, TString rootFileDirectory,
-				       TCut l1Cut,
-				       TCut recoCut,
+				       TString l1Cut,
+				       TString recoCut,
 				       double low,
 				       double high,
 				       bool variableBin = false)
@@ -84,7 +84,7 @@ TGraphAsymmErrors* calculateEfficiency(TString variable,
   /* Numerator and denominator histograms. */
   TH1F* Num;
   TH1F* Denom;
-  int bins = 10;
+  int bins = 15;
   Float_t xbins[11] = {0, 5, 10, 15, 20, 25, 30, 50, 70, 100, 200};
 
   if(variableBin)

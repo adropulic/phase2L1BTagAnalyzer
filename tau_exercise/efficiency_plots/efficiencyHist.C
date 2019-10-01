@@ -72,17 +72,23 @@ void plotThreeHists(TGraphAsymmErrors* histLoose, TString labelLoose,
   histNoBDT->SetMarkerStyle(kFullCircle);
   histNoBDT->SetLineWidth(2);
   
+  /* Dummy */
+  TGraphAsymmErrors* histDummy = new TGraphAsymmErrors(*histLoose);
+  histDummy->SetMarkerColor(0);
+  histDummy->SetLineColor(0);
+  
 
-  histLoose->Draw("");
-  histVLoose->Draw("P SAME");
-  histNoBDT->Draw("P SAME");
+  histDummy->Draw("");
+  histLoose->Draw("P");
+  histVLoose->Draw("P");
+  histNoBDT->Draw("P");
 
-  histLoose->GetXaxis()->SetTitle(xAxisLabel);
-  histLoose->GetYaxis()->SetTitle("L1 Efficiency");
-  histLoose->GetXaxis()->SetTitleSize(0.06); // default is 0.03                                                              
+  histDummy->GetXaxis()->SetTitle(xAxisLabel);
+  histDummy->GetYaxis()->SetTitle("L1 Efficiency");
+  histDummy->GetXaxis()->SetTitleSize(0.06); // default is 0.03                                                              
 
   /* Set y-axis limits */
-  histLoose->GetYaxis()->SetRangeUser(0.0, 1.1);
+  histDummy->GetYaxis()->SetRangeUser(0.0, 1.1);
 
   /* Customize legend */
   leg->SetHeader(legendName);

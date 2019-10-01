@@ -9,6 +9,7 @@
 #include "calculateL1TrackEfficiency.C"
 #include "calculatePFCandEfficiency.C"
 
+#include <string>
 /*********************************************************************/
 
 /* Plots L1 tau efficiency for different BDT discriminant working
@@ -25,7 +26,7 @@ void makeEfficienciesPlot(void)
   TString outputDirectory = "plots/";
 
   float xMin, xMax;
-  TCut recoCut, l1Cut, bdtCut;
+  TString recoCut, l1Cut;
 
   /* Working points: 60%, 70%, 80%, 90%, 95% */
   float wp60 = 0.0540466;
@@ -45,14 +46,17 @@ void makeEfficienciesPlot(void)
   l1Cut   = "recoPt>10 && genPt>10 && l1Track_pt>10 && genDM>9 && l1Pt>0";
   
   TGraphAsymmErrors* effVsRecoPt90 = calculateEfficiency("recoPt", treePath, rootFileDirectory,
-							 l1Cut, recoCut, xMin, xMax,
-							 true);
+							 l1Cut + "&& (l1BDTDisriminant > -0.0435867)",
+							 recoCut, xMin, xMax, true);
+  
   TGraphAsymmErrors* effVsRecoPt95 = calculateEfficiency("recoPt", treePath, rootFileDirectory,
-                                                         l1Cut, recoCut, xMin, xMax,
-							 true);
+                                                         l1Cut + "&& (l1BDTDisriminant > -0.0486184)",
+							 recoCut, xMin, xMax, true);
+
   TGraphAsymmErrors* effVsRecoPtNoBDT = calculateEfficiency("recoPt", treePath, rootFileDirectory,
-							    l1Cut, recoCut, xMin, xMax,
-							    true);
+							    l1Cut,
+							    recoCut, xMin, xMax, true);
+
 
   plotThreeHists(
 		 effVsRecoPt90, "allDM Loose",
@@ -73,14 +77,14 @@ void makeEfficienciesPlot(void)
   l1Cut   = "recoPt>30 && genPt>20 && l1Track_pt>10 && genDM>9 && l1Pt>10";
 
   TGraphAsymmErrors* effVsRecoEta90 = calculateEfficiency("recoEta", treePath, rootFileDirectory,
-							  l1Cut, recoCut, xMin, xMax,
-							  false);
+							  l1Cut + "&& (l1BDTDisriminant > -0.0435867)",
+							  recoCut, xMin, xMax, false);
   TGraphAsymmErrors* effVsRecoEta95 = calculateEfficiency("recoEta", treePath, rootFileDirectory,
-                                                          l1Cut, recoCut, xMin, xMax,
-							  false);
+                                                          l1Cut + "&& (l1BDTDisriminant > -0.0486184)",
+							  recoCut, xMin, xMax, false);
   TGraphAsymmErrors* effVsRecoEtaNoBDT = calculateEfficiency("recoEta", treePath, rootFileDirectory, 
-							     l1Cut, recoCut, xMin, xMax,
-							     false);
+							     l1Cut,
+							     recoCut, xMin, xMax, false);
 
   plotThreeHists(
 		 effVsRecoEta90, "allDM Loose",
