@@ -9,15 +9,6 @@
 #include "calculateL1TrackEfficiency.C"
 #include "calculatePFCandEfficiency.C"
 
-void plotHists(TGraphAsymmErrors* histLoose,
-               TGraphAsymmErrors* histMedium,
-               TGraphAsymmErrors* histMedium2,
-               TGraphAsymmErrors* histTight,
-               TGraphAsymmErrors* histTight2,
-	       TGraphAsymmErrors* histNoBDT,
-               TString variable, TString region,
-               TString outputDir);
-
 /*********************************************************************/
 
 /* Plots L1 tau efficiency for different BDT discriminant working
@@ -30,97 +21,75 @@ void makeEfficienciesPlot(void)
   /* Load the TTree. */
   TString treePath = "L1TauAnalyzer/efficiencyTree";
   TString rootFileDirectory = "../ntuples/use_charghadr_newAlgo/2019_Sep28-DYToLL_200PU_ext1-USE_CHARGED_HADRON_new_algo.root";
-  //  TString rootFileDirectory = "../ntuples/l1Tracks_PFCands_noChargedHadronMatching/2019_Sep25-DYToLL_NoPU_noChargHadrMatch.root";
   TString weightFileDirectory = "../training/dataset/weights/TMVAClassification_BDT.weights.xml";
   TString outputDirectory = "plots/";
+
+  float xMin, xMax;
+  TCut recoCut, l1Cut, bdtCut;
+
+  /* Working points: 60%, 70%, 80%, 90%, 95% */
+  float wp60 = 0.0540466;
+  float wp70 = 0.0126322;   // Tight
+  float wp80 = -0.0253954;  // Medium
+  float wp90 = -0.0435867;  // Loose
+  float wp95 = -0.0486184;  // VLoose
+  float wpNone = -99;
 
   /*******************************************************/
   /* efficiency as a function of recoPt                  */
   /*******************************************************/
 
-  int nBins = 50;
-  float xMin = 0;
-  float xMax = 100;
+  xMin = 0;
+  xMax = 100;
+  recoCut = "recoPt>10 && genPt>10 && l1Track_pt>10 && genDM>9";
+  l1Cut   = "recoPt>10 && genPt>10 && l1Track_pt>10 && genDM>9 && l1Pt>0";
+  
+  TGraphAsymmErrors* effVsRecoPt90 = calculateEfficiency("recoPt", treePath, rootFileDirectory,
+							 l1Cut, recoCut, xMin, xMax,
+							 true);
+  TGraphAsymmErrors* effVsRecoPt95 = calculateEfficiency("recoPt", treePath, rootFileDirectory,
+                                                         l1Cut, recoCut, xMin, xMax,
+							 true);
+  TGraphAsymmErrors* effVsRecoPtNoBDT = calculateEfficiency("recoPt", treePath, rootFileDirectory,
+							    l1Cut, recoCut, xMin, xMax,
+							    true);
 
-  float recoPtMin = 0;
-  float recoPtMax = 80;
-  float recoPtCut = 15;
-  float genPtCut = 15;
-  float l1PtCut = 20;
+  plotThreeHists(
+		 effVsRecoPt90, "allDM Loose",
+		 effVsRecoPt95, "allDM VLoose",
+		 effVsRecoPtNoBDT, "allDM",
+		 "Reco #tau_{H} p_{T} [GeV]",
+		 "Phase 2 L1 Taus",
+		 "effRecoPt_allDM_l1TracksPt10.png",
+		 outputDirectory);
 
-  /* Working points: 60%, 70%, 80%, 90%, 95% */
-  float wp60 = 0.0540466;
-  float wp70 = 0.0126322;
-  float wp80 = -0.0253954;
-  float wp90 = -0.0435867;
-  float wp95 = -0.0486184;
-  float wpNone = -99;
+  /*******************************************************/
+  /* efficiency as a function of recoEta                 */
+  /*******************************************************/
+  xMin = -3;
+  xMax = 3;
+  
+  recoCut = "recoPt>30 && genPt>20 && l1Track_pt>10 && genDM>9";
+  l1Cut   = "recoPt>30 && genPt>20 && l1Track_pt>10 && genDM>9 && l1Pt>10";
 
-  TString region = "barrel";
+  TGraphAsymmErrors* effVsRecoEta90 = calculateEfficiency("recoEta", treePath, rootFileDirectory,
+							  l1Cut, recoCut, xMin, xMax,
+							  false);
+  TGraphAsymmErrors* effVsRecoEta95 = calculateEfficiency("recoEta", treePath, rootFileDirectory,
+                                                          l1Cut, recoCut, xMin, xMax,
+							  false);
+  TGraphAsymmErrors* effVsRecoEtaNoBDT = calculateEfficiency("recoEta", treePath, rootFileDirectory, 
+							     l1Cut, recoCut, xMin, xMax,
+							     false);
 
-  /* RECO PT */
-  TGraphAsymmErrors* effVsRecoPt60 = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,
-							 nBins, "recoPt", region, xMin, xMax,
-							 recoPtCut, genPtCut, l1PtCut, wp60);
-  TGraphAsymmErrors* effVsRecoPt70 = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,
-							 nBins, "recoPt", region, xMin, xMax,
-							 recoPtCut, genPtCut, l1PtCut, wp70);
-  TGraphAsymmErrors* effVsRecoPt80 = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,
-                                                         nBins, "recoPt", region, xMin, xMax,
-                                                         recoPtCut, genPtCut, l1PtCut, wp80);
-  TGraphAsymmErrors* effVsRecoPt90 = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,
-                                                         nBins, "recoPt", region, xMin, xMax,
-                                                         recoPtCut, genPtCut, l1PtCut, wp90);
-  TGraphAsymmErrors* effVsRecoPt95 = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,
-                                                         nBins, "recoPt", region, xMin, xMax,
-                                                         recoPtCut, genPtCut, l1PtCut, wp95);
-  TGraphAsymmErrors* effVsRecoPtNoBDT = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,
-							    nBins, "recoPt", region, xMin, xMax,
-							    recoPtCut, genPtCut, l1PtCut, wpNone);
-
-  plotHists(effVsRecoPt60,
-	    effVsRecoPt70,
-	    effVsRecoPt80,
-	    effVsRecoPt90,
-	    effVsRecoPt95,
-	    effVsRecoPtNoBDT,
-	    "Reco #tau_{H} p_{T} [GeV]",
-	    "Phase 2 L1 Taus (All DM) Barrel",
-	    "effVsRecoPt_"+region+"_allDM_l1TracksPt10_TESTINGscriptRewrite.png",
-	    outputDirectory);
-
-  /* RECO ETA */
-  xMin = -1.44;
-  xMax = 1.44;
-  TGraphAsymmErrors* effVsRecoEta60 = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,
-							  nBins, "recoEta", region, xMin, xMax,
-							  recoPtCut, genPtCut, l1PtCut, wp60);
-  TGraphAsymmErrors* effVsRecoEta70 = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,
-                                                          nBins, "recoEta", region, xMin, xMax,
-                                                          recoPtCut, genPtCut, l1PtCut, wp70);
-  TGraphAsymmErrors* effVsRecoEta80 = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,
-							  nBins, "recoEta", region, xMin, xMax,
-							  recoPtCut, genPtCut, l1PtCut, wp80);
-  TGraphAsymmErrors* effVsRecoEta90 = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,
-                                                          nBins, "recoEta", region, xMin, xMax,
-                                                          recoPtCut, genPtCut, l1PtCut, wp90);
-  TGraphAsymmErrors* effVsRecoEta95 = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,
-                                                          nBins, "recoEta", region, xMin, xMax,
-                                                          recoPtCut, genPtCut, l1PtCut, wp95);
-  TGraphAsymmErrors* effVsRecoEtaNoBDT = calculateEfficiency(treePath, rootFileDirectory, weightFileDirectory,
-							     nBins, "recoEta", region, xMin, xMax,
-							     recoPtCut, genPtCut, l1PtCut, wpNone);
-
-  plotHists(effVsRecoEta60,
-	    effVsRecoEta70,
-	    effVsRecoEta80,
-	    effVsRecoEta90,
-	    effVsRecoEta95,
-	    effVsRecoEtaNoBDT,
-	    "Reco #tau_{H} eta",
-	    "Phase 2 L1 Taus (All DM) Barrel",
-	    "effVsRecoEta_"+region+"_allDM_l1TracksPt10_TESTINGscriptRewrite.png",
-	    outputDirectory);
+  plotThreeHists(
+		 effVsRecoEta90, "allDM Loose",
+		 effVsRecoEta95, "allDM VLoose",
+		 effVsRecoEtaNoBDT, "allDM",
+		 "Reco #tau_{H} #eta",
+		 "Phase 2 L1 Taus",
+		 "effVsRecoEta_allDM_l1TracksPt10.png",
+		 outputDirectory);
   
 }
 

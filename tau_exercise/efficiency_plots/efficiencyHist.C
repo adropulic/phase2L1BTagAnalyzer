@@ -25,8 +25,6 @@
 #include <TMath.h>
 #include <vector>
 
-
-#include "../base_code_for_plots/CMS_lumi.h"
 #include "../base_code_for_plots/tdrstyle.C"
 
 #ifndef EFFICIENCY_HIST_INCL
@@ -34,37 +32,82 @@
 
 /*******************************************************************/
 
-/* Sets the maximum and minimum error of an efficiency
-   TGraphAsymmErrors to be 1.0 and 0.0 respectively. */
-
-void setMaxErrorTo1(TGraphAsymmErrors *graph)
+void plotThreeHists(TGraphAsymmErrors* histLoose, TString labelLoose,
+		    TGraphAsymmErrors* histVLoose, TString labelVLoose,
+		    TGraphAsymmErrors* histNoBDT, TString labelNoBDT,
+		    TString xAxisLabel,
+		    TString legendName,
+		    TString outputName,
+		    TString outputDir
+		    )
 {
-  for (int i = 1; i < graph->GetN(); i++)
-    {
-      Double_t errorY = graph->GetErrorY(i);
-      Double_t pointX, pointY;
+  setTDRStyle();
+  TCanvas* Tcan = new TCanvas("Tcan","", 100, 20, 1000, 800);
+  TLegend* leg = new TLegend(0.60,0.75,0.85,0.9);
+  Tcan->SetGrid();
 
-      if (graph->GetPoint(i, pointX, pointY) < 0)
-	printf("Error getting point\n");
-      
-      Double_t errorUp = pointY + errorY;
-      Double_t errorLow = pointY - errorY;
-      
-      if (errorUp > 1)
-	graph->SetPointEYhigh(i, 1 - pointY);
-      else if (errorLow < 0)
-	graph->SetPointEYlow(i, pointY);
-      
-    } 
+  Tcan->cd();     /* Set current canvas */
+  Tcan->SetFillColor(0);
+  leg = new TLegend(0.55, 0.2, 0.90, 0.5);
+  applyLegStyle(leg);
+
+  /* Loose */
+  histLoose->SetMarkerColor(kViolet+9);
+  histLoose->SetLineColor(kViolet+9);
+  histLoose->SetMarkerSize(1.5);
+  histLoose->SetMarkerStyle(kFullCircle);
+  histLoose->SetLineWidth(2);
+
+  /* VLoose */
+  histVLoose->SetMarkerColor(kViolet-5);
+  histVLoose->SetLineColor(kViolet-5);
+  histVLoose->SetMarkerSize(1.5);
+  histVLoose->SetMarkerStyle(kFullCircle);
+  histVLoose->SetLineWidth(2);
+
+  /* No BDT */
+  histNoBDT->SetMarkerColor(kPink+5);
+  histNoBDT->SetLineColor(kPink+5);
+  histNoBDT->SetMarkerSize(1.5);
+  histNoBDT->SetMarkerStyle(kFullCircle);
+  histNoBDT->SetLineWidth(2);
+  
+
+  histLoose->Draw("");
+  histVLoose->Draw("P SAME");
+  histNoBDT->Draw("P SAME");
+
+  histLoose->GetXaxis()->SetTitle(xAxisLabel);
+  histLoose->GetYaxis()->SetTitle("L1 Efficiency");
+  histLoose->GetXaxis()->SetTitleSize(0.06); // default is 0.03                                                              
+
+  /* Set y-axis limits */
+  histLoose->GetYaxis()->SetRangeUser(0.0, 1.1);
+
+  /* Customize legend */
+  leg->SetHeader(legendName);
+  leg->AddEntry(histNoBDT, labelNoBDT, "P");
+  leg->AddEntry(histVLoose, labelVLoose, "P");
+  leg->AddEntry(histLoose, labelLoose, "P");
+
+  gStyle->SetLegendFont(30);
+  leg->Draw();
+
+  Tcan->cd();
+  Tcan->SaveAs(outputDir+outputName);
+
+
 }
+		    
 
 /*******************************************************************/
 
 /* Plots loose/medium/tight efficiency histograms and saves to a .png. */
 
-void plotHists(TGraphAsymmErrors* histLoose,
-               TGraphAsymmErrors* histMedium,
-               TGraphAsymmErrors* histMedium2,
+void plotSixHists(
+	       TGraphAsymmErrors* histLoose,
+	       TGraphAsymmErrors* histMedium,
+	       TGraphAsymmErrors* histMedium2,
                TGraphAsymmErrors* histTight,
                TGraphAsymmErrors* histTight2,
                TGraphAsymmErrors* histNoBDT,
