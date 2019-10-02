@@ -35,7 +35,7 @@ void plotHist(TH1D* hist, TString outputDirectory);
 
 int bkgRejVsSigEff()
 {
-  TString inputDirectory = "../training/TMVA_training_out_2019_Sep28-DYToLL_200PU_ext1-USE_CHARGED_HADRON_new_algo.root";
+  TString inputDirectory = "../training/TMVA_training_out.root";
   TFile *file = new TFile(inputDirectory);
   TString outputDirectory = "plots/bkgRejVsSigEff.png";
 
