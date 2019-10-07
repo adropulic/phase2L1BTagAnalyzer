@@ -151,7 +151,7 @@ void TMVAAnalysis_tau()
     dataloader->AddVariable("l1PVDZ", 'D');
     dataloader->AddVariable("l1HoE", 'D');
     dataloader->AddVariable("l1EoH", 'D');
-    dataloader->AddVariable("l1ChargedIso", 'D');
+    dataloader->AddVariable("(l1Pt/l1ChargedIso)", 'D');
 
     // You can add an arbitrary number of signal or background trees
     // Here we set the global event weights per tree to 1.0
