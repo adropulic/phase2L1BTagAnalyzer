@@ -37,7 +37,7 @@ int bkgRejVsSigEff()
 {
   TString inputDirectory = "../training/TMVA_training_out.root";
   TFile *file = new TFile(inputDirectory);
-  TString outputDirectory = "plots/bkgRejVsSigEff.png";
+  TString outputDirectory = "plots/bkgRejVsSigEff_NewTauZwithl1Pt10BkgCut_pureBkgSingleNeutrinoAdded.png";
 
   if(!file->IsOpen() || file==0)
     {
