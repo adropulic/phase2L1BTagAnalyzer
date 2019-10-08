@@ -90,17 +90,12 @@ void TMVAAnalysis_tau()
 
     inputTree->SetBranchAddress("recoPt", &recoPt);
     inputTree->SetBranchAddress("l1Pt", &l1Pt);
-    //    inputTree->SetBranchAddress("l1Eta", &l1Eta);
-    //    inputTree->SetBranchAddress("l1Phi", &l1Phi);
     inputTree->SetBranchAddress("l1DM", &l1DM);
-    //inputTree->SetBranchAddress("zVTX", &zVTX);
+
     //inputTree->SetBranchAddress("l1TauZ", &l1TauZ);
     inputTree->SetBranchAddress("l1PVDZ", &l1PVDZ);
     
     inputTree->SetBranchAddress("l1StripPt", &l1StripPt);
-    //    inputTree->SetBranchAddress("l1StripEta", &l1StripEta);
-    //    inputTree->SetBranchAddress("l1StripPhi", &l1StripPhi);
-    //    inputTree->SetBranchAddress("l1StripDR", &l1StripDR);
 
     inputTree->SetBranchAddress("l1HoE", &l1HoE);
     inputTree->SetBranchAddress("l1EoH", &l1EoH);

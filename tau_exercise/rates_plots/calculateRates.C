@@ -74,7 +74,7 @@ TH1F* calculateRates(TString isoHistPath,
 
   //  printf("nBins = %i, xMin = %f, xMax = %f\n", nBins, xMin, xMax);
 
-  TH1F* ratesHist = new TH1F("Rates", "Rates", nBins, xMin, xMax);
+  TH1F* ratesHist = new TH1F("Rates", "Rates", nBins+2, xMin, xMax);
   ratesHist->Sumw2();
 
   /* Loop through bins in the Rates histogram, in reverse order. */
@@ -94,7 +94,7 @@ TH1F* calculateRates(TString isoHistPath,
   float firstBin = ratesHist->GetBinContent(1);
   ratesHist->Scale((double) 1.00 / firstBin);
   
-  //  ratesHist->Scale(40.0 * 1000000.0);
+  ratesHist->Scale(40.0 * 1000000.0);
 
   return ratesHist;
 }

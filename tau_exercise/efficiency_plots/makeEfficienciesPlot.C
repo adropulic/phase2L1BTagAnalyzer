@@ -59,11 +59,11 @@ void makeEfficienciesPlot(void)
 
 
   plotThreeHists(
-		 effVsRecoPt90, "allDM Loose",
-		 effVsRecoPt95, "allDM VLoose",
-		 effVsRecoPtNoBDT, "allDM",
+		 effVsRecoPt90, "BDT Loose",
+		 effVsRecoPt95, "BDT VLoose",
+		 effVsRecoPtNoBDT, "No BDT",
 		 "Reco #tau_{H} p_{T} [GeV]",
-		 "Phase 2 L1 Taus",
+		 "Phase 2 L1 Taus (all #tau_{H} decay modes)",
 		 "effRecoPt_allDM_l1TracksPt10.png",
 		 outputDirectory);
 
@@ -87,11 +87,11 @@ void makeEfficienciesPlot(void)
 							     recoCut, xMin, xMax, false);
 
   plotThreeHists(
-		 effVsRecoEta90, "allDM Loose",
-		 effVsRecoEta95, "allDM VLoose",
-		 effVsRecoEtaNoBDT, "allDM",
+		 effVsRecoEta90, "BDT Loose",
+		 effVsRecoEta95, "BDT VLoose",
+		 effVsRecoEtaNoBDT, "No BDT",
 		 "Reco #tau_{H} #eta",
-		 "Phase 2 L1 Taus",
+		 "Phase 2 L1 Taus (all #tau_{H} decay modes)",
 		 "effVsRecoEta_allDM_l1TracksPt10.png",
 		 outputDirectory);
   
