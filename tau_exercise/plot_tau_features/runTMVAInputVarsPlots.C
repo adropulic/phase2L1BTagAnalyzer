@@ -12,7 +12,7 @@ void runTMVAInputVarsPlots()
   /**** End of Method 1 ***/
 
   /**** Method 2 for booking input/output directory (see below for the assumed file/naming convention ****/
-  TString description = "TMVA_training_out";
+  TString description = "TMVA_training_out_deltaZ_2cm_PF";
   TString inputDirectory = ("../training/" + description + ".root");
 
   /* Make the output directory */ 

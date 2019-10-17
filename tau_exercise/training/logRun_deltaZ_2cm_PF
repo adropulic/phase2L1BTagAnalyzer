@@ -1,0 +1,108 @@
+[skkwan@lxplus700 training]$ root -l -b -q TMVAAnalysis_tau_multifile.C 
+
+Processing TMVAAnalysis_tau_multifile.C...
+sigTree has 10066 entries
+bkgTree has 71228 entries
+sigTree has 28053 entries
+bkgTree has 84250 entries
+sigTree has 28053 entries
+bkgTree has 277450 entries
+<HEADER> DataSetInfo              : [dataset] : Added class "Signal"
+                         : Add Tree efficiencyTree of type Signal with 28053 events
+<HEADER> DataSetInfo              : [dataset] : Added class "Background"
+                         : Add Tree efficiencyTree of type Background with 277450 events
+Done adding signal and background trees.
+<HEADER> Factory                  : Booking method: BDT
+                         : 
+<WARNING> <WARNING>                : Found events with NaN and/or +-inf values
+<WARNING> <WARNING>                : Dataset[dataset] : Input expression resolves to infinite value (+inf or -inf): l1StripPt
+<WARNING> <WARNING>                : These NaN and/or +-infs were all removed by the specified cut, continuing.
+                         : 
+<HEADER> DataSetFactory           : [dataset] : Number of events in input trees
+                         : Dataset[dataset] :     Signal     requirement: "(l1StripPt < 400) &&                          !isinf(l1TauZ) && !isnan(l1TauZ) &&                          !isinf(l1EoH) && !isinf(l1HoE) && !isnan(l1EoH) && !isnan(l1HoE) &&                          !isinf(l1Pt) && !isinf(l1Eta) && !isinf(l1StripPt) && !isinf(l1DM) && !isinf(l1PVDZ) &&                          !isnan(l1Pt) && !isnan(l1Eta) && !isnan(l1StripPt) && !isnan(l1DM) && !isnan(l1PVDZ) &&                          !isinf(l1ChargedIso) && !isnan(l1ChargedIso)"
+                         : Dataset[dataset] :     Signal          -- number of events passed: 28052  / sum of weights: 28052
+                         : Dataset[dataset] :     Signal          -- efficiency             : 0.999964
+                         : Dataset[dataset] :     Background requirement: "(l1StripPt < 400) &&                          !isinf(l1TauZ) && !isnan(l1TauZ) &&                          !isinf(l1EoH) && !isinf(l1HoE) && !isnan(l1EoH) && !isnan(l1HoE) &&                          !isinf(l1Pt) && !isinf(l1Eta) && !isinf(l1StripPt) && !isinf(l1DM) && !isinf(l1PVDZ) &&                          !isnan(l1Pt) && !isnan(l1Eta) && !isnan(l1StripPt) && !isnan(l1DM) && !isnan(l1PVDZ) &&                          !isinf(l1ChargedIso) && !isnan(l1ChargedIso)"
+                         : Dataset[dataset] :     Background      -- number of events passed: 277450  / sum of weights: 277450
+                         : Dataset[dataset] :     Background      -- efficiency             : 1     
+                         : Dataset[dataset] :  you have opted for interpreting the requested number of training/testing events
+                         :  to be the number of events AFTER your preselection cuts
+                         : 
+                         : 
+                         : Dataset[dataset] : Weight renormalisation mode: "EqualNumEvents": renormalises all event classes ...
+                         : Dataset[dataset] :  such that the effective (weighted) number of events in each class is the same 
+                         : Dataset[dataset] :  (and equals the number of events (entries) given for class=0 )
+                         : Dataset[dataset] : ... i.e. such that Sum[i=1..N_j]{w_i} = N_classA, j=classA, classB, ...
+                         : Dataset[dataset] : ... (note that N_j is the sum of TRAINING events
+                         : Dataset[dataset] :  ..... Testing events are not renormalised nor included in the renormalisation factor!)
+                         : Number of training and testing events
+                         : ---------------------------------------------------------------------------
+                         : Signal     -- training events            : 14026
+                         : Signal     -- testing events             : 14026
+                         : Signal     -- training and testing events: 28052
+                         : Dataset[dataset] : Signal     -- due to the preselection a scaling factor has been applied to the numbers of requested events: 0.999964
+                         : Background -- training events            : 138725
+                         : Background -- testing events             : 138725
+                         : Background -- training and testing events: 277450
+                         : 
+<HEADER> DataSetInfo              : Correlation matrix (Signal):
+                         : --------------------------------------------------------------------------------------------
+                         :                  l1Pt   l1Eta l1StripPt    l1DM  l1PVDZ   l1HoE   l1EoH  l1TauZ l1ChargedIso
+                         :         l1Pt:  +1.000  -0.058    +0.238  +0.456  +0.015  +0.003  +0.041  +0.015       -0.455
+                         :        l1Eta:  -0.058  +1.000    -0.107  +0.163  +0.107  +0.028  -0.013  +0.107       -0.166
+                         :    l1StripPt:  +0.238  -0.107    +1.000  -0.113  -0.004  -0.010  +0.283  -0.004       -0.078
+                         :         l1DM:  +0.456  +0.163    -0.113  +1.000  -0.005  -0.008  -0.020  -0.004       -0.652
+                         :       l1PVDZ:  +0.015  +0.107    -0.004  -0.005  +1.000  +0.003  +0.001  +0.999       -0.042
+                         :        l1HoE:  +0.003  +0.028    -0.010  -0.008  +0.003  +1.000  -0.034  +0.003       -0.115
+                         :        l1EoH:  +0.041  -0.013    +0.283  -0.020  +0.001  -0.034  +1.000  +0.001       -0.100
+                         :       l1TauZ:  +0.015  +0.107    -0.004  -0.004  +0.999  +0.003  +0.001  +1.000       -0.042
+                         : l1ChargedIso:  -0.455  -0.166    -0.078  -0.652  -0.042  -0.115  -0.100  -0.042       +1.000
+                         : --------------------------------------------------------------------------------------------
+<HEADER> DataSetInfo              : Correlation matrix (Background):
+                         : --------------------------------------------------------------------------------------------
+                         :                  l1Pt   l1Eta l1StripPt    l1DM  l1PVDZ   l1HoE   l1EoH  l1TauZ l1ChargedIso
+                         :         l1Pt:  +1.000  +0.539    +0.433  -0.072  -0.007  +0.013  +0.456  -0.007       +0.002
+                         :        l1Eta:  +0.539  +1.000    +0.323  -0.224  +0.084  +0.052  +0.568  +0.084       +0.005
+                         :    l1StripPt:  +0.433  +0.323    +1.000  -0.190  +0.003  +0.070  +0.029  +0.003       +0.009
+                         :         l1DM:  -0.072  -0.224    -0.190  +1.000  -0.038  -0.027  -0.204  -0.038       -0.002
+                         :       l1PVDZ:  -0.007  +0.084    +0.003  -0.038  +1.000  +0.000  +0.001  +0.999       +0.000
+                         :        l1HoE:  +0.013  +0.052    +0.070  -0.027  +0.000  +1.000  -0.026  +0.000       -0.000
+                         :        l1EoH:  +0.456  +0.568    +0.029  -0.204  +0.001  -0.026  +1.000  +0.001       +0.007
+                         :       l1TauZ:  -0.007  +0.084    +0.003  -0.038  +0.999  +0.000  +0.001  +1.000       +0.000
+                         : l1ChargedIso:  +0.002  +0.005    +0.009  -0.002  +0.000  -0.000  +0.007  +0.000       +1.000
+                         : --------------------------------------------------------------------------------------------
+<HEADER> DataSetFactory           : [dataset] :  
+                         : 
+                         : Evaluate method: BDT
+                         : Evaluation done.] (93%, time left: 0 sec)  
+<HEADER> CrossValidation          :  ==== Results ====
+                         : Fold  0 ROC-Int : 0.9486
+                         : Fold  1 ROC-Int : 0.9487
+                         : Fold  2 ROC-Int : 0.9491
+                         : Fold  3 ROC-Int : 0.9505
+                         : Fold  4 ROC-Int : 0.9492
+                         : ------------------------
+                         : Average ROC-Int : 0.9492
+                         : Std-Dev ROC-Int : 0.0008
+                         : [>>>>>>>>>>>>>>>] (93%, time left: 0 sec)  
+                         : Evaluation results ranked by best signal efficiency and purity (area)
+                         : -------------------------------------------------------------------------------------------------------------------
+                         : DataSet       MVA                       
+                         : Name:         Method:          ROC-integ
+                         : dataset       BDT            : 0.949
+                         : -------------------------------------------------------------------------------------------------------------------
+                         : 
+                         : Testing efficiency compared to training efficiency (overtraining check)
+                         : -------------------------------------------------------------------------------------------------------------------
+                         : DataSet              MVA              Signal efficiency: from test sample (from training sample) 
+                         : Name:                Method:          @B=0.01             @B=0.10            @B=0.30   
+                         : -------------------------------------------------------------------------------------------------------------------
+                         : dataset              BDT            : 0.404 (0.416)       0.836 (0.837)      0.976 (0.976)
+                         : -------------------------------------------------------------------------------------------------------------------
+                         : 
+<HEADER> Dataset:dataset          : Created tree 'TestTree' with 30550 events
+                         : 
+<HEADER> Dataset:dataset          : Created tree 'TrainTree' with 122200 events
+                         : 
+<HEADER> Factory                  : Thank you for using TMVA!
+                         : For citation information, please visit: http://tmva.sf.net/citeTMVA.html

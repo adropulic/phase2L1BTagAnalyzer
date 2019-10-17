@@ -62,11 +62,11 @@ void TMVAAnalysis_tau_multifile()
     //--------------------------------------------
 
     // Input file
-    TString inputPath = "../ntuples/newTauZ/2019_Oct5-DYToLL_200PU_ext1-Z5-NewTauZ.root";
+    TString inputPath = "../ntuples/deltaZ_2cm_PF/2019_Oct15-DYToLL_200PU_Z2.root";
     TFile *inputFile  = TFile::Open(inputPath);
 
     // Output file
-    TString outputFilename = "TMVA_training_out.root";
+    TString outputFilename = "TMVA_training_out_deltaZ_2cm_PF.root";
     TFile *outFile = new TFile(outputFilename, "RECREATE");
 
     // Input tree
@@ -81,14 +81,14 @@ void TMVAAnalysis_tau_multifile()
     fillSigBkgTrees(inputTree, true, true, sigTree, bkgTree);
 
     // Sort second input
-    inputPath = "../ntuples/newTauZ/2019_Oct5-ggHToTauTau_200PU-Z5-NewTauZ.root";
+    inputPath = "../ntuples/deltaZ_2cm_PF/2019_Oct15-ggHToTauTau_200PU_Z2.root";
     inputFile = TFile::Open(inputPath);
     tree = "L1TauAnalyzer/efficiencyTree";
     inputTree = (TTree*) inputFile->Get(tree);
     fillSigBkgTrees(inputTree, true, true, sigTree, bkgTree);
     
     // Entirely-background TTree: note that the first Boolean ("getSig") is set to False
-    inputPath = "../ntuples/newTauZ/SingleNeutrino-200PU-2019_Oct5-Z5-NewTauZ.root";
+    inputPath = "../ntuples/deltaZ_2cm_PF/SingleNeutrino-200PU-2019_Oct15_Z2.root";
     inputFile = TFile::Open(inputPath);
     tree = "L1TauAnalyzerRates/efficiencyTree";
     inputTree = (TTree*) inputFile->Get(tree);
