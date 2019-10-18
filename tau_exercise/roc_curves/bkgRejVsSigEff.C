@@ -35,9 +35,9 @@ void plotHist(TH1D* hist, TString outputDirectory);
 
 int bkgRejVsSigEff()
 {
-  TString inputDirectory = "../training/TMVA_training_out_deltaZ_2cm_PF.root";
+  TString inputDirectory = "../training/TMVA_training_out_deltaZ_5_PUPPI.root";
   TFile *file = new TFile(inputDirectory);
-  TString outputDirectory = "plots/bkgRejVsSigEff_deltaZ_2cm_PF.pdf";
+  TString outputDirectory = "plots/bkgRejVsSigEff_deltaZ_5cm_PUPPI.pdf";
 
   if(!file->IsOpen() || file==0)
     {
