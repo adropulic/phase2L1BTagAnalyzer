@@ -12,29 +12,27 @@ void runTMVAInputVarsPlots()
   /**** End of Method 1 ***/
 
   /**** Method 2 for booking input/output directory (see below for the assumed file/naming convention ****/
-  TString description = "TMVA_training_out_deltaZ_2cm_PF";
+  TString description = "TMVA_training_out";
   TString inputDirectory = ("../training/" + description + ".root");
 
   /* Make the output directory */ 
-  gSystem->Exec("mkdir validationPlots/" + description);
-  TString outputDirectory = ("validationPlots/" + description + "/" + description + "_");
+  gSystem->Exec("mkdir validationPlots/" + description + "_ExpProj");
+  TString outputDirectory = ("validationPlots/" + description + "_ExpProj" + "/" + description + "_ExpProj_");
   /**** End of Method 2 ***/
 
   TString sigCut="(classID==0)";
   TString bkgCut="(classID==1)";
-  comparisonPlots("l1Pt", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1Pt", 80, 0, 200);
-  comparisonPlots("l1Eta", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1Eta", 50, -3, 3);
+  //  comparisonPlots("l1Pt", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1Pt", 80, 0, 200);
+  //  comparisonPlots("l1Eta", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1Eta", 50, -3, 3);
   //  comparisonPlots("l1Phi", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "L1 #tau Phi", 50, -4, 4);
-  comparisonPlots("l1TauZ", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1TauZ", 80, -1000, 1000);
-  comparisonPlots("l1PVDZ", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1TauPVDZ", 80, -1000, 1000);
+  //  comparisonPlots("l1TauZ", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1TauZ", 40, -20, 20);
+  comparisonPlots("l1PVDZ", sigCut + "&&(l1Pt>0)", bkgCut, treePath, inputDirectory, outputDirectory, "l1TauPVDZ", 40, -20, 20);
 
   // HoE, isEM
-  comparisonPlots("l1HoE", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1EoH", 80, 0, 80);
-  comparisonPlots("l1EoH", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1IsEM", 3, 0, 2);
-  comparisonPlots("l1ChargedIso", sigCut + "&&(l1Pt>1)", bkgCut, treePath, inputDirectory, outputDirectory, "l1ChargedIso", 80, 0, 150);
+  //  comparisonPlots("l1HoE", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1HoE", 80, 0, 80);
+  //  comparisonPlots("l1EoH", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1IsEM", 3, 0, 2);
+  //  comparisonPlots("l1ChargedIso", sigCut + "&&(l1Pt>1)", bkgCut, treePath, inputDirectory, outputDirectory, "l1ChargedIso", 80, 0, 60);
   		  
-		  
-
   // comparisonPlots("l1Time", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "l1Time", 200, 2, 20);
   // l1Iso has the tau included in the sum so it must be removed
   // comparisonPlots("l1Iso-l1Pt", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "l1Iso", 200, -10, 10);
@@ -60,7 +58,7 @@ void runTMVAInputVarsPlots()
   comparisonPlots("track3Time", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "track3Time", 200, 0, 22);
   */
   // Decay mode
-  comparisonPlots("l1DM", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1DM", 15, -1, 12);
+  //comparisonPlots("l1DM", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1DM", 15, -1, 12);
   // Chi Squared
   /*
   comparisonPlots("track1ChiSquared", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "track1ChiSquared", 300, 0, 200);
@@ -76,7 +74,7 @@ void runTMVAInputVarsPlots()
   comparisonPlots("track3Z", "genPt>20", "genPt<5", treePath, inputDirectory, outputDirectory, "track3Z", 200, -30, 30);
   */
   // Tau L1 Strip values
-  comparisonPlots("l1StripPt", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1StripPt", 80, 0, 200);
+  //  comparisonPlots("l1StripPt", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1StripPt", 80, 0, 200);
   //  comparisonPlots("l1StripEta", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1StripEta", 60, -2, 2);
   //  comparisonPlots("l1StripPhi", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1StripPhi", 60, -2, 2);
   //  comparisonPlots("l1StripDR", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "l1StripDeltaR", 60, 0, 5);
@@ -97,5 +95,5 @@ void runTMVAInputVarsPlots()
   //  comparisonPlots("recoPt", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "recoPt", 80, 0, 100);
 
   // BDT
-  comparisonPlots("BDT", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "bdtDiscriminant", 80, -1.0, 1.0);
+  //  comparisonPlots("BDT", sigCut, bkgCut, treePath, inputDirectory, outputDirectory, "bdtDiscriminant", 80, -1.0, 1.0);
 }

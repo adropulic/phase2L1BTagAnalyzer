@@ -85,13 +85,12 @@ TGraphAsymmErrors* calculateEfficiency(TString variable,
   TH1F* Num;
   TH1F* Denom;
   int bins = 15;
-  //Float_t xbins[11] = {0, 5, 10, 15, 20, 25, 30, 50, 70, 100, 200};
-  Float_t xbins[10] = {0, 5, 10, 15, 20, 25, 30, 50, 70, 100};
+  Float_t xbins[10] = {0, 5, 10, 20, 25, 30, 50, 70, 100, 200};
 
   if(variableBin)
     {
-      Denom = new TH1F("Denom", "Denom", 10, xbins);
-      Num = new TH1F("Num", "Num", 10, xbins);
+      Denom = new TH1F("Denom", "Denom", 9, xbins);
+      Num = new TH1F("Num", "Num", 9, xbins);
     }
   else
     {

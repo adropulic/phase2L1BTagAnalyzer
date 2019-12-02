@@ -33,8 +33,8 @@ void makeEfficienciesPlot(void)
 
   xMin = 0;
   xMax = 100;
-  recoCut = "recoPt>10 && genPt>10 && l1Track_pt>10 && ((genDM>9) || (genDM==3) || (genDM==4))";
-  l1Cut   = "recoPt>10 && genPt>10 && l1Track_pt>10 && ((genDM>9) || (genDM==3) || (genDM==4)) && l1Pt>0";
+  recoCut = "recoPt>10 && genPt>10 && l1Track_pt>10 && (genDM>9)";
+  l1Cut   = "recoPt>10 && genPt>10 && l1Track_pt>10 && (genDM>9) && l1Pt>0";
   
   TGraphAsymmErrors* recoPtVLoose = calculateEfficiency("recoPt", treePath, rootFileDirectory,
 						     l1Cut + "&& l1IsoVLoose",
@@ -60,14 +60,14 @@ void makeEfficienciesPlot(void)
 
 
   plotFiveHists(
-		recoPtNoBDT, "allDM + leptonic", kAzure+1,
-		recoPtTight, "allDM + leptonic, Tight", kBlue-3,
-		recoPtMedium, "allDM + leptonic, Medium", kViolet-5,
-		recoPtLoose, "allDM + leptonic, Loose", kPink+8,
-		recoPtVLoose, "allDM + leptonic, VLoose", kPink+6,
+		recoPtNoBDT, "allDM", kAzure+1,
+		recoPtTight, "allDM Tight", kBlue-3,
+		recoPtMedium, "allDM Medium", kViolet-5,
+		recoPtLoose, "allDM Loose", kPink+8,
+		recoPtVLoose, "allDM VLoose", kPink+6,
 		"Reco #tau_{H} p_{T} [GeV]",
 		"Phase 2 L1 Taus",
-		"eff_recoPt_PF_deltaZ5_WITH_LeptonDM.png",
+		"eff_recoPt_PF_deltaZ5_withoutLeptonDM.png",
 		outputDirectory);
 
   /*******************************************************/

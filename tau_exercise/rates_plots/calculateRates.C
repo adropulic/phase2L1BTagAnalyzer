@@ -94,7 +94,8 @@ TH1F* calculateRates(TString isoHistPath,
   float firstBin = ratesHist->GetBinContent(1);
   ratesHist->Scale((double) 1.00 / firstBin);
   
-  ratesHist->Scale(40.0 * 1000000.0);
+  /* kHz */
+  ratesHist->Scale(40.0 * 1000000.0 / 1000.0);
 
   return ratesHist;
 }

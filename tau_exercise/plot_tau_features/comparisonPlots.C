@@ -132,7 +132,8 @@ int comparisonPlots(TString variable, TString genCut, TString fakeCut, TString t
   
   Fake->GetXaxis()->SetTitle(variable);
   Fake->GetYaxis()->SetTitle("A.U.");
-  /* 
+
+  /*
   float max = 10;
   if(Fake->GetXaxis()->GetBinCenter( Fake->GetMaximumBin() ) > True->GetXaxis()->GetBinCenter( True->GetMaximumBin() ) )
     max = Fake->GetXaxis()->GetBinCenter(Fake->GetMaximumBin());
@@ -140,11 +141,13 @@ int comparisonPlots(TString variable, TString genCut, TString fakeCut, TString t
     max = True->GetXaxis()->GetBinCenter(True->GetMaximumBin());
    
   std::cout<<"max: "<<max<<std::endl;
-  Fake->SetMaximum(max*10);
+  Fake->SetMaximum(max/60);
   */
 
   //leg->AddEntry(NoIso,"No Isolation","l");
-  leg->AddEntry(True,"#tau_{h} Gen-Vis p_{T}>20 GeV","l");
+  //  leg->AddEntry(True,"#tau_{h} Gen-Vis p_{T}>20 GeV","l");
+  //  leg->AddEntry(Fake,"Fake Background","l");
+  leg->AddEntry(True,"L1 #tau_{h}, L1 p_{T}>0 GeV","l");
   leg->AddEntry(Fake,"Fake Background","l");
   leg->Draw();
  

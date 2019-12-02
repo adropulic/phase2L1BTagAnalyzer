@@ -91,12 +91,12 @@ void plotThreeHists(TGraphAsymmErrors* histLoose, TString labelLoose,
   histDummy->GetYaxis()->SetRangeUser(0.0, 1.1);
 
   /* Customize legend */
-  leg->SetHeader(legendName);
+  //  leg->SetHeader(legendName);
   leg->AddEntry(histNoBDT, labelNoBDT, "P");
   leg->AddEntry(histVLoose, labelVLoose, "P");
   leg->AddEntry(histLoose, labelLoose, "P");
 
-  gStyle->SetLegendFont(30);
+  gStyle->SetLegendFont(25);
   leg->Draw();
 
   Tcan->cd();
@@ -104,7 +104,98 @@ void plotThreeHists(TGraphAsymmErrors* histLoose, TString labelLoose,
 
 
 }
-		    
+
+/*******************************************************************/
+
+/* Plots loose/medium/tight efficiency histograms and saves to a .png. */
+
+void plotFiveHists(
+		   TGraphAsymmErrors* h1, TString s1, int c1,
+		   TGraphAsymmErrors* h2, TString s2, int c2,
+		   TGraphAsymmErrors* h3, TString s3, int c3,
+		   TGraphAsymmErrors* h4, TString s4, int c4,
+		   TGraphAsymmErrors* h5, TString s5, int c5,
+		   TString xAxisLabel,
+		   TString legendName,
+		   TString outputName,
+		   TString outputDir
+		   )
+{
+
+  setTDRStyle();
+  TCanvas* Tcan = new TCanvas("Tcan","", 100, 20, 1000, 800);
+  TLegend* leg = new TLegend(0.60,0.75,0.85,0.9);
+  Tcan->SetGrid();
+
+  Tcan->cd();     /* Set current canvas */
+  Tcan->SetFillColor(0);
+  leg = new TLegend(0.55, 0.2, 0.90, 0.5);
+  applyLegStyle(leg);
+
+  h1->SetMarkerColor(c1);
+  h1->SetMarkerStyle(kFullCircle);
+  h1->SetLineWidth(2);
+  h1->SetLineColor(c1);
+  h1->SetMarkerSize(2);
+
+  h2->SetMarkerColor(c2);
+  h2->SetMarkerStyle(kFullCircle);
+  h2->SetLineWidth(2);
+  h2->SetLineColor(c2);
+  h2->SetMarkerSize(2);
+
+  h3->SetMarkerColor(c3);
+  h3->SetMarkerStyle(kFullCircle);
+  h3->SetLineWidth(2);
+  h3->SetLineColor(c3);
+  h3->SetMarkerSize(2);
+
+  h4->SetMarkerColor(c4);
+  h4->SetMarkerStyle(kFullCircle);
+  h4->SetLineWidth(2);
+  h4->SetLineColor(c4);
+  h4->SetMarkerSize(2);
+
+  h5->SetMarkerColor(c5);
+  h5->SetMarkerStyle(kFullCircle);
+  h5->SetLineWidth(2);
+  h5->SetLineColor(c5);		    
+  h5->SetMarkerSize(2);
+
+  /* Dummy */
+  TGraphAsymmErrors* histDummy = new TGraphAsymmErrors(*h1);
+  histDummy->SetMarkerColor(0);
+  histDummy->SetLineColor(0);
+
+  histDummy->Draw("");
+  h5->Draw("P");
+  h4->Draw("P");
+  h3->Draw("P");
+  h2->Draw("P");
+  h1->Draw("P");
+
+  histDummy->GetXaxis()->SetTitle(xAxisLabel);
+  histDummy->GetYaxis()->SetTitle("L1 Efficiency");
+  histDummy->GetXaxis()->SetTitleSize(0.06); // default is 0.03                                                                         
+
+  /* Set y-axis limits */
+  histDummy->GetYaxis()->SetRangeUser(0.0, 1.1);
+
+  /* Customize legend */
+  //  leg->SetHeader(legendName);
+  leg->AddEntry(h1, s1, "P");
+  leg->AddEntry(h5, s5, "P");
+  leg->AddEntry(h4, s4, "P");
+  leg->AddEntry(h3, s3, "P");
+  leg->AddEntry(h2, s2, "P");
+		
+  gStyle->SetLegendFont(20);
+  leg->Draw();
+
+  Tcan->cd();
+  Tcan->SaveAs(outputDir+outputName);
+
+}
 
 /*******************************************************************/
 
