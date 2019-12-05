@@ -1,6 +1,6 @@
-[skkwan@lxplus700 training]$ root -l -b -q TMVAAnalysis_tau_multifile.C 
+[skkwan@lxplus790 training]$ root -l -b -q TMVAAnalysis_tau_arbitrary_precision.C
 
-Processing TMVAAnalysis_tau_multifile.C...
+Processing TMVAAnalysis_tau_arbitrary_precision.C...
 sigTree has 10066 entries
 bkgTree has 71228 entries
 sigTree has 28053 entries
@@ -76,20 +76,20 @@ Done adding signal and background trees.
                          : Evaluate method: BDT
                          : Evaluation done.] (93%, time left: 0 sec)  
 <HEADER> CrossValidation          :  ==== Results ====
-                         : Fold  0 ROC-Int : 0.9486
-                         : Fold  1 ROC-Int : 0.9487
-                         : Fold  2 ROC-Int : 0.9491
-                         : Fold  3 ROC-Int : 0.9505
-                         : Fold  4 ROC-Int : 0.9492
+                         : Fold  0 ROC-Int : 0.9485
+                         : Fold  1 ROC-Int : 0.9513
+                         : Fold  2 ROC-Int : 0.9479
+                         : Fold  3 ROC-Int : 0.9491
+                         : Fold  4 ROC-Int : 0.9511
                          : ------------------------
-                         : Average ROC-Int : 0.9492
-                         : Std-Dev ROC-Int : 0.0008
+                         : Average ROC-Int : 0.9496
+                         : Std-Dev ROC-Int : 0.0015
                          : [>>>>>>>>>>>>>>>] (93%, time left: 0 sec)  
                          : Evaluation results ranked by best signal efficiency and purity (area)
                          : -------------------------------------------------------------------------------------------------------------------
                          : DataSet       MVA                       
                          : Name:         Method:          ROC-integ
-                         : dataset       BDT            : 0.949
+                         : dataset       BDT            : 0.951
                          : -------------------------------------------------------------------------------------------------------------------
                          : 
                          : Testing efficiency compared to training efficiency (overtraining check)
@@ -97,7 +97,7 @@ Done adding signal and background trees.
                          : DataSet              MVA              Signal efficiency: from test sample (from training sample) 
                          : Name:                Method:          @B=0.01             @B=0.10            @B=0.30   
                          : -------------------------------------------------------------------------------------------------------------------
-                         : dataset              BDT            : 0.404 (0.416)       0.836 (0.837)      0.976 (0.976)
+                         : dataset              BDT            : 0.440 (0.420)       0.844 (0.836)      0.978 (0.977)
                          : -------------------------------------------------------------------------------------------------------------------
                          : 
 <HEADER> Dataset:dataset          : Created tree 'TestTree' with 30550 events
