@@ -3,8 +3,8 @@
 /* file created by the phase2L1BTagTrigger analyzer.                    */
 /*                                                                      */
 /* Example usage (note escape backslashes for strings "")               */
-/* % root -l "plotRecoJetProperties_cmdlineargs.C(\"path/to/            */
-/*            input/file.root\", \"outputname.pdf\")"                   */
+/* % root -l "plotRecoJetProperties.C(\"path/to/input/file.root\",      */
+/*                                    \"outputname.pdf\")"              */
 /*                                                                      */
 /* Based on mlpHiggs.C in official ROOT tutorials.                      */
 /************************************************************************/
@@ -62,7 +62,7 @@ void makePlot(const char *fileName, const char *outputName)
   gStyle->SetLabelSize(0.08, "x"); 
   gStyle->SetLabelSize(0.08, "y");  
   /* Title size defaults to 0.02 and axis defaults to x. */
-  gStyle->SetTitleSize(0.24); 	 
+  gStyle->SetTitleSize(0.10, "t");
 
   /* Set opacity for signal and background histograms */
   Float_t sigAlpha = 0.7;

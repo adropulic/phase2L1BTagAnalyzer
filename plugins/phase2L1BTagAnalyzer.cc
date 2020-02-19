@@ -183,7 +183,7 @@ phase2L1BTagAnalyzer::phase2L1BTagAnalyzer(const edm::ParameterSet& cfg):
   ttTrackToken_ = consumes< std::vector< TTTrack< Ref_Phase2TrackerDigi_ > > >(L1TrackInputTag);  
 
   edm::Service<TFileService> fs;
-  efficiencyTree = fs->make<TTree>("efficiencyTree", "Reco Jet Tree");
+  efficiencyTree = fs->make<TTree>("efficiencyTree", "Reco and L1 Jet Tree");
   efficiencyTree->Branch("run",          &run,         "run/I");
   efficiencyTree->Branch("lumi",         &lumi,        "lumi/I");
   efficiencyTree->Branch("event",        &event,       "event/I");
@@ -227,6 +227,7 @@ phase2L1BTagAnalyzer::phase2L1BTagAnalyzer(const edm::ParameterSet& cfg):
   efficiencyTree->Branch("muSIP3Dsig", &muSIP3Dsig, "muSIP3Dsig/D");
 
   efficiencyTree->Branch("muSIP2D_uint", &muSIP2D_uint, "muSIP2D_uint/s");
+
 }
 
 
@@ -301,7 +302,7 @@ phase2L1BTagAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
   edm::Handle< std::vector<pat::Muon> > miniMuons;
   if(!iEvent.getByToken( MiniMuonsToken_, miniMuons))
     std::cout<<"No miniAOD muons found"<<std::endl;
-
+  
   //std::cout<<"looping over jets"<<std::endl;
   for( std::vector<pat::Jet>::const_iterator jet = miniJets->begin(); jet != miniJets->end(); ++jet )
     {

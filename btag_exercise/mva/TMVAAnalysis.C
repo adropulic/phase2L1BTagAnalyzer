@@ -9,9 +9,9 @@
 //    E.g. [keyword] is ZTT or ttbar or 1, 2, 3, ...
 // 2. Run with
 //        `root -l -b -q TMVAAnalysis.C`.    (add `>logRun' after .C if desired)
-// 3. This will generate an output file "out_[keyword].root". Create and view desired
+// 3. This will generate an output file "TMVA_output[keyword].root". Create and view desired
 //    plots in the interactive TMVA GUI:
-//        `root -l -e 'TMVA::TMVAGui("out_[keyword].root")'`.
+//        `root -l -e 'TMVA::TMVAGui("TMVA_output[keyword].root")'`.
 //    Important: The output .eps files in `dataset/plots` will only be generated/
 //               updated by creating them afresh in the interactive TMVA GUI, which
 //               can be laggy. Check the Last Edited timestamp to avoid mistaking old
@@ -52,7 +52,7 @@ void TMVAAnalysis()
     std::map<std::string, int> Use;
 
     // Neural Networks (all are feed-forward Multilayer Perceptrons)
-    Use["MLP"] = 1;  // Recommended ANN
+    //    Use["MLP"] = 1;  // Recommended ANN
 	
 	// Boosted Decision Trees
 	Use["BDT"] = 1;  // uses Adaptive Boost
@@ -60,13 +60,13 @@ void TMVAAnalysis()
 	//--------------------------------------------
 	// Load data
 	//--------------------------------------------
-	TString dir = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/feb2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/test/outputs/";
-	TString key = "4";
+	TString dir = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/apr2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/test/outputs/";
+	TString key = "5";
 	TString inputFilename = dir + "analyzer_" + key + ".root";
 
 	// Get input file and declare output file where TMVA will store ntuples, hists, etc.
 	TFile *inputFile = new TFile(inputFilename.Data());
-	TString outputFilename = "out_" + key + ".root";
+	TString outputFilename = "TMVA_output" + key + ".root";
 	TFile *outFile = new TFile(outputFilename, "RECREATE");
 	
 	// Get input tree
@@ -140,20 +140,13 @@ void TMVAAnalysis()
 	// "3*var1/var2*abs(var3)". [All types of expressions that can also be
 	// parsed by TTree::Draw( "expression" )]
 
-	/*
-	dataloader->AddVariable("recoTk1IP", 'D');
-	dataloader->AddVariable("recoTk2IP", 'D');
-	dataloader->AddVariable("recoTk3IP", 'D');
-	dataloader->AddVariable("recoTk4IP", 'D');
-	*/
-
-	dataloader->AddVariable("recoTk1IP_uint", 's');
-	dataloader->AddVariable("recoTk2IP_uint", 's');
-	dataloader->AddVariable("recoTk3IP_uint", 's');
-	dataloader->AddVariable("recoTk4IP_uint", 's');
-	dataloader->AddVariable("muPt_uint",    's');
-	dataloader->AddVariable("muEta_uint",   's');
-	dataloader->AddVariable("muSIP2D_uint", 's');
+	dataloader->AddVariable("recoTk1IP_uint", 'I');
+	dataloader->AddVariable("recoTk2IP_uint", 'I');
+	dataloader->AddVariable("recoTk3IP_uint", 'I');
+	dataloader->AddVariable("recoTk4IP_uint", 'I');
+	dataloader->AddVariable("muPt_uint",    'I');
+	dataloader->AddVariable("muEta_uint",   'I');
+	dataloader->AddVariable("muSIP2D_uint", 'I');
 
 	// You can add an arbitrary number of signal or background trees
 	// Here we set the global event weights per tree to 1.0
@@ -171,8 +164,12 @@ void TMVAAnalysis()
 	TCut backgroundCut = "recoTk1IP > -99 && recoTk2IP > -99 && recoTk3IP > -99  && recoTk4IP > -99"; 
 	*/
 
-	TCut signalCut     = "recoTk1IP_uint > 0 && recoTk2IP_uint > 0 && recoTk3IP_uint > 0 && recoTk4IP_uint > 0 && muPt_uint > 0 && muEta_uint > 0 && muSIP2D_uint > 0";
+	/*	TCut signalCut     = "recoTk1IP_uint > 0 && recoTk2IP_uint > 0 && recoTk3IP_uint > 0 && recoTk4IP_uint > 0 && muPt_uint > 0 && muEta_uint > 0 && muSIP2D_uint > 0";
 	TCut backgroundCut = "recoTk1IP_uint > 0 && recoTk2IP_uint > 0 && recoTk3IP_uint > 0 && recoTk4IP_uint > 0 && muPt_uint > 0 && muEta_uint > 0 && muSIP2D_uint > 0";
+	*/
+
+	TCut signalCut = "";
+	TCut backgroundCut = "";
 
 	TString datasetOptions = "SplitMode=Random";
 	dataloader->PrepareTrainingAndTestTree(signalCut, backgroundCut, datasetOptions);

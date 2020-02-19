@@ -3,7 +3,7 @@
  Stephanie Kwan + based on                        
  https://root.cern.ch/doc/v610/TMVAClassificationApplication_8C.html
  
- Usage:       
+ Usage:  % root -l -b -q applyWeightFile.C 
  ****************************************************/
 
 

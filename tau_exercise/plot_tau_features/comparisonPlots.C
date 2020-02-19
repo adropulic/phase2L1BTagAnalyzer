@@ -55,7 +55,7 @@ void applyLegStyle(TLegend *leg){
 /* Generate a comparison plot of "variable", using the gen-level genCut, and selecting fakes using fakeCut. treePath specifies the tree in the ROOT file to use.
    The ROOT file is located at inputDirectory. The resulting plots are written to outputDirectory, with filename including "name". The histogram has (bins)
    number of bins and ranges from integers low to high. */
-void comparisonPlots(TString variable, TString genCut, TString fakeCut, TString treePath, TString inputDirectory, TString outputDirectory, TString name, int bins, int low, int high){ 
+int comparisonPlots(TString variable, TString genCut, TString fakeCut, TString treePath, TString inputDirectory, TString outputDirectory, TString name, int bins, int low, int high){ 
  
   gROOT->LoadMacro("CMS_lumi.C");
   //gROOT->ProcessLine(".L ~/Documents/work/Analysis/PhaseIIStudies/2018/tdrstyle.C");
@@ -103,39 +103,37 @@ void comparisonPlots(TString variable, TString genCut, TString fakeCut, TString 
  
   /* Compute the ratio by cloning the True histogram, subtracting the Fake values,
      and dividing it by the Fake value. */
+  /*
   TH1F *ratio = (TH1F*)True->Clone();
   ratio->Add(Fake,-1);
   ratio->Divide(Fake);
-   
-  /* Set opacity for signal and background histograms. Added by SK */
-  Float_t sigAlpha = 0.7;
-  Float_t bkgAlpha = 0.7;
+  */
 
-  True->SetLineWidth(2);
+  True->SetMarkerColor(0);
+  True->SetFillStyle(1001);
+  True->SetFillColorAlpha(kBlue+2, 0.1);
+  True->SetLineWidth(1);
   True->SetLineColor(kBlue+2);
-  True->SetFillStyle(3244);
-  True->SetFillColor(kBlue+2);
-  True->SetFillColorAlpha(kBlue+2, sigAlpha); // added by SK
 
-  Fake->SetLineWidth(2);
-  Fake->SetFillStyle(3001);  
-  Fake->SetFillColor(kRed+2);
+  Fake->SetMarkerColor(0);
+  Fake->SetFillStyle(1001);
+  Fake->SetFillColorAlpha(kRed+2, 0.1);
+  Fake->SetLineWidth(1);
   Fake->SetLineColor(kRed+2);
-  Fake->SetFillColorAlpha(kRed+2, bkgAlpha); // added by SK
 
   Fake->Scale(1/Fake->Integral());
 
   True->Scale(1/True->Integral());
   Tcan->SetLogy();
-  // pad1->SetLogy();
-  // NoIso->Draw();
-  Fake->Draw("HIST L");   // changed by SK
-  True->Draw("HIST L same");  // changed by SK
 
+  // NoIso->Draw();
+  Fake->Draw("HIST");  
+  True->Draw("HIST same"); 
   
   Fake->GetXaxis()->SetTitle(variable);
   Fake->GetYaxis()->SetTitle("A.U.");
- 
+
+  /*
   float max = 10;
   if(Fake->GetXaxis()->GetBinCenter( Fake->GetMaximumBin() ) > True->GetXaxis()->GetBinCenter( True->GetMaximumBin() ) )
     max = Fake->GetXaxis()->GetBinCenter(Fake->GetMaximumBin());
@@ -143,52 +141,35 @@ void comparisonPlots(TString variable, TString genCut, TString fakeCut, TString 
     max = True->GetXaxis()->GetBinCenter(True->GetMaximumBin());
    
   std::cout<<"max: "<<max<<std::endl;
-  Fake->SetMaximum(max*10);
- 
-  leg->SetHeader("MTD Level1 PF Taus");
+  Fake->SetMaximum(max/60);
+  */
+
   //leg->AddEntry(NoIso,"No Isolation","l");
-  leg->AddEntry(True,"#tau_{h} Gen-Vis p_{T}>20 GeV","l");
+  //  leg->AddEntry(True,"#tau_{h} Gen-Vis p_{T}>20 GeV","l");
+  //  leg->AddEntry(Fake,"Fake Background","l");
+  leg->AddEntry(True,"L1 #tau_{h}, L1 p_{T}>0 GeV","l");
   leg->AddEntry(Fake,"Fake Background","l");
   leg->Draw();
  
   Tcan->cd();
+
   //TPad* pad2 = new TPad("pad2","The lower pad",0,0,0.98,0.25);
   //applyPadStyle(pad2);
   //pad2->cd();
   //pad2->SetGrid(0,0); 
  
   //ratio->Draw("p");
- 
-  ratio->GetXaxis()->SetLabelSize(0.1);
-  ratio->GetYaxis()->SetLabelSize(0.1);
-  ratio->GetXaxis()->SetNdivisions(10);
-  ratio->GetYaxis()->SetNdivisions(502);
- 
-  /* TLine (Double_t x1, Double_t y1, Double_t x2, Double_t y2) */
-  TLine *line0 = new TLine(low,0,high,0);
-  line0->SetLineColor(kBlue);
-  line0->Draw();
- 
-  TLine *line1 = new TLine(low,2,high,2);
-  line1->SetLineColor(kGray);
-  line1->SetLineStyle(2);
-  line1->Draw();
- 
-  TLine *line2 = new TLine(low,-2,high,-2);
-  line2->SetLineColor(kGray);
-  line2->SetLineStyle(2);
-  line2->Draw();
- 
-  ratio->Draw("psame");
- 
-  ratio->SetMaximum(5);
-  ratio->SetMinimum(-5);
+
  
   Tcan->cd();
-  //Tcan->SaveAs(outputDirectory+name+".pdf");
+  Tcan->SetLogy();
+  // Tcan->SaveAs(outputDirectory+name+".pdf");
   Tcan->SaveAs(outputDirectory+name+".png");
  
   delete Tcan;
+
+  return 1;
+
 }
 
 #endif
