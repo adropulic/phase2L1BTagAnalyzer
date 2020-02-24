@@ -52,9 +52,10 @@ void setMaxErrorTo1(TGraphAsymmErrors *graph);
 /*******************************************************************/
 
 /* Calculates and returns the efficiency and statistical uncertainty
-   (as a TGraphAsymmErrors with range [xMin, xMax]) using a BDT discriminant cut at
-   the value bdtDiscriminantMin, using an TTree (ntuple) of L1
-   taus pointed to by treePath and rootFileDirectory. 
+   for variable, using the n-tuple specified by rootFileDirectory
+   and treePath, and applying the L1 cuts l1Cut and reco-level cut
+   recoCut. Returns a TGraphAsymmErrors with x-axis range [low, high]).
+   If variableBin = true, uses the bins specified in the function.
 */
    
 TGraphAsymmErrors* calculateEfficiency(TString variable,
@@ -69,14 +70,14 @@ TGraphAsymmErrors* calculateEfficiency(TString variable,
   TFile *file = new TFile(rootFileDirectory);
   if (!file->IsOpen() || file==0 )
     {
-      std::cout<<"ERROR FILE "<< rootFileDirectory <<" NOT FOUND; EXITING"<<std::endl;
+      std::cout<<"ERROR: FILE "<< rootFileDirectory <<" NOT FOUND; EXITING"<<std::endl;
       return NULL;
     }
 
   TTree* tree = (TTree*)file->Get(treePath);
   if (tree == 0)
     {
-      std::cout<<"ERROR Tau Tree is "<< tree<<" NOT FOUND; EXITING"<<std::endl;
+      std::cout<<"ERROR: Tree is "<< tree<<" NOT FOUND; EXITING"<<std::endl;
       return NULL;
     }
 
@@ -125,8 +126,8 @@ TGraphAsymmErrors* calculateEfficiency(TString variable,
 
 /*******************************************************************/
 
-/* Sets the maximum and minimum error of an efficiency 
-   TGraphAsymmErrors to be 1.0 and 0.0 respectively. */
+/* Sets the maximum and minimum error of graph to be 1.0 and 0.0 
+   respectively. */
 
 void setMaxErrorTo1(TGraphAsymmErrors *graph)
 {

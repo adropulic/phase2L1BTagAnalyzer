@@ -28,7 +28,7 @@ void plotFiveRates(TH1F* h1, TString h1Label, int c1,
 
 /*********************************************************************/
 
-/* Plots rates (x-axis: L1 Tau Pt). */
+/* Plots rates (x-axis: L1 Tau Pt) and saves to .png file. */
 
 void makeRatesPlot(void)
 {
@@ -124,7 +124,8 @@ void makeRatesPlot(void)
 /*********************************************************************/
 
 /* Plot five histograms with rates, with the labels h1Label and line
-   color int c1 etc. */
+   color int c1 etc. If there's a way to do this without hard-coding
+   five histograms in the argument, I'd love to see it... */
 
 void plotFiveRates(TH1F* h1, TString h1Label, int c1,
 		   TH1F* h2, TString h2Label, int c2,
