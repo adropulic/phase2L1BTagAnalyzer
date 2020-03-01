@@ -52,7 +52,7 @@ void TMVAAnalysis()
     std::map<std::string, int> Use;
 
     // Neural Networks (all are feed-forward Multilayer Perceptrons)
-    //    Use["MLP"] = 1;  // Recommended ANN
+        Use["MLP"] = 1;  // Recommended ANN
 	
 	// Boosted Decision Trees
 	Use["BDT"] = 1;  // uses Adaptive Boost
@@ -60,27 +60,31 @@ void TMVAAnalysis()
 	//--------------------------------------------
 	// Load data
 	//--------------------------------------------
-	TString dir = "/afs/cern.ch/work/s/skkwan/public/triggerDevel/apr2019/CMSSW_10_5_0_pre1/src/L1Trigger/phase2L1BTagAnalyzer/test/outputs/";
-	TString key = "5";
-	TString inputFilename = dir + "analyzer_" + key + ".root";
+	TString dir = "/afs/cern.ch/user/a/addropul/CMSSW_10_6_0_pre4/src/L1Trigger/Run3Ntuplizer/test/";
+	//TString key = "5";
+	TString inputFilename_VBF = dir + "l1TNtuple-VBF.root";
+	TString inputFilename_ZB = "/afs/cern.ch/work/o/ojalvo/public/forAdriana/ZeroBiasLarge.root"; //dir + "l1TNtuple-ZB.root";
 
 	// Get input file and declare output file where TMVA will store ntuples, hists, etc.
-	TFile *inputFile = new TFile(inputFilename.Data());
-	TString outputFilename = "TMVA_output" + key + ".root";
+	TFile *inputFile_VBF = new TFile(inputFilename_VBF.Data());
+	TFile *inputFile_ZB = new TFile(inputFilename_ZB.Data());
+	TString outputFilename = "TMVA_output.root";
 	TFile *outFile = new TFile(outputFilename, "RECREATE");
 	
 	// Get input tree
-	TTree *inputTree = (TTree*) inputFile->Get("L1BTagAnalyzer/efficiencyTree");
+	TTree *inputTree_VBF = (TTree*) inputFile_VBF->Get("l1NtupleProducer/Stage3Regions/efficiencyTree");
+	TTree *inputTree_ZB = (TTree*) inputFile_ZB->Get("l1NtupleProducer/Stage3Regions/efficiencyTree");
 
 	// Split the signal and background into two trees
-	TTree *sigTree = inputTree->CloneTree(0);    // Create a clone of oldtree and copy 0 entries
-	TTree *bkgTree = inputTree->CloneTree(0);
+	TTree *sigTree = inputTree_VBF->CloneTree(0);    // Create a clone of oldtree and copy 0 entries
+	TTree *bkgTree = inputTree_ZB->CloneTree(0);
 
 	// Declare variables to read from TTree
-	Double_t recoPt, recoEta, recoPhi, recoTk1IP, recoTk2IP, recoTk3IP, recoTk4IP, l1Pt, l1Eta, l1Phi;
-	Int_t hadronFlavor;
-	UShort_t recoTk1IP_uint, recoTk2IP_uint, recoTk3IP_uint, recoTk4IP_uint;
-	UShort_t muPt_uint, muEta_uint, muSIP2D_uint;
+	Double_t recoPt_1, recoEta_1, recoPhi_1, recoNthJet_1, recoPt_2, recoEta_2, recoPhi_2, recoNthJet_2,
+	recoDeltaEta, recoDeltaPhi, recoDeltaR, recoMass, l1Pt_1, l1Eta_1, l1Phi_1, l1NthJet_1, l1Pt_2, l1Eta_2,
+	l1Phi_2, l1NthJet_2, l1DeltaEta, l1DeltaPhi, l1DeltaR, l1Mass, l1Matched_1, l1Matched_2;
+	
+	Int_t  nRecoJets, nL1Jets;
 
 	// Set branch addresses
         /*
@@ -94,25 +98,38 @@ void TMVAAnalysis()
 	inputTree->SetBranchAddress("recoTk4IP", &recoTk4IP);
 	*/
 
-	inputTree->SetBranchAddress("hadronFlavor", &hadronFlavor);
-	inputTree->SetBranchAddress("recoTk1IP_uint", &recoTk1IP_uint);
-	inputTree->SetBranchAddress("recoTk2IP_uint", &recoTk2IP_uint);
-	inputTree->SetBranchAddress("recoTk3IP_uint", &recoTk3IP_uint);
-	inputTree->SetBranchAddress("recoTk4IP_uint", &recoTk4IP_uint);
-	inputTree->SetBranchAddress("muPt_uint",    &muPt_uint);
-	inputTree->SetBranchAddress("muEta_uint",   &muEta_uint);
-	inputTree->SetBranchAddress("muSIP2D_uint", &muSIP2D_uint);
+	inputTree_VBF->SetBranchAddress("recoPt_1", &recoPt_1);
+	inputTree_VBF->SetBranchAddress("recoPt_2", &recoPt_2);
+	inputTree_VBF->SetBranchAddress("recoDeltaEta", &recoDeltaEta);
+	inputTree_VBF->SetBranchAddress("recoDeltaPhi", &recoDeltaPhi);
+	inputTree_VBF->SetBranchAddress("recoMass", &recoMass);
+	inputTree_VBF->SetBranchAddress("l1Pt_1",    &l1Pt_1);
+	inputTree_VBF->SetBranchAddress("l1Pt_2",   &l1Pt_2);
+	inputTree_VBF->SetBranchAddress("l1DeltaEta", &l1DeltaEta);
+        inputTree_VBF->SetBranchAddress("l1DeltaPhi",   &l1DeltaPhi);
+        inputTree_VBF->SetBranchAddress("l1Mass", &l1Mass);
+
+        inputTree_ZB->SetBranchAddress("recoPt_1", &recoPt_1);
+        inputTree_ZB->SetBranchAddress("recoPt_2", &recoPt_2);
+        inputTree_ZB->SetBranchAddress("recoDeltaEta", &recoDeltaEta);
+        inputTree_ZB->SetBranchAddress("recoDeltaPhi", &recoDeltaPhi);
+        inputTree_ZB->SetBranchAddress("recoMass", &recoMass);
+        inputTree_ZB->SetBranchAddress("l1Pt_1",    &l1Pt_1);
+        inputTree_ZB->SetBranchAddress("l1Pt_2",   &l1Pt_2);
+        inputTree_ZB->SetBranchAddress("l1DeltaEta", &l1DeltaEta);
+        inputTree_ZB->SetBranchAddress("l1DeltaPhi",   &l1DeltaPhi);
+        inputTree_ZB->SetBranchAddress("l1Mass", &l1Mass);
 
 	// Loop through jets and fill sigTree and bkgTree
 	Int_t i;
-	for ( i = 0; i < inputTree->GetEntries(); i++ ) {
-	        inputTree->GetEntry(i);
-		if ( hadronFlavor == 5 ) {
-			sigTree->Fill();
-		}
-		else {
-			bkgTree->Fill();
-		}
+	Int_t j;
+	for ( i = 0; i < inputTree_VBF->GetEntries(); i++ ) {
+	        inputTree_VBF->GetEntry(i);
+		sigTree->Fill();
+	}
+	for ( j = 0; j < inputTree_ZB->GetEntries(); j++ ) {
+		inputTree_ZB->GetEntry(j);
+		bkgTree->Fill();
 	} // end jet loop
 
 	//--------------------------------------------
@@ -140,13 +157,11 @@ void TMVAAnalysis()
 	// "3*var1/var2*abs(var3)". [All types of expressions that can also be
 	// parsed by TTree::Draw( "expression" )]
 
-	dataloader->AddVariable("recoTk1IP_uint", 'I');
-	dataloader->AddVariable("recoTk2IP_uint", 'I');
-	dataloader->AddVariable("recoTk3IP_uint", 'I');
-	dataloader->AddVariable("recoTk4IP_uint", 'I');
-	dataloader->AddVariable("muPt_uint",    'I');
-	dataloader->AddVariable("muEta_uint",   'I');
-	dataloader->AddVariable("muSIP2D_uint", 'I');
+	dataloader->AddVariable("l1Pt_1", 'D');
+	dataloader->AddVariable("l1Pt_2", 'D');
+	dataloader->AddVariable("l1DeltaEta", 'D');
+	dataloader->AddVariable("l1DeltaPhi", 'D');
+	dataloader->AddVariable("l1Mass",    'D');
 
 	// You can add an arbitrary number of signal or background trees
 	// Here we set the global event weights per tree to 1.0
@@ -164,12 +179,11 @@ void TMVAAnalysis()
 	TCut backgroundCut = "recoTk1IP > -99 && recoTk2IP > -99 && recoTk3IP > -99  && recoTk4IP > -99"; 
 	*/
 
-	/*	TCut signalCut     = "recoTk1IP_uint > 0 && recoTk2IP_uint > 0 && recoTk3IP_uint > 0 && recoTk4IP_uint > 0 && muPt_uint > 0 && muEta_uint > 0 && muSIP2D_uint > 0";
-	TCut backgroundCut = "recoTk1IP_uint > 0 && recoTk2IP_uint > 0 && recoTk3IP_uint > 0 && recoTk4IP_uint > 0 && muPt_uint > 0 && muEta_uint > 0 && muSIP2D_uint > 0";
-	*/
+	TCut signalCut     = "l1Pt_1 > 0 && l1Pt_2 > 0 && l1Mass > 0 && l1Pt_1 < 511 && l1Pt_2 < 511";
+	TCut backgroundCut = "l1Pt_1 > 0 && l1Pt_2 > 0 && l1Mass > 0 && l1Pt_1 < 511 && l1Pt_2 < 511";
 
-	TCut signalCut = "";
-	TCut backgroundCut = "";
+	//TCut signalCut = "";
+	//TCut backgroundCut = "";
 
 	TString datasetOptions = "SplitMode=Random";
 	dataloader->PrepareTrainingAndTestTree(signalCut, backgroundCut, datasetOptions);
@@ -181,8 +195,8 @@ void TMVAAnalysis()
 	  factory->BookMethod(dataloader, TMVA::Types::kBDT, "BDT", methodOptions);
 	//  TMVA ANN: MLP (recommended ANN) -- all ANNs in TMVA are Multilayer Perceptrons
 	if (Use["MLP"])
-	  factory->BookMethod(dataloader, TMVA::Types::kMLP, "MLP", methodOptions);
-
+	  //factory->BookMethod(dataloader, TMVA::Types::kMLP, "MLP", methodOptions);
+	factory->BookMethod( dataloader, TMVA::Types::kMLP, "MLP", "H:!V:NeuronType=tanh:VarTransform=N:NCycles=600:HiddenLayers=N+5:TestRate=5:!UseRegulator" );
 	// Training and Evaluation
 	factory->TrainAllMethods();
 	factory->TestAllMethods();
