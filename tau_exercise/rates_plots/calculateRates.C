@@ -29,16 +29,16 @@
 
 /*******************************************************************/
 
-/* Calculates and returns the rates
-   of a BDT discriminant cut at
-   the value bdtCut for Level 1 taus, using an TTree (ntuple) of L1
-   taus pointed to by treePath and rootFileDirectory. 
-   The BDT weight file is read from weightFileDirectory.
-   pTCut and l1PtCut are lower bounds on the gen/reco and l1 pT
-   respectively, and absEta(Lower/Upper)Bound is for gen/reco eta.
-   (Whether gen/reco is used depends on whether L1 matches with gen/
-   reco).
-*/
+/* isoHistPath: Path to histogram containing the objects passing the
+                desired trigger working point. e.g. 
+		"L1TauAnalyzerRates/l1TauIsoTight_pt" contains the
+                pTs of the taus passing the Tight isolation MVA
+		requirement.
+   allHistPath: Path to histogram containing all the objects regardless
+                of whether they pass the trigger.
+                e.g. "L1TauAnalyzer/l1Tau_pt" 
+   rootFileDirectory: Directory to the ROOT file. 
+   Returns a TH1F of the rate assuming the HL-LHC 40 MHz event rate. */
    
 TH1F* calculateRates(TString isoHistPath,
 		     TString allHistPath,

@@ -1,10 +1,10 @@
 # Tau README
 
 ## Getting tau n-tuples
-Generate n-tuples using [https://github.com/skkwan/phase2L1TauAnalyzer](the phase2L1TauAnalyzer).
+Generate n-tuples using [the phase2L1TauAnalyzer](https://github.com/skkwan/phase2L1TauAnalyzer).
 
 ## (Aside) Plotting efficiencies for cut-based approach
-This has all been moved to [https://github.com/skkwan/phase2L1validation](the phase2L1validation GitHub), which should be run from a SL7 machine. My current setup is on UW Wisc servers.
+This has all been moved to [the phase2L1validation GitHub](https://github.com/skkwan/phase2L1validation] which should be run from a SL7 machine. My current setup is on UWisc servers.
 
 ## Training a BDT in TMVA and recording it in a .txt table
 1. Obtain an n-tuple (eventually need to set up my own analyzer).
